@@ -36,7 +36,9 @@ public  class FXMLResultWin extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(400.0);
         setPrefWidth(600.0);
-        setStyle("-fx-background-color: #22726e;");
+        this.getStyleClass().add("AnchorPane");
+       
+        //setStyle("-fx-background-color: #22726e;");
 
         imageViewHome.setFitHeight(80.0);
         imageViewHome.setFitWidth(85.0);

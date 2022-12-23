@@ -61,7 +61,7 @@ public class FXMLResultDraw extends AnchorPane {
         getChildren().add(mediaViewVideoDraw);
         
           //video
-        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/winVideo.mp4").toExternalForm());
+        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/DrawVideo.mp4").toExternalForm());
         player=new MediaPlayer(media);
         mediaViewVideoDraw.setMediaPlayer(player);
         player.play();

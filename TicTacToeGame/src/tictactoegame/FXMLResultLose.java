@@ -60,7 +60,7 @@ public class FXMLResultLose extends AnchorPane {
         getChildren().add(mediaViewVideoLose);
 
         //video
-        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/winVideo.mp4").toExternalForm());
+        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/try agin.mp4").toExternalForm());
         player=new MediaPlayer(media);
         mediaViewVideoLose.setMediaPlayer(player);
         player.play();

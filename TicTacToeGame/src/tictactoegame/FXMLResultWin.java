@@ -82,7 +82,7 @@ public  class FXMLResultWin extends AnchorPane {
         getChildren().add(labelName);
      
         //video
-        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/winVideo.mp4").toExternalForm());
+        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
         player=new MediaPlayer(media);
         mediaViewVideoWin.setMediaPlayer(player);
         player.play();

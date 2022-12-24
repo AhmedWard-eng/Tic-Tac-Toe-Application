@@ -71,8 +71,7 @@ public class GameServerBase extends AnchorPane {
                     
                     while(true)
                     {
-                         s = serverSocket.accept();
-                        
+                         s = serverSocket.accept();                 
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);

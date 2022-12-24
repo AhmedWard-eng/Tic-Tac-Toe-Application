@@ -1,6 +1,9 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
@@ -146,6 +149,18 @@ public class FXMLHome extends AnchorPane {
         buttonOnline.setCursor(Cursor.CLOSED_HAND);
 
         buttonOnline.setEffect(glow1);
+
+        buttonOnline.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLAvailableUsersBase());
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+
+        buttonOnePlayer.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLGameScreenBase());
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
 
         rectangle0.setArcHeight(5.0);
         rectangle0.setArcWidth(5.0);

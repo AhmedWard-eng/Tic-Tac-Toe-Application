@@ -3,3 +3,26 @@
     -fx-background-color: #22726e;
 }
 
+#labelCharO{
+    -fx-text-fill: linear-gradient(to top, #000000,#363062,#4538ab);
+    
+}
+#labelCharX{
+    -fx-text-fill: linear-gradient(to top, #000000, red,#e12e2b);
+}
+
+#labelPlayer{
+     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
+}
+#labelCumputer{
+    -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
+}
+#labelVS{
+    -fx-text-fill: linear-gradient(to bottom, #5d6f0c, #e4e8c3);
+}
+#Record{
+    -fx-text-fill: linear-gradient(to bottom, #fcc1c1,#f5e4e4);
+}
+#Record:selected {
+    -fx-text-fill: linear-gradient(to bottom, #e06666, #ffffff);
+}

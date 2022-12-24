@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="674.0" style="-fx-background-color: #22726e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle id="border" fx:id="rectangleBordGameOnePlayer" arcHeight="5.0" arcWidth="5.0" fill="#fedb39" height="387.0" layoutX="65.0" layoutY="132.0" stroke="#22726e" strokeType="INSIDE" width="544.0" />
+      <Line endX="455.0" fill="#22726e" layoutX="155.0" layoutY="261.0" startX="-90.0" stroke="#22726e" strokeWidth="6.0" />
+      <Line endX="348.0" fill="#22726e" layoutX="263.0" layoutY="390.0" startX="-199.0" stroke="#22726e" strokeWidth="6.0" />
+      <Line endX="17.0" endY="272.0" fill="#22726e" layoutX="211.0" layoutY="247.0" startX="17.0" startY="-115.0" stroke="#22726e" strokeWidth="6.0" />
+      <Line endX="16.0" endY="215.0" fill="#22726e" layoutX="406.0" layoutY="304.0" startX="16.0" startY="-172.0" stroke="#22726e" strokeWidth="6.0" />
+      <Label id="labelCharX" fx:id="label2" alignment="CENTER" graphicTextGap="0.0" layoutX="228.0" layoutY="132.0" prefHeight="103.0" prefWidth="190.0" text="x" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#e12e2b" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <JFXToggleButton id="Record" fx:id="toggleButtonRecord" layoutX="505.0" layoutY="-2.0" prefHeight="51.0" prefWidth="164.0" text="Record" toggleLineColor="#e06666" unToggleColor="#e1d2d2" unToggleLineColor="#e4d6d6">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="0.6796116504854368" startX="1.0" startY="0.49514563106796117">
+               <stops>
+                  <Stop color="#f5e4e4" />
+                  <Stop color="#fcc1c1" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+         <toggleColor>
+            <LinearGradient endY="1.0" startX="0.8932038834951457">
+               <stops>
+                  <Stop color="#f5e4e4" />
+                  <Stop color="#e06666" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </toggleColor>
+      </JFXToggleButton>
+      <ImageView fx:id="imageViewPlayAgin" fitHeight="98.0" fitWidth="117.0" layoutX="505.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
+      <Label id="labelVS" fx:id="labelVS" layoutX="296.0" layoutY="55.0" text="VS">
+         <font>
+            <Font name="System Bold Italic" size="51.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.5339805825242718" endY="1.0" startX="0.47572815533980584">
+               <stops>
+                  <Stop color="#5d6f0c" />
+                  <Stop color="#e4e8c3" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCumputer" fx:id="labelCumputer" layoutX="428.0" layoutY="64.0" text="Computer">
+         <font>
+            <Font name="System Bold Italic" size="39.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.5097087378640777" endY="1.0" startX="0.46601941747572817">
+               <stops>
+                  <Stop color="#a17d7d" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharX" fx:id="label3" alignment="CENTER" graphicTextGap="0.0" layoutX="422.0" layoutY="132.0" prefHeight="103.0" prefWidth="190.0" text="x" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#e12e2b" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharX" fx:id="label6" alignment="CENTER" graphicTextGap="0.0" layoutX="423.0" layoutY="261.0" prefHeight="103.0" prefWidth="190.0" text="x" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#e12e2b" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharX" fx:id="label4" alignment="CENTER" graphicTextGap="0.0" layoutX="64.0" layoutY="261.0" prefHeight="129.0" prefWidth="164.0" text="x" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#e12e2b" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharX" fx:id="label7" alignment="CENTER" graphicTextGap="0.0" layoutX="67.0" layoutY="387.0" prefHeight="129.0" prefWidth="164.0" text="x" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#e12e2b" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharO" fx:id="label1" alignment="CENTER" graphicTextGap="0.0" layoutX="67.0" layoutY="132.0" prefHeight="129.0" prefWidth="164.0" text="o" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#363062" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharO" fx:id="label5" alignment="CENTER" graphicTextGap="0.0" layoutX="232.0" layoutY="261.0" prefHeight="129.0" prefWidth="190.0" text="o" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#363062" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharO" fx:id="label8" alignment="CENTER" graphicTextGap="0.0" layoutX="232.0" layoutY="393.0" prefHeight="129.0" prefWidth="190.0" text="o" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#363062" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label id="labelCharO" fx:id="label9" alignment="CENTER" graphicTextGap="0.0" layoutX="423.0" layoutY="387.0" prefHeight="129.0" prefWidth="181.0" text="o" textAlignment="RIGHT">
+         <font>
+            <Font name="System Bold" size="89.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.024271844660194174" endY="0.7427184466019416" startX="0.18446601941747573" startY="0.19902912621359226">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#363062" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <ImageView fx:id="imageViewHome" fitHeight="98.0" fitWidth="117.0" layoutX="32.0" layoutY="538.0" pickOnBounds="true" preserveRatio="true" />
+      <Label id="labelPlayer" fx:id="labelPlayer" layoutX="80.0" layoutY="64.0" text="Player">
+         <font>
+            <Font name="System Bold Italic" size="39.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.5097087378640777" endY="1.0" startX="0.46601941747572817">
+               <stops>
+                  <Stop color="#a17d7d" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+   </children>
+</AnchorPane>

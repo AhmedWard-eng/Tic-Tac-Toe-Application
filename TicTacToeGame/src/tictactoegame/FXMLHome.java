@@ -76,7 +76,7 @@ public class FXMLHome extends AnchorPane {
         imageViewLogo.setLayoutY(36.0);
         imageViewLogo.setPickOnBounds(true);
         imageViewLogo.setPreserveRatio(true);
-        imageViewLogo.setImage(new Image(getClass().getResource("Capture.PNG").toExternalForm()));
+        imageViewLogo.setImage(new Image(getClass().getResource("Resources/Capture.PNG").toExternalForm()));
 
         anchorPane.setPrefHeight(400.0);
         anchorPane.setPrefWidth(195.0);

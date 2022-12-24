@@ -1,15 +1,11 @@
-/TicTacToeGame/nbproject/private/
-<<<<<<< HEAD
+/TicTacToeGame/nbproject
+
 /TicTacToeGame/build/
 /TicTacToeGame/dist/
 
 *.class
-=======
-/TicTacToeGame/dist/
-/TicTacToeGame/build/
->>>>>>> FXML_Home
-/Server/GmeeServer/nbproject/private/
-/GmeeServer/nbproject/private/
+
+/Server/GmeeServer/nbproject
 /GameServer/nbproject/private/
 /GameServer/build/
 /GameServer/dist/

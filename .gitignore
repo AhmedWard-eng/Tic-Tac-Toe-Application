@@ -1,5 +1,10 @@
 /TicTacToeGame/nbproject/private/
+<<<<<<< HEAD
 /TicTacToeGame/build/
 /TicTacToeGame/dist/
 
 *.class
+=======
+/TicTacToeGame/dist/
+/TicTacToeGame/build/
+>>>>>>> FXML_Home

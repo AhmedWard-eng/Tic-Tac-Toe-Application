@@ -119,6 +119,7 @@ public class FXMLHome extends AnchorPane {
 
         buttonOnePlayer.setEffect(glow);
 
+        
         buttonTwoPlayer.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
         buttonTwoPlayer.setLayoutY(86.0);
         buttonTwoPlayer.setMnemonicParsing(false);

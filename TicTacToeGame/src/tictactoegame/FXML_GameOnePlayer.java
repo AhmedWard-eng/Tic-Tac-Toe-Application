@@ -2,6 +2,8 @@ package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
 import static java.awt.Color.red;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -289,5 +291,9 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         pathImageHome=new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
 
+        imageViewHome.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent> (){
+                public void handle(ActionEvent e){
+                
+                }});
     }
 }

@@ -78,7 +78,7 @@ public class FXMLHome extends AnchorPane {
         imageViewLogo.setPreserveRatio(true);
         imageViewLogo.setImage(new Image(getClass().getResource("Resources/Capture.PNG").toExternalForm()));
 
-        anchorPane.setPrefHeight(400.0);
+        anchorPane.setPrefHeight(450.0);
         anchorPane.setPrefWidth(195.0);
         anchorPane.setStyle("-fx-background-color: #12947F;");
 

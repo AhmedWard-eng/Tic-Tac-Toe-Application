@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #22726e;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <Button id="ButtonLoginID" layoutX="241.0" layoutY="252.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="120.0" style="-fx-border-color: #000000; -fx-border-width: 3px; -fx-background-color: #ff9900;" text="Login" textAlignment="JUSTIFY">
+         <font>
+            <Font name="Comic Sans MS" size="18.0" />
+         </font>
+      </Button>
+      <Button id="ButtonSignUpID" layoutX="240.0" layoutY="151.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="120.0" style="-fx-border-color: #000000; -fx-border-width: 3px; -fx-background-color: #cc0000;" text="Sign Up" textAlignment="JUSTIFY" textFill="WHITE">
+         <font>
+            <Font name="Comic Sans MS" size="18.0" />
+         </font>
+      </Button>
+      <Text fill="WHITE" layoutX="234.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online">
+         <font>
+            <Font name="Comic Sans MS Bold" size="45.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-11.0" layoutY="258.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

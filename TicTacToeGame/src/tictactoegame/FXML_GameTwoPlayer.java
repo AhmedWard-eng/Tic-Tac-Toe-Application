@@ -1,6 +1,17 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,8 +24,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
-public  class FXML_GameTwoPlayer extends AnchorPane {
+public class FXML_GameTwoPlayer extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Line line;
@@ -36,12 +48,23 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
     protected final Label label9;
     protected final ImageView imageViewHome;
     protected final Label labelPlayer;
-    
-    
+
     Image pathImagePlayAgin;
     Image pathImageHome;
 
-    public FXML_GameTwoPlayer() {
+    //create array list to cary button
+    ArrayList<Label> buttons;
+
+    int playerTurn = 0;
+    boolean isWon = false;
+    int playerXCount = 0;
+    int playerOCount = 0;
+
+    Stage stage;
+
+    public FXML_GameTwoPlayer(Stage stage) {
+
+        this.stage = stage;
 
         rectangleBordGameOnePlayer = new Rectangle();
         line = new Line();
@@ -70,7 +93,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(650.0);
         setPrefWidth(674.0);
-        
+
         this.getStyleClass().add("AnchorPane");
 
         rectangleBordGameOnePlayer.setArcHeight(5.0);
@@ -127,7 +150,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label2.setLayoutY(132.0);
         label2.setPrefHeight(103.0);
         label2.setPrefWidth(190.0);
-        label2.setText("x");
+        //label2.setText("x");
         label2.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label2.setFont(new Font("System Bold", 89.0));
 
@@ -135,9 +158,9 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         toggleButtonRecord.setLayoutX(505.0);
         toggleButtonRecord.setLayoutY(-2.0);
         toggleButtonRecord.setText("Record");
-        Font boldFontBold23  = Font.font("Bold", FontWeight.BOLD, 23);
+        Font boldFontBold23 = Font.font("Bold", FontWeight.BOLD, 23);
         toggleButtonRecord.setFont(boldFontBold23);
-        
+
         toggleButtonRecord.setToggleLineColor(Paint.valueOf("#e06666"));
         toggleButtonRecord.setToggleColor(Paint.valueOf("#d63333"));
 
@@ -147,7 +170,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         imageViewHome.setLayoutY(538.0);
         imageViewHome.setPickOnBounds(true);
         imageViewHome.setPreserveRatio(true);
-        
+
         imageViewPlayAgin.setFitHeight(98.0);
         imageViewPlayAgin.setFitWidth(117.0);
         imageViewPlayAgin.setLayoutX(550.0);
@@ -174,7 +197,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label3.setLayoutY(132.0);
         label3.setPrefHeight(103.0);
         label3.setPrefWidth(190.0);
-        label3.setText("x");
+        //label3.setText("x");
         label3.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label3.setFont(new Font("System Bold", 89.0));
 
@@ -185,7 +208,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label6.setLayoutY(261.0);
         label6.setPrefHeight(103.0);
         label6.setPrefWidth(190.0);
-        label6.setText("x");
+        //label6.setText("x");
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label6.setFont(new Font("System Bold", 89.0));
 
@@ -196,7 +219,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label4.setLayoutY(261.0);
         label4.setPrefHeight(129.0);
         label4.setPrefWidth(164.0);
-        label4.setText("x");
+        //label4.setText("x");
         label4.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label4.setFont(new Font("System Bold", 89.0));
 
@@ -207,7 +230,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label7.setLayoutY(387.0);
         label7.setPrefHeight(129.0);
         label7.setPrefWidth(164.0);
-        label7.setText("x");
+        //label7.setText("x");
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label7.setFont(new Font("System Bold", 89.0));
 
@@ -218,7 +241,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label1.setLayoutY(132.0);
         label1.setPrefHeight(129.0);
         label1.setPrefWidth(164.0);
-        label1.setText("o");
+        //label1.setText("o");
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label1.setFont(new Font("System Bold", 89.0));
 
@@ -229,7 +252,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label5.setLayoutY(261.0);
         label5.setPrefHeight(129.0);
         label5.setPrefWidth(190.0);
-        label5.setText("o");
+        //label5.setText("o");
         label5.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label5.setFont(new Font("System Bold", 89.0));
 
@@ -240,7 +263,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label8.setLayoutY(393.0);
         label8.setPrefHeight(129.0);
         label8.setPrefWidth(190.0);
-        label8.setText("o");
+        //label8.setText("o");
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label8.setFont(new Font("System Bold", 89.0));
 
@@ -251,7 +274,7 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         label9.setLayoutY(387.0);
         label9.setPrefHeight(129.0);
         label9.setPrefWidth(181.0);
-        label9.setText("o");
+        // label9.setText("o");
         label9.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label9.setFont(new Font("System Bold", 89.0));
 
@@ -281,13 +304,134 @@ public  class FXML_GameTwoPlayer extends AnchorPane {
         getChildren().add(label9);
         getChildren().add(imageViewHome);
         getChildren().add(labelPlayer);
-        
+
         //image
-        pathImagePlayAgin=new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
+        pathImagePlayAgin = new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
         imageViewPlayAgin.setImage(pathImagePlayAgin);
-        
-        pathImageHome=new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
+
+        pathImageHome = new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
 
+        buttons = new ArrayList<>(Arrays.asList(label1, label2, label3, label4, label5, label6, label7, label8, label9));
+
+        for (int i = 0; i < buttons.size(); i++) {
+            System.out.println("ArrayList:" + i + " " + buttons.get(i) + " " + buttons.get(i).getText());
+        }
+
+        buttons.forEach(label -> {
+            setupButton(label);
+            label.setFocusTraversable(false);
+        });
+
     }
+
+    public void setupButton(Label label) {
+
+        label.setOnMouseClicked(mouseEvent -> {
+            setPlayerSymbol(label);
+            label.setDisable(true);
+            //checkIfGameIsOver();
+            checkForWinner();
+        });
+    }
+
+    public void setPlayerSymbol(Label label) {
+
+        if (playerTurn % 2 == 0) {
+            label.setText("X");
+            label.setId("labelCharX");
+
+            playerTurn = 1;
+            playerXCount++;
+        } else {
+            label.setText("O");
+            label.setId("labelCharO");
+            playerTurn = 0;
+            playerOCount++;
+        }
+        //ckeck drown
+        if (playerXCount + playerOCount == 9) {
+            // System.out.println("Drow and end game");
+            // isWon = true;
+            Scene scene = new Scene(new FXMLResultDraw());
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        }
+
+    }
+
+    public void checkForWinner() {
+        ckeckRowForWin();
+        ckeckColForWin();
+        ckeckDiagonalRightForWin();
+        ckeckDiagonalLeftForWin();
+
+    }
+
+    //horizontal
+    private void ckeckRowForWin() {
+        for (int i = 0; i < 7; i = i + 2) {
+            if (buttons.get(i).getText().equals(buttons.get(i + 1).getText())
+                    && buttons.get(i).getText().equals(buttons.get(i + 2).getText())
+                    && !buttons.get(i).getText().equals("")) {
+
+                // System.out.println("Row:you Wwwin");
+                Scene scene = new Scene(new FXMLResultWin(stage));
+                scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                stage.setScene(scene);
+
+            }
+
+        }
+
+    }
+
+    //vertical
+    private void ckeckColForWin() {
+        for (int i = 0; i < 3; i++) {
+            if (buttons.get(i).getText().equals(buttons.get(i + 3).getText())
+                    && buttons.get(i).getText().equals(buttons.get(i + 6).getText())
+                    && !buttons.get(i).getText().equals("")) {
+                // endGame();
+                //System.out.println("col:you Wwwin and end game");
+                Scene scene = new Scene(new FXMLResultWin(stage));
+                scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                stage.setScene(scene);
+                //isWon=true;
+                break;
+            }
+
+        }
+    }
+
+    //DiagonaLeft
+    private void ckeckDiagonalLeftForWin() {
+
+        if (buttons.get(0).getText().equals(buttons.get(4).getText())
+                && buttons.get(0).getText().equals(buttons.get(8).getText())
+                && !buttons.get(0).getText().equals("")) {
+            // endGame();
+            // System.out.println("left:you Wwwin and end game");
+            Scene scene = new Scene(new FXMLResultWin(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+            isWon = true;
+        }
+    }
+
+    //DiagonaRight
+    private void ckeckDiagonalRightForWin() {
+
+        if (buttons.get(2).getText().equals(buttons.get(4).getText())
+                && buttons.get(2).getText().equals(buttons.get(6).getText())
+                && !buttons.get(2).getText().equals("")) {
+            //endGame();
+            //  System.out.println("Right:you Wwwin and end game");
+            Scene scene = new Scene(new FXMLResultWin(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+            isWon = true;
+        }
+    }
+
 }

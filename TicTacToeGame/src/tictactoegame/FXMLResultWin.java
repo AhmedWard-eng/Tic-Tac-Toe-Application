@@ -1,5 +1,8 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,21 +11,22 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
-public  class FXMLResultWin extends AnchorPane {
+public class FXMLResultWin extends AnchorPane {
 
     protected final ImageView imageViewHome;
     protected final ImageView imageViewPlayAgain;
     protected final MediaView mediaViewVideoWin;
     protected final Label labelCongratulation;
     protected final Label labelName;
-    
+
     MediaPlayer player;
-    Media media ;
+    Media media;
     Image pathImagePlayAgin;
     Image pathImageHome;
 
-    public FXMLResultWin() {
+    public FXMLResultWin(Stage stage) {
 
         imageViewHome = new ImageView();
         imageViewPlayAgain = new ImageView();
@@ -37,9 +41,8 @@ public  class FXMLResultWin extends AnchorPane {
         setPrefHeight(400.0);
         setPrefWidth(600.0);
         this.getStyleClass().add("AnchorPane");
-       
-        //setStyle("-fx-background-color: #22726e;");
 
+        //setStyle("-fx-background-color: #22726e;");
         imageViewHome.setFitHeight(80.0);
         imageViewHome.setFitWidth(85.0);
         imageViewHome.setLayoutX(35.0);
@@ -80,19 +83,28 @@ public  class FXMLResultWin extends AnchorPane {
         getChildren().add(mediaViewVideoWin);
         getChildren().add(labelCongratulation);
         getChildren().add(labelName);
-     
+
         //video
         media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
-        player=new MediaPlayer(media);
+        player = new MediaPlayer(media);
         mediaViewVideoWin.setMediaPlayer(player);
         player.play();
-        
+
         //image
-        pathImagePlayAgin=new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
+        pathImagePlayAgin = new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
         imageViewPlayAgain.setImage(pathImagePlayAgin);
-        
-        pathImageHome=new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
+
+        pathImageHome = new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
 
+       /* imageViewPlayAgain.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+
+                Scene scene = new Scene(new FXML_GameTwoPlayer(stage));
+                scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                stage.setScene(scene);
+            }
+        });*/
+        
     }
 }

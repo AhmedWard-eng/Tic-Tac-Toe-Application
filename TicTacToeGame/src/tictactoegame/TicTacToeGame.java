@@ -22,7 +22,7 @@ public class TicTacToeGame extends Application {
     public void start(Stage stage) throws Exception {
 
         
-        Parent root = new FXMLHome(stage);
+        Parent root = new FXML_GameTwoPlayer(stage);
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());

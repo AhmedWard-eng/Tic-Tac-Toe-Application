@@ -1,6 +1,9 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
@@ -78,7 +81,7 @@ public class FXMLHome extends AnchorPane {
         imageViewLogo.setPreserveRatio(true);
         imageViewLogo.setImage(new Image(getClass().getResource("Resources/Capture.PNG").toExternalForm()));
 
-        anchorPane.setPrefHeight(400.0);
+        anchorPane.setPrefHeight(450.0);
         anchorPane.setPrefWidth(195.0);
         anchorPane.setStyle("-fx-background-color: #12947F;");
 
@@ -147,6 +150,18 @@ public class FXMLHome extends AnchorPane {
         buttonOnline.setCursor(Cursor.CLOSED_HAND);
 
         buttonOnline.setEffect(glow1);
+
+        buttonOnline.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLAvailableUsersBase());
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+
+        buttonOnePlayer.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLGameScreenBase());
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
 
         rectangle0.setArcHeight(5.0);
         rectangle0.setArcWidth(5.0);

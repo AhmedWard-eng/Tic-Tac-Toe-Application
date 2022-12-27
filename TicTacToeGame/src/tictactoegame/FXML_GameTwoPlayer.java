@@ -63,6 +63,8 @@ public class FXML_GameTwoPlayer extends AnchorPane {
     boolean isWon = false;
     int playerXCount = 0;
     int playerOCount = 0;
+    
+    String winnerSymbol;
 
     Stage stage;
 
@@ -385,16 +387,6 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         ckeckDiagonalLeftForWin();
         checkDraw();
 
-        //        Timer timer = new Timer();
-//        TimerTask timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                System.out.println("current Thread: "+ Thread.currentThread().getName());
-//                
-//            }
-//        };
-//        
-//        timer.schedule(timerTask,new Date());
     }
 
     //horizontal
@@ -404,11 +396,10 @@ public class FXML_GameTwoPlayer extends AnchorPane {
                     && buttons.get(i).getText().equals(buttons.get(i + 2).getText())
                     && !buttons.get(i).getText().equals("")) {
 
-                // System.out.println("Row:you Wwwin");
-                Scene scene = new Scene(new FXMLResultWin(stage));
+                winnerSymbol = buttons.get(i).getText();
+                Scene scene = new Scene(new FXMLResultWin(stage,winnerSymbol));
                 scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
                 stage.setScene(scene);
-
             }
 
         }
@@ -421,12 +412,12 @@ public class FXML_GameTwoPlayer extends AnchorPane {
             if (buttons.get(i).getText().equals(buttons.get(i + 3).getText())
                     && buttons.get(i).getText().equals(buttons.get(i + 6).getText())
                     && !buttons.get(i).getText().equals("")) {
-                // endGame();
-                System.out.println("the winnner: "+ buttons.get(i).getText());
-                Scene scene = new Scene(new FXMLResultWin(stage));
+                
+                winnerSymbol = buttons.get(i).getText();
+                Scene scene = new Scene(new FXMLResultWin(stage, winnerSymbol));
                 scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
                 stage.setScene(scene);
-                //isWon=true;
+                
                 break;
             }
 
@@ -439,9 +430,10 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         if (buttons.get(0).getText().equals(buttons.get(4).getText())
                 && buttons.get(0).getText().equals(buttons.get(8).getText())
                 && !buttons.get(0).getText().equals("")) {
-            // endGame();
-            // System.out.println("left:you Wwwin and end game");
-            Scene scene = new Scene(new FXMLResultWin(stage));
+            
+            
+            winnerSymbol = buttons.get(0).getText();
+            Scene scene = new Scene(new FXMLResultWin(stage, winnerSymbol));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
             isWon = true;
@@ -454,9 +446,9 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         if (buttons.get(2).getText().equals(buttons.get(4).getText())
                 && buttons.get(2).getText().equals(buttons.get(6).getText())
                 && !buttons.get(2).getText().equals("")) {
-            //endGame();
-            //  System.out.println("Right:you Wwwin and end game");
-            Scene scene = new Scene(new FXMLResultWin(stage));
+            
+            winnerSymbol = buttons.get(2).getText();
+            Scene scene = new Scene(new FXMLResultWin(stage,winnerSymbol));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
             isWon = true;

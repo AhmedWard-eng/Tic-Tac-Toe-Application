@@ -18,7 +18,7 @@ public class FXMLResultWin extends AnchorPane {
     protected final ImageView imageViewHome;
     protected final ImageView imageViewPlayAgain;
     protected final MediaView mediaViewVideoWin;
-    protected final Label labelCongratulation;
+    protected final Label labelWinner;
     protected final Label labelName;
 
     MediaPlayer player;
@@ -26,12 +26,12 @@ public class FXMLResultWin extends AnchorPane {
     Image pathImagePlayAgin;
     Image pathImageHome;
 
-    public FXMLResultWin(Stage stage) {
+    public FXMLResultWin(Stage stage, String winnerSymbol) {
 
         imageViewHome = new ImageView();
         imageViewPlayAgain = new ImageView();
         mediaViewVideoWin = new MediaView();
-        labelCongratulation = new Label();
+        labelWinner = new Label();
         labelName = new Label();
 
         setMaxHeight(USE_PREF_SIZE);
@@ -66,26 +66,29 @@ public class FXMLResultWin extends AnchorPane {
         mediaViewVideoWin.setLayoutX(25.0);
         mediaViewVideoWin.setLayoutY(21.0);
 
-        labelCongratulation.setLayoutX(202.0);
-        labelCongratulation.setLayoutY(290.0);
-        labelCongratulation.setText("Congratulations");
-        labelCongratulation.setTextFill(javafx.scene.paint.Color.WHITE);
-        labelCongratulation.setFont(new Font("System Bold", 18.0));
+        labelWinner.setLayoutX(240.0);
+        labelWinner.setLayoutY(290.0);
+        labelWinner.setText("Winner is ");
+        labelWinner.setTextFill(javafx.scene.paint.Color.WHITE);
+        labelWinner.setFont(new Font("System Bold", 18.0));
 
-        labelName.setLayoutX(345.0);
+        labelName.setLayoutX(330.0);
         labelName.setLayoutY(290.0);
-        labelName.setText("Name");
+        labelName.setText(winnerSymbol);
         labelName.setTextFill(javafx.scene.paint.Color.WHITE);
         labelName.setFont(new Font("System Bold", 20.0));
 
         getChildren().add(imageViewHome);
         getChildren().add(imageViewPlayAgain);
         getChildren().add(mediaViewVideoWin);
-        getChildren().add(labelCongratulation);
+        getChildren().add(labelWinner);
         getChildren().add(labelName);
 
         //video
-        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
+        if(winnerSymbol == "X")
+            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
+        else if(winnerSymbol == "O")
+            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/Owinner.mp4").toExternalForm());
         player = new MediaPlayer(media);
         mediaViewVideoWin.setMediaPlayer(player);
         player.play();

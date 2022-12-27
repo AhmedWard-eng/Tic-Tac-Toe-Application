@@ -23,6 +23,7 @@ public class TicTacToeGame extends Application {
 
         
         Parent root = new FXML_GameTwoPlayer(stage);
+
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());

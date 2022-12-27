@@ -18,6 +18,9 @@
 #labelPlayer{
      -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
 }
+#labelPlayer2{
+     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
+}
 #labelCumputer{
     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
 }

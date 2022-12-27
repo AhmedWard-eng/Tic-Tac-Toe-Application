@@ -66,13 +66,13 @@ public class FXMLResultWin extends AnchorPane {
         mediaViewVideoWin.setLayoutX(25.0);
         mediaViewVideoWin.setLayoutY(21.0);
 
-        labelWinner.setLayoutX(230.0);
+        labelWinner.setLayoutX(240.0);
         labelWinner.setLayoutY(290.0);
         labelWinner.setText("Winner is ");
         labelWinner.setTextFill(javafx.scene.paint.Color.WHITE);
         labelWinner.setFont(new Font("System Bold", 18.0));
 
-        labelName.setLayoutX(320.0);
+        labelName.setLayoutX(330.0);
         labelName.setLayoutY(290.0);
         labelName.setText(winnerSymbol);
         labelName.setTextFill(javafx.scene.paint.Color.WHITE);

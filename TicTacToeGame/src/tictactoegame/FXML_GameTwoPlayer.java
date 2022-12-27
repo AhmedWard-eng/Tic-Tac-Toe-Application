@@ -312,11 +312,12 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         pathImageHome = new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
 
+        //creation array list
         buttons = new ArrayList<>(Arrays.asList(label1, label2, label3, label4, label5, label6, label7, label8, label9));
 
-        for (int i = 0; i < buttons.size(); i++) {
+      /*  for (int i = 0; i < buttons.size(); i++) {
             System.out.println("ArrayList:" + i + " " + buttons.get(i) + " " + buttons.get(i).getText());
-        }
+        }*/
 
         buttons.forEach(label -> {
             setupButton(label);
@@ -340,7 +341,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         if (playerTurn % 2 == 0) {
             label.setText("X");
             label.setId("labelCharX");
-
+            
             playerTurn = 1;
             playerXCount++;
         } else {
@@ -370,7 +371,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
 
     //horizontal
     private void ckeckRowForWin() {
-        for (int i = 0; i < 7; i = i + 2) {
+        for (int i = 0; i < 7; i = i + 3) {
             if (buttons.get(i).getText().equals(buttons.get(i + 1).getText())
                     && buttons.get(i).getText().equals(buttons.get(i + 2).getText())
                     && !buttons.get(i).getText().equals("")) {

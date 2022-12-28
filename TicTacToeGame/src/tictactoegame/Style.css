@@ -8,25 +8,33 @@
 }
 
 #labelCharO{
-    -fx-text-fill: linear-gradient(to top, #000000,#363062,#4538ab);
-    
+  
+    -fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);
 }
 #labelCharX{
-    -fx-text-fill: linear-gradient(to top, #000000, red,#e12e2b);
+
+   -fx-text-fill: linear-gradient(to top,ff9900,#ff9900);
+     
 }
 
 #labelPlayer{
-     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
+     -fx-text-fill:#f0f0f0 ;
 }
+#labelPlayer2{
+    
+     -fx-text-fill:#f0f0f0 ;
+}
+/*
 #labelCumputer{
     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
 }
 #labelVS{
     -fx-text-fill: linear-gradient(to bottom, #5d6f0c, #e4e8c3);
-}
+}*/
+
 #Record{
-    -fx-text-fill: linear-gradient(to bottom, #fcc1c1,#f5e4e4);
+    -fx-text-fill: linear-gradient(to bottom, #ffa620,#ffa620);
 }
 #Record:selected {
-    -fx-text-fill: linear-gradient(to bottom, #e06666, #ffffff);
+    -fx-text-fill: linear-gradient(to bottom, #ffa620,#ffa620);
 }

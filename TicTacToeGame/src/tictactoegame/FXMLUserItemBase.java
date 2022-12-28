@@ -20,6 +20,7 @@ public  class FXMLUserItemBase extends AnchorPane {
         setId("AnchorPane");
         setPrefHeight(50.0);
         setPrefWidth(465.0);
+
         setStyle("-fx-background-color: #12947F;");
 
         labelScore.setAlignment(javafx.geometry.Pos.CENTER);
@@ -28,11 +29,13 @@ public  class FXMLUserItemBase extends AnchorPane {
         labelScore.setText("2001");
         labelScore.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         labelScore.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
+
         labelScore.setWrapText(true);
         labelScore.setFont(new Font("Arial Black", 19.0));
         labelScore.setPadding(new Insets(0.0, 5.0, 0.0, 5.0));
 
         labelName.setAlignment(javafx.geometry.Pos.CENTER);
+
         labelName.setLayoutX(160.0);
         labelName.setLayoutY(10.0);
         labelName.setText("Marina Abd Elmalak");
@@ -47,6 +50,7 @@ public  class FXMLUserItemBase extends AnchorPane {
         labelStatus.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         labelStatus.setWrapText(true);
         labelStatus.setFont(new Font("Arial Black", 21.0));
+
 
         getChildren().add(labelScore);
         getChildren().add(labelName);

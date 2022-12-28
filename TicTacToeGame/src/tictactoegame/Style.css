@@ -7,20 +7,24 @@
     -fx-background-color:  #22726e;
 }
 
-
-
-/*
-
 #labelCharO{
-    -fx-text-fill: linear-gradient(to top, #000000,#363062,#4538ab);
-    
+  
+    -fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);
 }
 #labelCharX{
-    -fx-text-fill: linear-gradient(to top, #000000, red,#e12e2b);
+
+   -fx-text-fill: linear-gradient(to top,ff9900,#ff9900);
+     
 }
+
 #labelPlayer{
-     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
+     -fx-text-fill:#f0f0f0 ;
 }
+#labelPlayer2{
+    
+     -fx-text-fill:#f0f0f0 ;
+}
+/*
 #labelCumputer{
     -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #22726e;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXListView fx:id="listViewAvailableUsers" layoutX="9.0" layoutY="66.0" maxWidth="1.7976931348623157E308" prefHeight="331.0" prefWidth="583.0" style="-fx-background-color: #12947F; -fx-border-color: white; -fx-background-radius: 10; -fx-border-radius: 10;">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXListView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d0880b" height="46.0" layoutX="10.0" layoutY="12.0" stroke="#d0880b" strokeType="INSIDE" width="583.0" />
+      <Label layoutX="52.0" layoutY="20.0" text="Score" textFill="WHITE">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="263.0" layoutY="20.0" text="Name" textFill="#fffdfd">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="476.0" layoutY="20.0" text="Status" textFill="#fffafa">
+         <font>
+            <Font name="Arial Black" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -1,6 +1,8 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -8,6 +10,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class FXMLResultWinBase extends AnchorPane {
 
@@ -18,7 +21,9 @@ public class FXMLResultWinBase extends AnchorPane {
     protected final Button buttonReplay;
     MediaPlayer player;
     Media media;
-    public FXMLResultWinBase() {
+    
+    
+    public FXMLResultWinBase(Stage stage, String winnerSymbol) {
 
         mediaViewVideoWin = new MediaView();
         labelCongratulation = new Label();
@@ -51,7 +56,8 @@ public class FXMLResultWinBase extends AnchorPane {
 
         labelName.setLayoutX(321.0);
         labelName.setLayoutY(290.0);
-        labelName.setText("Name");
+        //labelName.setText("Name");
+        labelName.setText(winnerSymbol);
         labelName.setTextFill(javafx.scene.paint.Color.WHITE);
         labelName.setFont(new Font("Arial Black", 18.0));
 
@@ -81,10 +87,28 @@ public class FXMLResultWinBase extends AnchorPane {
         getChildren().add(buttonBackHome);
         getChildren().add(buttonReplay);
         
-        media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
+        //video
+        if(winnerSymbol == "X")
+            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
+        else if(winnerSymbol == "O")
+            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/Owinner.mp4").toExternalForm());
         player = new MediaPlayer(media);
         mediaViewVideoWin.setMediaPlayer(player);
         player.play();
+        
+        buttonReplay.setOnAction((ActionEvent event) -> {
+            player.stop();
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+        
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            player.stop();
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
 
     }
 }

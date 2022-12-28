@@ -1,12 +1,15 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class FXMLResultDrawBase extends AnchorPane {
 
@@ -16,7 +19,7 @@ public class FXMLResultDrawBase extends AnchorPane {
     MediaPlayer player;
     Media media;
 
-    public FXMLResultDrawBase() {
+    public FXMLResultDrawBase(Stage stage) {
 
         mediaViewVideoDraw = new MediaView();
         buttonBackHome = new Button();
@@ -67,5 +70,20 @@ public class FXMLResultDrawBase extends AnchorPane {
         player = new MediaPlayer(media);
         mediaViewVideoDraw.setMediaPlayer(player);
         player.play();
+        
+         buttonReplay.setOnAction((ActionEvent event) -> {
+            player.stop();
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+        
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            player.stop();
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+        
     }
 }

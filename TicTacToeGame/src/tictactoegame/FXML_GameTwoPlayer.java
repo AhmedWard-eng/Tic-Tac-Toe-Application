@@ -60,7 +60,6 @@ public class FXML_GameTwoPlayer extends AnchorPane {
     ArrayList<Label> borderLabel;
 
     int playerTurn = 0;
-    boolean isWon = false;
     int playerXCount = 0;
     int playerOCount = 0;
     
@@ -318,13 +317,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         pathImageHome = new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
 
-
         borderLabel = new ArrayList<>(Arrays.asList(label1, label2, label3, label4, label5, label6, label7, label8, label9));
-
-       /* for (int i = 0; i < borderLabel.size(); i++) {
-            System.out.println("ArrayList:" + i + " " + borderLabel.get(i) + " " + borderLabel.get(i).getText());
-        }*/
-
 
         borderLabel.forEach(label -> {
             setupButton(label);
@@ -338,8 +331,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         label.setOnMouseClicked(mouseEvent -> {
 
             label.setMouseTransparent(true);
-            //label.setDisable(true);
-            //checkIfGameIsOver();
+        
             setPlayerSymbol(label);
             new Thread(new Runnable() {
                 @Override
@@ -364,7 +356,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
     }
 
     public void setPlayerSymbol(Label label) {
-        System.out.println("current Thread: " + Thread.currentThread().getName());
+       // System.out.println("current Thread: " + Thread.currentThread().getName());
         if (playerTurn % 2 == 0) {
             label.setText("X");
             label.setId("labelCharX");
@@ -444,7 +436,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
             Scene scene = new Scene(new FXMLResultWin(stage, winnerSymbol));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
-            isWon = true;
+          
         }
     }
 
@@ -459,15 +451,12 @@ public class FXML_GameTwoPlayer extends AnchorPane {
             Scene scene = new Scene(new FXMLResultWin(stage,winnerSymbol));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
-            isWon = true;
         }
     }
 
     private void checkDraw() {
         //ckeck drown
         if (playerXCount + playerOCount == 9) {
-            // System.out.println("Drow and end game");
-            // isWon = true;
             Scene scene = new Scene(new FXMLResultDraw());
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);

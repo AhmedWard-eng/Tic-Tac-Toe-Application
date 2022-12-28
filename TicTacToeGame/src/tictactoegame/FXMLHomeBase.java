@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class FXMLHome extends AnchorPane {
+public class FXMLHomeBase extends AnchorPane {
 
     protected final ImageView imageViewLogo;
     protected final AnchorPane anchorPane;
@@ -40,7 +40,7 @@ public class FXMLHome extends AnchorPane {
     protected final Label label2;
     protected final Glow glow4;
 
-    public FXMLHome(Stage stage) {
+    public FXMLHomeBase(Stage stage) {
 
         imageViewLogo = new ImageView();
         anchorPane = new AnchorPane();
@@ -152,13 +152,19 @@ public class FXMLHome extends AnchorPane {
         buttonOnline.setEffect(glow1);
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLAvailableUsersBase());
+            Scene scene = new Scene(new FXMLAvailablesBase());
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLGameOnePlayerBase());
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+        buttonTwoPlayer.setOnAction((event) -> {
+            
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });

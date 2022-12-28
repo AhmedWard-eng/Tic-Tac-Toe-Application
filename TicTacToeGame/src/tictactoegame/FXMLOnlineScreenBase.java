@@ -72,7 +72,9 @@ public class FXMLOnlineScreenBase extends AnchorPane {
         buttonBackHome.setStyle("-fx-background-radius: 50; -fx-background-color: #ff9900; -fx-border-radius: 50;");
         buttonBackHome.setText("<");
         buttonBackHome.setFont(new Font("Arial Black", 20.0));
-
+        
+        buttonBackHome.setCursor(Cursor.CLOSED_HAND);
+        
         getChildren().add(text);
         getChildren().add(ButtonLogin);
         getChildren().add(ButtonSignUp);

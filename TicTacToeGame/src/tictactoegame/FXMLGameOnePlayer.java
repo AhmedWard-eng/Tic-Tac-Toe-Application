@@ -18,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public  class FXML_GameOnePlayer extends AnchorPane {
+public  class FXMLGameOnePlayer extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Line line;
@@ -43,7 +43,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
 
     Image pathImagePlayAgin;
     Image pathImageHome;
-    public FXML_GameOnePlayer() {
+    public FXMLGameOnePlayer() {
 
         rectangleBordGameOnePlayer = new Rectangle();
         line = new Line();

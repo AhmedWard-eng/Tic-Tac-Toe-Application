@@ -21,10 +21,8 @@ public class TicTacToeGame extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        
-        Parent root = new FXML_GameTwoPlayer(stage);
+        Parent root = new FXMLGameTwoPlayerBase(stage);
 
-        
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         stage.setTitle("Tic-Tac-Toe Game");

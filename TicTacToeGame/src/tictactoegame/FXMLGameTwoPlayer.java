@@ -30,7 +30,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 
-public class FXML_GameTwoPlayer extends AnchorPane {
+public class FXMLGameTwoPlayer extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Line line;
@@ -67,7 +67,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
 
     Stage stage;
 
-    public FXML_GameTwoPlayer(Stage stage) {
+    public FXMLGameTwoPlayer(Stage stage) {
 
         this.stage = stage;
 
@@ -336,7 +336,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(30);
+                        Thread.sleep(80);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
@@ -357,8 +357,10 @@ public class FXML_GameTwoPlayer extends AnchorPane {
         if (playerTurn % 2 == 0) {
             label.setText("X");
             label.setId("labelCharX");
+
             labelPlayer.setStyle("-fx-text-fill: linear-gradient(to bottom, #f44336, #f44336);");
             labelPlayer2.setStyle("-fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);");
+
             playerTurn = 1;
             playerXCount++;
         } else {
@@ -386,6 +388,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
     //horizontal
     private void ckeckRowForWin() {
         for (int i = 0; i < 7; i = i + 3) {
+
             if (borderLabel.get(i).getText().equals(borderLabel.get(i + 1).getText())
                     && borderLabel.get(i).getText().equals(borderLabel.get(i + 2).getText())
                     && !borderLabel.get(i).getText().equals("")) {
@@ -450,7 +453,7 @@ public class FXML_GameTwoPlayer extends AnchorPane {
     private void checkDraw() {
         //ckeck drown
         if (playerXCount + playerOCount == 9) {
-            Scene scene = new Scene(new FXMLResultDraw());
+            Scene scene = new Scene(new FXMLResultDrawBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         }

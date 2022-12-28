@@ -105,7 +105,7 @@ public class FXMLResultWinBase extends AnchorPane {
         
         buttonBackHome.setOnAction((ActionEvent event) -> {
             player.stop();
-            Scene scene = new Scene(new FXMLHome(stage));
+            Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });

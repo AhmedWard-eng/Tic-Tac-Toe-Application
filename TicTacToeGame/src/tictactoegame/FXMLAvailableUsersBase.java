@@ -38,20 +38,20 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         listViewAvailableUsers.setOpaqueInsets(new Insets(0.0));
         listViewAvailableUsers.setPrefSize(500, 350);
         
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
-        listViewAvailableUsers.getItems().add(new FXML_UserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
+        listViewAvailableUsers.getItems().add(new FXMLUserItemBase());
         
         
 //        listViewAvailableUsers.setOnMouseClicked(new EventHandler<MouseEvent>() {

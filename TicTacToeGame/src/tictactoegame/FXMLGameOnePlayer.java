@@ -1,10 +1,15 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
+import static java.awt.Color.red;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Stop;
@@ -13,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public  class FXML_GameOnline extends AnchorPane {
+public  class FXMLGameOnePlayer extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Line line;
@@ -35,13 +40,10 @@ public  class FXML_GameOnline extends AnchorPane {
     protected final Label label9;
     protected final ImageView imageViewHome;
     protected final Label labelPlayer;
-    protected final Label labelScorePlayer1;
-    protected final Label labelScorePlayer2;
 
     Image pathImagePlayAgin;
     Image pathImageHome;
-    
-    public FXML_GameOnline() {
+    public FXMLGameOnePlayer() {
 
         rectangleBordGameOnePlayer = new Rectangle();
         line = new Line();
@@ -63,16 +65,14 @@ public  class FXML_GameOnline extends AnchorPane {
         label9 = new Label();
         imageViewHome = new ImageView();
         labelPlayer = new Label();
-        labelScorePlayer1 = new Label();
-        labelScorePlayer2 = new Label();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
         setMinWidth(USE_PREF_SIZE);
-        setPrefHeight(724.0);
+        setPrefHeight(650.0);
         setPrefWidth(674.0);
-        setStyle("-fx-background-color: #22726e;");
+        this.getStyleClass().add("AnchorPane");
 
         rectangleBordGameOnePlayer.setArcHeight(5.0);
         rectangleBordGameOnePlayer.setArcWidth(5.0);
@@ -80,7 +80,7 @@ public  class FXML_GameOnline extends AnchorPane {
         rectangleBordGameOnePlayer.setHeight(387.0);
         rectangleBordGameOnePlayer.setId("border");
         rectangleBordGameOnePlayer.setLayoutX(65.0);
-        rectangleBordGameOnePlayer.setLayoutY(197.0);
+        rectangleBordGameOnePlayer.setLayoutY(132.0);
         rectangleBordGameOnePlayer.setStroke(javafx.scene.paint.Color.valueOf("#22726e"));
         rectangleBordGameOnePlayer.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
         rectangleBordGameOnePlayer.setWidth(544.0);
@@ -88,7 +88,7 @@ public  class FXML_GameOnline extends AnchorPane {
         line.setEndX(455.0);
         line.setFill(javafx.scene.paint.Color.valueOf("#22726e"));
         line.setLayoutX(155.0);
-        line.setLayoutY(323.0);
+        line.setLayoutY(261.0);
         line.setStartX(-90.0);
         line.setStroke(javafx.scene.paint.Color.valueOf("#22726e"));
         line.setStrokeWidth(6.0);
@@ -96,16 +96,16 @@ public  class FXML_GameOnline extends AnchorPane {
         line0.setEndX(348.0);
         line0.setFill(javafx.scene.paint.Color.valueOf("#22726e"));
         line0.setLayoutX(263.0);
-        line0.setLayoutY(452.0);
+        line0.setLayoutY(390.0);
         line0.setStartX(-199.0);
         line0.setStroke(javafx.scene.paint.Color.valueOf("#22726e"));
         line0.setStrokeWidth(6.0);
 
         line1.setEndX(17.0);
-        line1.setEndY(269.0);
+        line1.setEndY(272.0);
         line1.setFill(javafx.scene.paint.Color.valueOf("#22726e"));
         line1.setLayoutX(211.0);
-        line1.setLayoutY(312.0);
+        line1.setLayoutY(247.0);
         line1.setStartX(17.0);
         line1.setStartY(-115.0);
         line1.setStroke(javafx.scene.paint.Color.valueOf("#22726e"));
@@ -114,8 +114,8 @@ public  class FXML_GameOnline extends AnchorPane {
         line2.setEndX(16.0);
         line2.setEndY(215.0);
         line2.setFill(javafx.scene.paint.Color.valueOf("#22726e"));
-        line2.setLayoutX(408.0);
-        line2.setLayoutY(369.0);
+        line2.setLayoutX(406.0);
+        line2.setLayoutY(304.0);
         line2.setStartX(16.0);
         line2.setStartY(-172.0);
         line2.setStroke(javafx.scene.paint.Color.valueOf("#22726e"));
@@ -124,8 +124,8 @@ public  class FXML_GameOnline extends AnchorPane {
         label2.setAlignment(javafx.geometry.Pos.CENTER);
         label2.setGraphicTextGap(0.0);
         label2.setId("labelCharX");
-        label2.setLayoutX(232.0);
-        label2.setLayoutY(197.0);
+        label2.setLayoutX(228.0);
+        label2.setLayoutY(132.0);
         label2.setPrefHeight(103.0);
         label2.setPrefWidth(190.0);
         label2.setText("x");
@@ -135,33 +135,31 @@ public  class FXML_GameOnline extends AnchorPane {
         toggleButtonRecord.setId("Record");
         toggleButtonRecord.setLayoutX(505.0);
         toggleButtonRecord.setLayoutY(-2.0);
+        toggleButtonRecord.setFont(new Font("System Bold", 23.0));
         toggleButtonRecord.setText("Record");
         Font boldFontBold23  = Font.font("Bold", FontWeight.BOLD, 23);
         toggleButtonRecord.setFont(boldFontBold23);
         
         toggleButtonRecord.setToggleLineColor(Paint.valueOf("#e06666"));
         toggleButtonRecord.setToggleColor(Paint.valueOf("#d63333"));
-
-
+        
         labelVS.setId("labelVS");
         labelVS.setLayoutX(296.0);
-        labelVS.setLayoutY(101.0);
+        labelVS.setLayoutY(55.0);
         labelVS.setText("VS");
         labelVS.setFont(new Font("System Bold Italic", 51.0));
 
-        labelCumputer.setAlignment(javafx.geometry.Pos.CENTER);
         labelCumputer.setId("labelCumputer");
-        labelCumputer.setLayoutX(460.0);
-        labelCumputer.setLayoutY(73.0);
-        labelCumputer.setText("player 2");
-        labelCumputer.setTextAlignment(javafx.scene.text.TextAlignment.JUSTIFY);
+        labelCumputer.setLayoutX(428.0);
+        labelCumputer.setLayoutY(64.0);
+        labelCumputer.setText("Computer");
         labelCumputer.setFont(new Font("System Bold Italic", 39.0));
 
         label3.setAlignment(javafx.geometry.Pos.CENTER);
         label3.setGraphicTextGap(0.0);
         label3.setId("labelCharX");
-        label3.setLayoutX(424.0);
-        label3.setLayoutY(197.0);
+        label3.setLayoutX(422.0);
+        label3.setLayoutY(132.0);
         label3.setPrefHeight(103.0);
         label3.setPrefWidth(190.0);
         label3.setText("x");
@@ -171,8 +169,8 @@ public  class FXML_GameOnline extends AnchorPane {
         label6.setAlignment(javafx.geometry.Pos.CENTER);
         label6.setGraphicTextGap(0.0);
         label6.setId("labelCharX");
-        label6.setLayoutX(424.0);
-        label6.setLayoutY(326.0);
+        label6.setLayoutX(423.0);
+        label6.setLayoutY(261.0);
         label6.setPrefHeight(103.0);
         label6.setPrefWidth(190.0);
         label6.setText("x");
@@ -183,7 +181,7 @@ public  class FXML_GameOnline extends AnchorPane {
         label4.setGraphicTextGap(0.0);
         label4.setId("labelCharX");
         label4.setLayoutX(64.0);
-        label4.setLayoutY(320.0);
+        label4.setLayoutY(261.0);
         label4.setPrefHeight(129.0);
         label4.setPrefWidth(164.0);
         label4.setText("x");
@@ -193,8 +191,8 @@ public  class FXML_GameOnline extends AnchorPane {
         label7.setAlignment(javafx.geometry.Pos.CENTER);
         label7.setGraphicTextGap(0.0);
         label7.setId("labelCharX");
-        label7.setLayoutX(64.0);
-        label7.setLayoutY(452.0);
+        label7.setLayoutX(67.0);
+        label7.setLayoutY(387.0);
         label7.setPrefHeight(129.0);
         label7.setPrefWidth(164.0);
         label7.setText("x");
@@ -205,7 +203,7 @@ public  class FXML_GameOnline extends AnchorPane {
         label1.setGraphicTextGap(0.0);
         label1.setId("labelCharO");
         label1.setLayoutX(67.0);
-        label1.setLayoutY(197.0);
+        label1.setLayoutY(132.0);
         label1.setPrefHeight(129.0);
         label1.setPrefWidth(164.0);
         label1.setText("o");
@@ -216,7 +214,7 @@ public  class FXML_GameOnline extends AnchorPane {
         label5.setGraphicTextGap(0.0);
         label5.setId("labelCharO");
         label5.setLayoutX(232.0);
-        label5.setLayoutY(320.0);
+        label5.setLayoutY(261.0);
         label5.setPrefHeight(129.0);
         label5.setPrefWidth(190.0);
         label5.setText("o");
@@ -227,7 +225,7 @@ public  class FXML_GameOnline extends AnchorPane {
         label8.setGraphicTextGap(0.0);
         label8.setId("labelCharO");
         label8.setLayoutX(232.0);
-        label8.setLayoutY(452.0);
+        label8.setLayoutY(393.0);
         label8.setPrefHeight(129.0);
         label8.setPrefWidth(190.0);
         label8.setText("o");
@@ -237,8 +235,8 @@ public  class FXML_GameOnline extends AnchorPane {
         label9.setAlignment(javafx.geometry.Pos.CENTER);
         label9.setGraphicTextGap(0.0);
         label9.setId("labelCharO");
-        label9.setLayoutX(428.0);
-        label9.setLayoutY(452.0);
+        label9.setLayoutX(423.0);
+        label9.setLayoutY(387.0);
         label9.setPrefHeight(129.0);
         label9.setPrefWidth(181.0);
         label9.setText("o");
@@ -248,42 +246,22 @@ public  class FXML_GameOnline extends AnchorPane {
         imageViewHome.setFitHeight(98.0);
         imageViewHome.setFitWidth(117.0);
         imageViewHome.setLayoutX(35.0);
-        imageViewHome.setLayoutY(610.0);
+        imageViewHome.setLayoutY(538.0);
         imageViewHome.setPickOnBounds(true);
         imageViewHome.setPreserveRatio(true);
         
         imageViewPlayAgin.setFitHeight(98.0);
         imageViewPlayAgin.setFitWidth(117.0);
         imageViewPlayAgin.setLayoutX(550.0);
-        imageViewPlayAgin.setLayoutY(610.0);
+        imageViewPlayAgin.setLayoutY(538.0);
         imageViewPlayAgin.setPickOnBounds(true);
         imageViewPlayAgin.setPreserveRatio(true);
 
-        labelPlayer.setAlignment(javafx.geometry.Pos.CENTER);
         labelPlayer.setId("labelPlayer");
-        labelPlayer.setLayoutX(62.0);
-        labelPlayer.setLayoutY(73.0);
-        labelPlayer.setText("Player 1");
-        labelPlayer.setTextAlignment(javafx.scene.text.TextAlignment.JUSTIFY);
+        labelPlayer.setLayoutX(80.0);
+        labelPlayer.setLayoutY(64.0);
+        labelPlayer.setText("Player");
         labelPlayer.setFont(new Font("System Bold Italic", 39.0));
-
-        labelScorePlayer1.setAlignment(javafx.geometry.Pos.CENTER);
-        labelScorePlayer1.setId("scorePlayerOne");
-        labelScorePlayer1.setLayoutX(91.0);
-        labelScorePlayer1.setLayoutY(129.0);
-        labelScorePlayer1.setText("1501");
-        labelScorePlayer1.setTextAlignment(javafx.scene.text.TextAlignment.JUSTIFY);
-        labelScorePlayer1.setTextFill(javafx.scene.paint.Color.valueOf("#c9b9b9"));
-        labelScorePlayer1.setFont(new Font("System Bold", 31.0));
-
-        labelScorePlayer2.setAlignment(javafx.geometry.Pos.CENTER);
-        labelScorePlayer2.setId("scorePlayerTwo");
-        labelScorePlayer2.setLayoutX(499.0);
-        labelScorePlayer2.setLayoutY(129.0);
-        labelScorePlayer2.setText("1520");
-        labelScorePlayer2.setTextAlignment(javafx.scene.text.TextAlignment.JUSTIFY);
-        labelScorePlayer2.setTextFill(javafx.scene.paint.Color.valueOf("#c9b9b9"));
-        labelScorePlayer2.setFont(new Font("System Bold", 31.0));
 
         getChildren().add(rectangleBordGameOnePlayer);
         getChildren().add(line);
@@ -305,14 +283,17 @@ public  class FXML_GameOnline extends AnchorPane {
         getChildren().add(label9);
         getChildren().add(imageViewHome);
         getChildren().add(labelPlayer);
-        getChildren().add(labelScorePlayer1);
-        getChildren().add(labelScorePlayer2);
-
+        
         //image
         pathImagePlayAgin=new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
         imageViewPlayAgin.setImage(pathImagePlayAgin);
         
         pathImageHome=new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
+
+        imageViewHome.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent> (){
+                public void handle(ActionEvent e){
+                
+                }});
     }
 }

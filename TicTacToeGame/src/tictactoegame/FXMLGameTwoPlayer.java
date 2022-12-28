@@ -1,10 +1,20 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
-import static java.awt.Color.red;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,8 +27,10 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import javafx.application.Platform;
 
-public  class FXML_GameOnePlayer extends AnchorPane {
+public class FXMLGameTwoPlayer extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Line line;
@@ -29,7 +41,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
     protected final JFXToggleButton toggleButtonRecord;
     protected final ImageView imageViewPlayAgin;
     protected final Label labelVS;
-    protected final Label labelCumputer;
+    protected final Label labelPlayer2;
     protected final Label label3;
     protected final Label label6;
     protected final Label label4;
@@ -43,7 +55,21 @@ public  class FXML_GameOnePlayer extends AnchorPane {
 
     Image pathImagePlayAgin;
     Image pathImageHome;
-    public FXML_GameOnePlayer() {
+
+    //create array list to cary button
+    ArrayList<Label> borderLabel;
+
+    int playerTurn = 0;
+    int playerXCount = 0;
+    int playerOCount = 0;
+    
+    String winnerSymbol;
+
+    Stage stage;
+
+    public FXMLGameTwoPlayer(Stage stage) {
+
+        this.stage = stage;
 
         rectangleBordGameOnePlayer = new Rectangle();
         line = new Line();
@@ -54,7 +80,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         toggleButtonRecord = new JFXToggleButton();
         imageViewPlayAgin = new ImageView();
         labelVS = new Label();
-        labelCumputer = new Label();
+        labelPlayer2 = new Label();
         label3 = new Label();
         label6 = new Label();
         label4 = new Label();
@@ -72,6 +98,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(650.0);
         setPrefWidth(674.0);
+
         this.getStyleClass().add("AnchorPane");
 
         rectangleBordGameOnePlayer.setArcHeight(5.0);
@@ -128,32 +155,45 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label2.setLayoutY(132.0);
         label2.setPrefHeight(103.0);
         label2.setPrefWidth(190.0);
-        label2.setText("x");
+        //label2.setText("x");
         label2.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label2.setFont(new Font("System Bold", 89.0));
 
         toggleButtonRecord.setId("Record");
         toggleButtonRecord.setLayoutX(505.0);
         toggleButtonRecord.setLayoutY(-2.0);
-        toggleButtonRecord.setFont(new Font("System Bold", 23.0));
         toggleButtonRecord.setText("Record");
-        Font boldFontBold23  = Font.font("Bold", FontWeight.BOLD, 23);
+        Font boldFontBold23 = Font.font("Bold", FontWeight.BOLD, 23);
         toggleButtonRecord.setFont(boldFontBold23);
-        
+
         toggleButtonRecord.setToggleLineColor(Paint.valueOf("#e06666"));
         toggleButtonRecord.setToggleColor(Paint.valueOf("#d63333"));
-        
+
+        imageViewHome.setFitHeight(98.0);
+        imageViewHome.setFitWidth(117.0);
+        imageViewHome.setLayoutX(35.0);
+        imageViewHome.setLayoutY(538.0);
+        imageViewHome.setPickOnBounds(true);
+        imageViewHome.setPreserveRatio(true);
+
+        imageViewPlayAgin.setFitHeight(98.0);
+        imageViewPlayAgin.setFitWidth(117.0);
+        imageViewPlayAgin.setLayoutX(550.0);
+        imageViewPlayAgin.setLayoutY(538.0);
+        imageViewPlayAgin.setPickOnBounds(true);
+        imageViewPlayAgin.setPreserveRatio(true);
+
         labelVS.setId("labelVS");
         labelVS.setLayoutX(296.0);
         labelVS.setLayoutY(55.0);
         labelVS.setText("VS");
         labelVS.setFont(new Font("System Bold Italic", 51.0));
 
-        labelCumputer.setId("labelCumputer");
-        labelCumputer.setLayoutX(428.0);
-        labelCumputer.setLayoutY(64.0);
-        labelCumputer.setText("Computer");
-        labelCumputer.setFont(new Font("System Bold Italic", 39.0));
+        labelPlayer2.setId("labelPlayer2");
+        labelPlayer2.setLayoutX(428.0);
+        labelPlayer2.setLayoutY(64.0);
+        labelPlayer2.setText("player 2");
+        labelPlayer2.setFont(new Font("System Bold Italic", 39.0));
 
         label3.setAlignment(javafx.geometry.Pos.CENTER);
         label3.setGraphicTextGap(0.0);
@@ -162,7 +202,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label3.setLayoutY(132.0);
         label3.setPrefHeight(103.0);
         label3.setPrefWidth(190.0);
-        label3.setText("x");
+        //label3.setText("x");
         label3.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label3.setFont(new Font("System Bold", 89.0));
 
@@ -173,7 +213,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label6.setLayoutY(261.0);
         label6.setPrefHeight(103.0);
         label6.setPrefWidth(190.0);
-        label6.setText("x");
+        //label6.setText("x");
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label6.setFont(new Font("System Bold", 89.0));
 
@@ -184,7 +224,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label4.setLayoutY(261.0);
         label4.setPrefHeight(129.0);
         label4.setPrefWidth(164.0);
-        label4.setText("x");
+        //label4.setText("x");
         label4.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label4.setFont(new Font("System Bold", 89.0));
 
@@ -195,7 +235,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label7.setLayoutY(387.0);
         label7.setPrefHeight(129.0);
         label7.setPrefWidth(164.0);
-        label7.setText("x");
+        //label7.setText("x");
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label7.setFont(new Font("System Bold", 89.0));
 
@@ -206,7 +246,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label1.setLayoutY(132.0);
         label1.setPrefHeight(129.0);
         label1.setPrefWidth(164.0);
-        label1.setText("o");
+        //label1.setText("o");
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label1.setFont(new Font("System Bold", 89.0));
 
@@ -217,7 +257,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label5.setLayoutY(261.0);
         label5.setPrefHeight(129.0);
         label5.setPrefWidth(190.0);
-        label5.setText("o");
+        //label5.setText("o");
         label5.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label5.setFont(new Font("System Bold", 89.0));
 
@@ -228,7 +268,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label8.setLayoutY(393.0);
         label8.setPrefHeight(129.0);
         label8.setPrefWidth(190.0);
-        label8.setText("o");
+        //label8.setText("o");
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label8.setFont(new Font("System Bold", 89.0));
 
@@ -239,28 +279,14 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         label9.setLayoutY(387.0);
         label9.setPrefHeight(129.0);
         label9.setPrefWidth(181.0);
-        label9.setText("o");
+        // label9.setText("o");
         label9.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label9.setFont(new Font("System Bold", 89.0));
-
-        imageViewHome.setFitHeight(98.0);
-        imageViewHome.setFitWidth(117.0);
-        imageViewHome.setLayoutX(35.0);
-        imageViewHome.setLayoutY(538.0);
-        imageViewHome.setPickOnBounds(true);
-        imageViewHome.setPreserveRatio(true);
-        
-        imageViewPlayAgin.setFitHeight(98.0);
-        imageViewPlayAgin.setFitWidth(117.0);
-        imageViewPlayAgin.setLayoutX(550.0);
-        imageViewPlayAgin.setLayoutY(538.0);
-        imageViewPlayAgin.setPickOnBounds(true);
-        imageViewPlayAgin.setPreserveRatio(true);
 
         labelPlayer.setId("labelPlayer");
         labelPlayer.setLayoutX(80.0);
         labelPlayer.setLayoutY(64.0);
-        labelPlayer.setText("Player");
+        labelPlayer.setText("Player 1");
         labelPlayer.setFont(new Font("System Bold Italic", 39.0));
 
         getChildren().add(rectangleBordGameOnePlayer);
@@ -272,7 +298,7 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         getChildren().add(toggleButtonRecord);
         getChildren().add(imageViewPlayAgin);
         getChildren().add(labelVS);
-        getChildren().add(labelCumputer);
+        getChildren().add(labelPlayer2);
         getChildren().add(label3);
         getChildren().add(label6);
         getChildren().add(label4);
@@ -283,17 +309,158 @@ public  class FXML_GameOnePlayer extends AnchorPane {
         getChildren().add(label9);
         getChildren().add(imageViewHome);
         getChildren().add(labelPlayer);
-        
+
         //image
-        pathImagePlayAgin=new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
+        pathImagePlayAgin = new Image(getClass().getResourceAsStream("Resources/playAgin.png"));
         imageViewPlayAgin.setImage(pathImagePlayAgin);
-        
-        pathImageHome=new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
+
+        pathImageHome = new Image(getClass().getResourceAsStream("Resources/homeIcon.png"));
         imageViewHome.setImage(pathImageHome);
 
-        imageViewHome.addEventHandler(ActionEvent.ACTION,new EventHandler<ActionEvent> (){
-                public void handle(ActionEvent e){
-                
-                }});
+        borderLabel = new ArrayList<>(Arrays.asList(label1, label2, label3, label4, label5, label6, label7, label8, label9));
+
+        borderLabel.forEach(label -> {
+            setupButton(label);
+            label.setFocusTraversable(false);
+        });
+
     }
+
+    public void setupButton(Label label) {
+
+        label.setOnMouseClicked(mouseEvent -> {
+
+            label.setMouseTransparent(true);
+        
+            setPlayerSymbol(label);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(80);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            checkForWinner();
+
+                        }
+                    });
+                }
+            }).start();
+
+        });
+    }
+
+    public void setPlayerSymbol(Label label) {
+       // System.out.println("current Thread: " + Thread.currentThread().getName());
+        if (playerTurn % 2 == 0) {
+            label.setText("X");
+            label.setId("labelCharX");
+
+            labelPlayer.setStyle("-fx-text-fill: linear-gradient(to bottom, #f44336, #f44336);");
+            labelPlayer2.setStyle("-fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);");
+
+            playerTurn = 1;
+            playerXCount++;
+        } else {
+            label.setText("O");
+            label.setId("labelCharO");
+            labelPlayer2.setStyle("-fx-text-fill: linear-gradient(to bottom, #f44336, #f44336);");
+            labelPlayer.setStyle("-fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);");
+            
+            playerTurn = 0;
+            playerOCount++;
+        }
+
+    }
+
+    public void checkForWinner() {
+
+        ckeckRowForWin();
+        ckeckColForWin();
+        ckeckDiagonalRightForWin();
+        ckeckDiagonalLeftForWin();
+        checkDraw();
+
+    }
+
+    //horizontal
+    private void ckeckRowForWin() {
+        for (int i = 0; i < 7; i = i + 3) {
+
+            if (borderLabel.get(i).getText().equals(borderLabel.get(i + 1).getText())
+                    && borderLabel.get(i).getText().equals(borderLabel.get(i + 2).getText())
+                    && !borderLabel.get(i).getText().equals("")) {
+
+                winnerSymbol = borderLabel.get(i).getText();
+                Scene scene = new Scene(new FXMLResultWin(stage,winnerSymbol));
+                scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                stage.setScene(scene);
+            }
+
+        }
+
+    }
+
+    //vertical
+    private void ckeckColForWin() {
+        for (int i = 0; i < 3; i++) {
+            if (borderLabel.get(i).getText().equals(borderLabel.get(i + 3).getText())
+                    && borderLabel.get(i).getText().equals(borderLabel.get(i + 6).getText())
+                    && !borderLabel.get(i).getText().equals("")) {
+                
+                winnerSymbol = borderLabel.get(i).getText();
+                Scene scene = new Scene(new FXMLResultWin(stage, winnerSymbol));
+                scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                stage.setScene(scene);
+                
+                break;
+            }
+
+        }
+    }
+
+    //DiagonaLeft
+    private void ckeckDiagonalLeftForWin() {
+
+        if (borderLabel.get(0).getText().equals(borderLabel.get(4).getText())
+                && borderLabel.get(0).getText().equals(borderLabel.get(8).getText())
+                && !borderLabel.get(0).getText().equals("")) {
+            
+            
+            winnerSymbol = borderLabel.get(0).getText();
+            Scene scene = new Scene(new FXMLResultWin(stage, winnerSymbol));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+          
+        }
+    }
+
+    //DiagonaRight
+    private void ckeckDiagonalRightForWin() {
+
+        if (borderLabel.get(2).getText().equals(borderLabel.get(4).getText())
+                && borderLabel.get(2).getText().equals(borderLabel.get(6).getText())
+                && !borderLabel.get(2).getText().equals("")) {
+            
+            winnerSymbol = borderLabel.get(2).getText();
+            Scene scene = new Scene(new FXMLResultWin(stage,winnerSymbol));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        }
+    }
+
+    private void checkDraw() {
+        //ckeck drown
+        if (playerXCount + playerOCount == 9) {
+            Scene scene = new Scene(new FXMLResultDrawBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        }
+    }
+
 }

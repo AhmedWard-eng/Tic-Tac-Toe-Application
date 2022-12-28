@@ -5,13 +5,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
-public  class FXML_UserItemBase extends AnchorPane {
+public  class FXMLUserItemBase extends AnchorPane {
 
     protected final Label labelScore;
     protected final Label labelName;
     protected final Label labelStatus;
 
-    public FXML_UserItemBase() {
+    public FXMLUserItemBase() {
 
         labelScore = new Label();
         labelName = new Label();

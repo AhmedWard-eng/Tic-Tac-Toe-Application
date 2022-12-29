@@ -11,14 +11,19 @@ package game;
  */
 public enum Seed {
     CROSS("X"), NOUGHT("O"), NO_SEED(" ");
+    
+    
+    
     private final String icon;
 
     private Seed(String content) {
         this.icon = content;
     }
 
-    public String getContent() {
+    public String getIcon() {
         return icon;
     }
 
 }
+
+

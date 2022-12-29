@@ -13,13 +13,16 @@ import java.util.ArrayList;
  */
 public class Cell {
 
-    
-    public Seed seed;
+    public Seed content;
+    public int index;
 
     public Cell() {
-        seed = Seed.NO_SEED;
+        content = Seed.NO_SEED;
     }
-    
-    public int index;
-    
+
+    public Cell(Seed seed, int index) {
+        this.content = seed;
+        this.index = index;
+    }
+
 }

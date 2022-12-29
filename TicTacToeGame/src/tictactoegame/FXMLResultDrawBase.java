@@ -70,20 +70,20 @@ public class FXMLResultDrawBase extends AnchorPane {
         player = new MediaPlayer(media);
         mediaViewVideoDraw.setMediaPlayer(player);
         player.play();
-        
-         buttonReplay.setOnAction((ActionEvent event) -> {
+
+        buttonReplay.setOnAction((ActionEvent event) -> {
             player.stop();
             Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             player.stop();
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
-        
+
     }
 }

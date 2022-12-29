@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -368,6 +369,18 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         readingPlayerName();
         System.out.println("tictactoegame.FXMLGameTwoPlayer.<init>()");
 
+        buttonRestart.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+
     }
 
     private void readingPlayerName() {
@@ -483,7 +496,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
                     && !borderLabel.get(i).getText().equals("")) {
 
                 winnerSymbol = borderLabel.get(i).getText();
-                Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol));
+                Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol, new FXMLGameTwoPlayerBase(stage)));
                 scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
                 stage.setScene(scene);
             }
@@ -500,7 +513,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
                     && !borderLabel.get(i).getText().equals("")) {
 
                 winnerSymbol = borderLabel.get(i).getText();
-                Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol));
+                Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol,new FXMLGameTwoPlayerBase(stage)));
                 scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
                 stage.setScene(scene);
 
@@ -518,7 +531,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
                 && !borderLabel.get(0).getText().equals("")) {
 
             winnerSymbol = borderLabel.get(0).getText();
-            Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol));
+            Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol,new FXMLGameTwoPlayerBase(stage)));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
 
@@ -533,7 +546,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
                 && !borderLabel.get(2).getText().equals("")) {
 
             winnerSymbol = borderLabel.get(2).getText();
-            Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol));
+            Scene scene = new Scene(new FXMLResultWinBase(stage, winnerSymbol,new FXMLGameTwoPlayerBase(stage)));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         }
@@ -542,7 +555,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
     private void checkDraw() {
         //ckeck drown
         if (playerXCount + playerOCount == 9) {
-            Scene scene = new Scene(new FXMLResultDrawBase(stage));
+            Scene scene = new Scene(new FXMLResultDrawBase(stage,new FXMLGameTwoPlayerBase(stage)));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         }

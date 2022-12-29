@@ -23,7 +23,7 @@ public class FXMLResultWinBase extends AnchorPane {
     Media media;
     
     
-    public FXMLResultWinBase(Stage stage, String winnerSymbol) {
+    public FXMLResultWinBase(Stage stage, String winnerSymbol,AnchorPane anchorPane) {
 
         mediaViewVideoWin = new MediaView();
         labelCongratulation = new Label();
@@ -98,7 +98,7 @@ public class FXMLResultWinBase extends AnchorPane {
         
         buttonReplay.setOnAction((ActionEvent event) -> {
             player.stop();
-            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            Scene scene = new Scene(anchorPane);
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
@@ -108,6 +108,7 @@ public class FXMLResultWinBase extends AnchorPane {
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
+          
         });
 
     }

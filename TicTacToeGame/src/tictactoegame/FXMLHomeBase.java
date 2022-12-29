@@ -152,13 +152,13 @@ public class FXMLHomeBase extends AnchorPane {
         buttonOnline.setEffect(glow1);
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLAvailablesBase());
+            Scene scene = new Scene(new FXMLAvailableUsersBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLGameOnePlayerBase());
+            Scene scene = new Scene(new FXMLGameOnePlayerBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });

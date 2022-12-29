@@ -1,7 +1,9 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -10,8 +12,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
-public  class FXMLGameOnlineBase extends AnchorPane {
+public class FXMLGameOnlineBase extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Pane pane;
@@ -39,7 +42,7 @@ public  class FXMLGameOnlineBase extends AnchorPane {
     protected final Label labelPlayer1Score;
     protected final Label labelPlayer2Score;
 
-    public FXMLGameOnlineBase() {
+    public FXMLGameOnlineBase(Stage stage) {
 
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
@@ -67,9 +70,8 @@ public  class FXMLGameOnlineBase extends AnchorPane {
         labelPlayer1Score = new Label();
         labelPlayer2Score = new Label();
 
-        
         this.getStyleClass().add("Pane");
-        
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -313,7 +315,12 @@ public  class FXMLGameOnlineBase extends AnchorPane {
         labelPlayer2Score.setText("5555");
         labelPlayer2Score.setTextFill(javafx.scene.paint.Color.valueOf("#ff9900"));
         labelPlayer2Score.setFont(new Font("Arial Black", 22.0));
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
 
+        });
         getChildren().add(rectangleBordGameOnePlayer);
         pane.getChildren().add(line);
         pane.getChildren().add(line0);

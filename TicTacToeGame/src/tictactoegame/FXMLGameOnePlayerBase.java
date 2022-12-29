@@ -1,7 +1,9 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -10,6 +12,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class FXMLGameOnePlayerBase extends AnchorPane {
 
@@ -37,7 +40,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
     protected final Button buttonBackHome;
     protected final Button buttonRestart;
 
-    public FXMLGameOnePlayerBase() {
+    public FXMLGameOnePlayerBase(Stage stage) {
 
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
@@ -315,6 +318,18 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
+        
+        buttonRestart.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLGameOnePlayerBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
 
     }
 }

@@ -108,6 +108,7 @@ public class FXMLResultWinBase extends AnchorPane {
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
+          
         });
 
     }

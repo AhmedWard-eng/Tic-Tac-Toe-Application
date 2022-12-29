@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXToggleButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -341,6 +342,18 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         borderLabel.forEach(label -> {
             setupButton(label);
             label.setFocusTraversable(false);
+        });
+        
+        buttonRestart.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        });
+
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
         });
 
     }

@@ -21,7 +21,7 @@ public class FXMLResultLoseBase extends AnchorPane {
     protected final Button buttonReplay;
     MediaPlayer player;
     Media media;
-    public FXMLResultLoseBase(Stage stage) {
+    public FXMLResultLoseBase(Stage stage, AnchorPane anchorPane) {
 
         imageViewHome = new ImageView();
         imageViewPlayAgain = new ImageView();
@@ -93,7 +93,7 @@ public class FXMLResultLoseBase extends AnchorPane {
 
         buttonReplay.setOnAction((ActionEvent event) -> {
             player.stop();
-            Scene scene = new Scene(new FXMLGameOnePlayerBase(stage));
+            Scene scene = new Scene(anchorPane);
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });

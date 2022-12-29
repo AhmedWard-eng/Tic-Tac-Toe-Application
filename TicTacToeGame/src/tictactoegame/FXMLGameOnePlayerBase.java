@@ -50,6 +50,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
     protected final Button buttonRestart;
     private ArrayList<Label> labelsBoard;
     private ArrayList<Cell> cells;
+    Stage stage;
 
     public FXMLGameOnePlayerBase(Stage stage) {
 
@@ -76,6 +77,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         labelCumputer = new Label();
         buttonBackHome = new Button();
         buttonRestart = new Button();
+        this.stage = stage;
 
         labelsBoard = new ArrayList<>(Arrays.asList(label0, label1, label2, label3, label4, label5, label6, label7, label8));
 
@@ -154,9 +156,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label2.setLayoutY(7.0);
         label2.setPrefHeight(82.0);
         label2.setPrefWidth(76.0);
-        label2.setText("x");
         label2.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label2.setTextFill(javafx.scene.paint.Color.valueOf("#ff9900"));
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
         label2.setId("2");
@@ -167,10 +167,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label1.setLayoutY(7.0);
         label1.setPrefHeight(72.0);
         label1.setPrefWidth(83.0);
-        label1.setText("o");
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label1.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label1.setFont(new Font("System Bold", 55.0));
+        label1.setFont(new Font("Arial Black", 55.0));
         label1.setCursor(Cursor.HAND);
         label1.setId("1");
 
@@ -180,10 +178,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label0.setLayoutY(5.0);
         label0.setPrefHeight(62.0);
         label0.setPrefWidth(83.0);
-        label0.setText("o");
         label0.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label0.setTextFill(javafx.scene.paint.Color.valueOf("#eeece8"));
-        label0.setFont(new Font("Arial Black", 56.0));
+        label0.setFont(new Font("Arial Black", 55.0));
         label0.setCursor(Cursor.HAND);
 
         label0.setId("0");
@@ -194,9 +190,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label3.setLayoutY(109.0);
         label3.setPrefHeight(82.0);
         label3.setPrefWidth(76.0);
-        label3.setText("x");
         label3.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label3.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
 
@@ -208,9 +202,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label4.setLayoutY(109.0);
         label4.setPrefHeight(82.0);
         label4.setPrefWidth(76.0);
-        label4.setText("x");
         label4.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label4.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
         label4.setId("4");
@@ -221,9 +213,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label5.setLayoutY(108.0);
         label5.setPrefHeight(82.0);
         label5.setPrefWidth(76.0);
-        label5.setText("x");
         label5.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label5.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
         label5.setId("5");
@@ -234,10 +224,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label6.setLayoutY(207.0);
         label6.setPrefHeight(72.0);
         label6.setPrefWidth(83.0);
-        label6.setText("o");
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label6.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label6.setFont(new Font("System Bold", 55.0));
+        label6.setFont(new Font("Arial Black", 55.0));
         label6.setCursor(Cursor.HAND);
         label6.setId("6");
 
@@ -247,10 +235,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label7.setLayoutY(206.0);
         label7.setPrefHeight(72.0);
         label7.setPrefWidth(83.0);
-        label7.setText("o");
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label7.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label7.setFont(new Font("System Bold", 55.0));
+        label7.setFont(new Font("Arial Black", 55.0));
         label7.setCursor(Cursor.HAND);
         label7.setId("7");
 
@@ -260,10 +246,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label8.setLayoutY(206.0);
         label8.setPrefHeight(72.0);
         label8.setPrefWidth(83.0);
-        label8.setText("o");
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label8.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label8.setFont(new Font("System Bold", 55.0));
+        label8.setFont(new Font("Arial Black", 55.0));
         label8.setCursor(Cursor.HAND);
         label8.setId("8");
 
@@ -354,7 +338,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
-        
+
         buttonRestart.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLGameOnePlayerBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
@@ -409,10 +393,15 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
                     public void run() {
                         cells.get(compstep).seed = Seed.NOUGHT;
                         labelsBoard.get(compstep).setText(cells.get(compstep).seed.getContent());
+
+                        labelsBoard.get(compstep).setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
                         labelsBoard.get(compstep).setMouseTransparent(true);
                         setTextEnabled();
                         if (isComputerWon()) {
-                            System.out.println("transfer to window lose");
+
+                            Scene scene = new Scene(new FXMLResultLoseBase(stage,new FXMLGameOnePlayerBase(stage)));
+                            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                            stage.setScene(scene);
                             setTextDisabled();
                         }
 
@@ -423,7 +412,6 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
     }
 
     private void setTextEnabled() {
-
         for (int i = 0; i < labelsBoard.size(); i++) {
             labelsBoard.get(i).setDisable(false);
         }
@@ -437,11 +425,16 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
                 int index = Integer.parseInt(label.getId());
                 cells.get(index).seed = Seed.CROSS;
                 label.setText(cells.get(index).seed.getContent());
+                label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                 label.setMouseTransparent(true);
                 if (isPlayerWon()) {
-                    System.out.println("transfer to window won");
+                    Scene scene = new Scene(new FXMLResultWinBase(stage, Seed.CROSS.getContent(),new FXMLGameOnePlayerBase(stage)));
+                    scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                    stage.setScene(scene);
                 } else if (isDraw()) {
-                    System.out.println("transfer to window draw");
+                    Scene scene = new Scene(new FXMLResultDrawBase(stage, new FXMLGameOnePlayerBase(stage)));
+                    scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+                    stage.setScene(scene);
                 } else {
                     computerTurn();
                 }
@@ -494,7 +487,6 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         return false;
 
     }
-
 
     private boolean isDraw() {
         for (int i = 0; i < cells.size(); i++) {

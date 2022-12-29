@@ -1,13 +1,17 @@
-package tictactoegame.View;
+package tictactoegame;
 
 import com.jfoenix.controls.JFXListView;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import tictactoegame.FXMLHomeBase;
 import tictactoegame.FXMLUserItemBase;
 
 public class FXMLAvailableUsersBase extends AnchorPane {
@@ -19,7 +23,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
     protected final Label label1;
     protected final Button buttonBackHome;
 
-    public FXMLAvailableUsersBase() {
+    public FXMLAvailableUsersBase(Stage stage) {
 
         listViewAvailableUsers = new JFXListView();
         rectangle = new Rectangle();
@@ -85,6 +89,12 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label1.setText("Status");
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#fffafa"));
         label1.setFont(new Font("Arial Black", 20.0));
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+
+        });
 
         buttonBackHome.setLayoutX(18.0);
         buttonBackHome.setLayoutY(362.0);

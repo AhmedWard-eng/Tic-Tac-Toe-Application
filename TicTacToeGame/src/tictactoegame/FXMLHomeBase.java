@@ -14,7 +14,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import tictactoegame.View.FXMLAvailableUsersBase;
 
 public class FXMLHomeBase extends AnchorPane {
 
@@ -153,7 +152,7 @@ public class FXMLHomeBase extends AnchorPane {
         buttonOnline.setEffect(glow1);
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLAvailableUsersBase());
+            Scene scene = new Scene(new FXMLAvailableUsersBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });

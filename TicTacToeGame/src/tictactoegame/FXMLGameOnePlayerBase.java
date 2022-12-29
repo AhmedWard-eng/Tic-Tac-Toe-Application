@@ -1,9 +1,19 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
+import com.sun.javafx.charts.ChartLayoutAnimator;
+import game.Cell;
+import game.Seed;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -36,6 +46,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
     protected final Label labelCumputer;
     protected final Button buttonBackHome;
     protected final Button buttonRestart;
+    private ArrayList<Label> labelsBoard;
+    private ArrayList<Cell> cells;
 
     public FXMLGameOnePlayerBase() {
 
@@ -62,6 +74,11 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         labelCumputer = new Label();
         buttonBackHome = new Button();
         buttonRestart = new Button();
+
+        labelsBoard = new ArrayList<>(Arrays.asList(label0, label1, label2, label3, label4, label5, label6, label7, label8));
+
+        cells = new ArrayList<>();
+        init();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -140,6 +157,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label2.setTextFill(javafx.scene.paint.Color.valueOf("#ff9900"));
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
+        label2.setId("2");
 
         label1.setAlignment(javafx.geometry.Pos.CENTER);
         label1.setGraphicTextGap(0.0);
@@ -152,6 +170,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label1.setFont(new Font("System Bold", 55.0));
         label1.setCursor(Cursor.HAND);
+        label1.setId("1");
 
         label0.setAlignment(javafx.geometry.Pos.CENTER);
         label0.setGraphicTextGap(0.0);
@@ -165,6 +184,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label0.setFont(new Font("Arial Black", 56.0));
         label0.setCursor(Cursor.HAND);
 
+        label0.setId("0");
+
         label3.setAlignment(javafx.geometry.Pos.CENTER);
         label3.setGraphicTextGap(0.0);
         label3.setLayoutX(9.0);
@@ -177,6 +198,8 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
 
+        label3.setId("3");
+
         label4.setAlignment(javafx.geometry.Pos.CENTER);
         label4.setGraphicTextGap(0.0);
         label4.setLayoutX(112.0);
@@ -188,6 +211,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label4.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
+        label4.setId("4");
 
         label5.setAlignment(javafx.geometry.Pos.CENTER);
         label5.setGraphicTextGap(0.0);
@@ -200,6 +224,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label5.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
+        label5.setId("5");
 
         label6.setAlignment(javafx.geometry.Pos.CENTER);
         label6.setGraphicTextGap(0.0);
@@ -212,6 +237,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label6.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label6.setFont(new Font("System Bold", 55.0));
         label6.setCursor(Cursor.HAND);
+        label6.setId("6");
 
         label7.setAlignment(javafx.geometry.Pos.CENTER);
         label7.setGraphicTextGap(0.0);
@@ -224,6 +250,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label7.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label7.setFont(new Font("System Bold", 55.0));
         label7.setCursor(Cursor.HAND);
+        label7.setId("7");
 
         label8.setAlignment(javafx.geometry.Pos.CENTER);
         label8.setGraphicTextGap(0.0);
@@ -236,6 +263,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         label8.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label8.setFont(new Font("System Bold", 55.0));
         label8.setCursor(Cursor.HAND);
+        label8.setId("8");
 
         pane1.setLayoutX(-12.0);
         pane1.setLayoutY(-8.0);
@@ -251,6 +279,9 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         toggleButtonRecord.setFont(new Font("Arial Black", 18.0));
         toggleButtonRecord.setCursor(Cursor.CLOSED_HAND);
 
+        labelsBoard.forEach((label) -> {
+            setLabelsMouseListener(label);
+        });
         labelPlayer.setId("labelPlayer");
         labelPlayer.setLayoutX(76.0);
         labelPlayer.setLayoutY(122.0);
@@ -291,6 +322,12 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         buttonRestart.setText("Restart");
         buttonRestart.setFont(new Font("Arial Bold", 15.0));
         buttonRestart.setCursor(Cursor.CLOSED_HAND);
+        buttonRestart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                newGame();
+            }
+        });
 
         getChildren().add(rectangleBordGameOnePlayer);
         pane.getChildren().add(line);
@@ -315,6 +352,141 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
+        newGame();
 
+    }
+
+    void init() {
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            cells.add(new Cell());
+        }
+    }
+
+    void newGame() {
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            labelsBoard.get(i).setText(" ");
+            setTextEnabled();
+            labelsBoard.get(i).setMouseTransparent(false);
+            cells.get(i).seed = Seed.NO_SEED;
+        }
+    }
+
+    private void setTextDisabled() {
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            labelsBoard.get(i).setDisable(true);
+        }
+    }
+    int compstep;
+
+    private void computerTurn() {
+        new Thread() {
+            @Override
+            public void run() {
+                compstep = new Random().nextInt(9);
+
+                System.out.println(compstep);
+                while (cells.get(compstep).seed != Seed.NO_SEED) {
+                    compstep = new Random().nextInt(9);
+                    System.out.println(compstep);
+                }
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        cells.get(compstep).seed = Seed.NOUGHT;
+                        labelsBoard.get(compstep).setText(cells.get(compstep).seed.getContent());
+                        labelsBoard.get(compstep).setMouseTransparent(true);
+                        setTextEnabled();
+                        if (isComputerWon()) {
+                            System.out.println("transfer to window lose");
+                            setTextDisabled();
+                        }
+
+                    }
+                });
+            }
+        }.start();
+    }
+
+    private void setTextEnabled() {
+
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            labelsBoard.get(i).setDisable(false);
+        }
+    }
+
+    public void setLabelsMouseListener(Label label) {
+
+        label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                int index = Integer.parseInt(label.getId());
+                cells.get(index).seed = Seed.CROSS;
+                label.setText(cells.get(index).seed.getContent());
+                label.setMouseTransparent(true);
+                if (isPlayerWon()) {
+                    System.out.println("transfer to window won");
+                } else if (isDraw()) {
+                    System.out.println("transfer to window draw");
+                } else {
+                    computerTurn();
+                }
+                setTextDisabled();
+            }
+
+        });
+    }
+
+    private boolean isPlayerWon() {
+        if (cells.get(0).seed == cells.get(1).seed && cells.get(0).seed == cells.get(2).seed && cells.get(0).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(3).seed == cells.get(4).seed && cells.get(3).seed == cells.get(5).seed && cells.get(3).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(6).seed == cells.get(7).seed && cells.get(6).seed == cells.get(8).seed && cells.get(6).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(0).seed == cells.get(3).seed && cells.get(0).seed == cells.get(6).seed && cells.get(0).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(1).seed == cells.get(4).seed && cells.get(1).seed == cells.get(7).seed && cells.get(1).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(2).seed == cells.get(5).seed && cells.get(2).seed == cells.get(8).seed && cells.get(2).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(0).seed == cells.get(4).seed && cells.get(0).seed == cells.get(8).seed && cells.get(0).seed == Seed.CROSS) {
+            return true;
+        } else if (cells.get(2).seed == cells.get(4).seed && cells.get(2).seed == cells.get(6).seed && cells.get(2).seed == Seed.CROSS) {
+            return true;
+        }
+        return false;
+
+    }
+
+    private boolean isComputerWon() {
+        if (cells.get(0).seed == cells.get(1).seed && cells.get(0).seed == cells.get(2).seed && cells.get(0).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(3).seed == cells.get(4).seed && cells.get(3).seed == cells.get(5).seed && cells.get(3).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(6).seed == cells.get(7).seed && cells.get(6).seed == cells.get(8).seed && cells.get(6).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(0).seed == cells.get(3).seed && cells.get(0).seed == cells.get(6).seed && cells.get(0).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(1).seed == cells.get(4).seed && cells.get(1).seed == cells.get(7).seed && cells.get(1).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(2).seed == cells.get(5).seed && cells.get(2).seed == cells.get(8).seed && cells.get(2).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(0).seed == cells.get(4).seed && cells.get(0).seed == cells.get(8).seed && cells.get(0).seed == Seed.NOUGHT) {
+            return true;
+        } else if (cells.get(2).seed == cells.get(4).seed && cells.get(2).seed == cells.get(6).seed && cells.get(2).seed == Seed.NOUGHT) {
+            return true;
+        }
+        return false;
+
+    }
+
+    private boolean isDraw() {
+        for (int i = 0; i < cells.size(); i++) {
+            if (cells.get(i).seed == Seed.NO_SEED) {
+                return false;
+            }
+        }
+        return true;
     }
 }

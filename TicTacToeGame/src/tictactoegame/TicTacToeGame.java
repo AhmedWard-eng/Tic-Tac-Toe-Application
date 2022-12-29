@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import tictactoegame.View.FXMLAvailableUsersBase;
 
 /**
  *
@@ -21,11 +22,7 @@ public class TicTacToeGame extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-
-       
-        Parent root = new FXMLHomeBase(stage);
-
-
+        Parent root = new FXMLAvailableUsersBase();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         stage.setTitle("Tic-Tac-Toe Game");

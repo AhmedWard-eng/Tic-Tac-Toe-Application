@@ -3,13 +3,20 @@ package tictactoegame;
 import com.jfoenix.controls.JFXToggleButton;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
@@ -42,6 +49,14 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
     protected final Label labelPlayer2;
     protected final Button buttonBackHome;
     protected final Button buttonRestart;
+    
+    protected final DialogPane dialogPaneName;
+    protected final GridPane gridPane;
+    protected final Label labelFirstPlayer;
+    protected final Label labelSecondPlayer;
+    protected final TextField textFieldFirstPlayer;
+    protected final TextField textFieldSecondPlayer;
+    protected String firstPlayer, secondPlayer;
 
     //decleration array list to cary label
     ArrayList<Label> borderLabel;
@@ -81,6 +96,13 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         labelPlayer2 = new Label();
         buttonBackHome = new Button();
         buttonRestart = new Button();
+        
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label("First Player: ");
+        labelSecondPlayer = new Label("Second Player: ");
+        textFieldFirstPlayer = new TextField();
+        textFieldSecondPlayer = new TextField();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -343,6 +365,9 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
             setupButton(label);
             label.setFocusTraversable(false);
         });
+        
+        readingPlayerName();
+        System.out.println("tictactoegame.FXMLGameTwoPlayer.<init>()");
 
         buttonRestart.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
@@ -358,6 +383,46 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
 
     }
 
+    private void readingPlayerName() {
+        dialogPaneName.setHeaderText("add your names please!");
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        textFieldFirstPlayer.setPromptText("First player name");
+        textFieldSecondPlayer.setPromptText("Second player name");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        gridPane.add(textFieldFirstPlayer, 1, 0);
+        gridPane.add(labelSecondPlayer, 0, 1);
+        gridPane.add(textFieldSecondPlayer, 1, 1);
+
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("player names");
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+        ButtonType cancelButtonType = new ButtonType("Cancel");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
+        
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+            firstPlayer = textFieldFirstPlayer.getText();
+            secondPlayer = textFieldSecondPlayer.getText();
+            if (!firstPlayer.equals(""))
+                labelPlayer.setText(firstPlayer);
+            if (!secondPlayer.equals(""))
+                labelPlayer2.setText(secondPlayer);
+            
+        } else if (clickedButton.get() == cancelButtonType) {
+            Scene scene = new Scene(new FXMLHomeBase(stage));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+        }
+    }
+    
     public void setupButton(Label label) {
 
         label.setOnMouseClicked(mouseEvent -> {

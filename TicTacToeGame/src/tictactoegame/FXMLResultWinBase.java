@@ -21,9 +21,8 @@ public class FXMLResultWinBase extends AnchorPane {
     protected final Button buttonReplay;
     MediaPlayer player;
     Media media;
-    
-    
-    public FXMLResultWinBase(Stage stage, String winnerSymbol,AnchorPane anchorPane) {
+
+    public FXMLResultWinBase(Stage stage, String winnerSymbol, AnchorPane anchorPane) {
 
         mediaViewVideoWin = new MediaView();
         labelCongratulation = new Label();
@@ -86,29 +85,30 @@ public class FXMLResultWinBase extends AnchorPane {
         getChildren().add(labelName);
         getChildren().add(buttonBackHome);
         getChildren().add(buttonReplay);
-        
+
         //video
-        if(winnerSymbol == "X")
-            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
-        else if(winnerSymbol == "O")
+        if (winnerSymbol.equals("X")) {
+            String videoUrl =getClass().getResource("Resources/WinVideo .mp4").toExternalForm();
+            media = new Media(videoUrl);
+        } else if (winnerSymbol.equals("O")) {
             media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/Owinner.mp4").toExternalForm());
+        }
         player = new MediaPlayer(media);
         mediaViewVideoWin.setMediaPlayer(player);
         player.play();
-        
+
         buttonReplay.setOnAction((ActionEvent event) -> {
             player.stop();
             Scene scene = new Scene(anchorPane);
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             player.stop();
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
-          
         });
 
     }

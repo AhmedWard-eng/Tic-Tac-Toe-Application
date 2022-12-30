@@ -17,6 +17,7 @@ public class GameManager {
     private ArrayList<Cell> recordedGame;
     private ArrayList<Cell> board;
     boolean isRecorded;
+    int counterGames;
 
     public GameManager() {
         init();
@@ -25,6 +26,7 @@ public class GameManager {
     private void init() {
         recordedGame = new ArrayList<>();
         board = new ArrayList<>();
+        counterGames = 0;
         for (int i = 0; i < TOTAL_NUM_CELLS; i++) {
             board.add(new Cell());
         }
@@ -32,6 +34,7 @@ public class GameManager {
 
     public void newGame() {
         isRecorded = false;
+        counterGames = 0;
         for (int i = 0; i < TOTAL_NUM_CELLS; i++) {
             board.get(i).content = Seed.NO_SEED;
         }
@@ -42,6 +45,10 @@ public class GameManager {
             recordedGame.add(new Cell(seed, index));
         }
         board.get(index).content = seed;
+        counterGames++;
+
+        System.out.println(counterGames + " in set Cell");
+
     }
 
     public Cell getCell(int index) {
@@ -61,12 +68,11 @@ public class GameManager {
     }
 
     public boolean isDraw() {
-        for (int i = 0; i < TOTAL_NUM_CELLS; i++) {
-            if (board.get(i).content == Seed.NO_SEED) {
-                return false;
-            }
+        if (counterGames == 9 && !isPlayerOWon() && !isPlayerXWon()) {
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     private boolean checkRowWin(Seed seed) {
@@ -105,8 +111,9 @@ public class GameManager {
             System.out.println("save Record");
         }
     }
-    public void print(){
-        for(int i = 0; i < board.size(); i++){
+
+    public void print() {
+        for (int i = 0; i < board.size(); i++) {
             System.out.println(board.get(i).content.getIcon());
         }
         System.out.println("----------------------------------------");

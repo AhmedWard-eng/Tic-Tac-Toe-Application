@@ -1,5 +1,6 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class FXMLSignUpBase extends AnchorPane {
 
@@ -20,12 +22,12 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final Rectangle rectangle3;
     protected final Text text;
     protected final TextField TextFieldMail;
-    protected final Button ButtonSigmUp;
+    protected final Button ButtonSignUp;
     protected final TextField TextFieldpassword;
     protected final TextField TextFieldConfirmPassword;
     protected final Button buttonBackHome;
 
-    public FXMLSignUpBase() {
+    public FXMLSignUpBase(Stage stage) {
 
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
@@ -35,10 +37,18 @@ public class FXMLSignUpBase extends AnchorPane {
         rectangle3 = new Rectangle();
         text = new Text();
         TextFieldMail = new TextField();
-        ButtonSigmUp = new Button();
+        ButtonSignUp = new Button();
         TextFieldpassword = new TextField();
         TextFieldConfirmPassword = new TextField();
         buttonBackHome = new Button();
+        
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLHomeBase(stage));
+        });
+        
+        ButtonSignUp.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLOnlineScreenBase(stage));
+        });
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -123,17 +133,17 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldMail.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
         TextFieldMail.setFont(new Font(16.0));
 
-        ButtonSigmUp.setLayoutX(243.0);
-        ButtonSigmUp.setLayoutY(330.0);
-        ButtonSigmUp.setMnemonicParsing(false);
-        ButtonSigmUp.setPrefHeight(49.0);
-        ButtonSigmUp.setPrefWidth(120.0);
-        ButtonSigmUp.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
-        ButtonSigmUp.setText("Sign Up");
-        ButtonSigmUp.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        ButtonSigmUp.setFont(new Font("Comic Sans MS", 18.0));
-        ButtonSigmUp.setOpaqueInsets(new Insets(0.0));
-        ButtonSigmUp.setCursor(Cursor.CLOSED_HAND);
+        ButtonSignUp.setLayoutX(243.0);
+        ButtonSignUp.setLayoutY(330.0);
+        ButtonSignUp.setMnemonicParsing(false);
+        ButtonSignUp.setPrefHeight(49.0);
+        ButtonSignUp.setPrefWidth(120.0);
+        ButtonSignUp.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
+        ButtonSignUp.setText("Sign Up");
+        ButtonSignUp.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        ButtonSignUp.setFont(new Font("Comic Sans MS", 18.0));
+        ButtonSignUp.setOpaqueInsets(new Insets(0.0));
+        ButtonSignUp.setCursor(Cursor.CLOSED_HAND);
 
         TextFieldpassword.setLayoutX(187.0);
         TextFieldpassword.setLayoutY(200.0);
@@ -168,7 +178,7 @@ public class FXMLSignUpBase extends AnchorPane {
         pane.getChildren().add(text);
         pane.getChildren().add(TextFieldMail);
         getChildren().add(pane);
-        getChildren().add(ButtonSigmUp);
+        getChildren().add(ButtonSignUp);
         getChildren().add(TextFieldpassword);
         getChildren().add(TextFieldConfirmPassword);
         getChildren().add(buttonBackHome);

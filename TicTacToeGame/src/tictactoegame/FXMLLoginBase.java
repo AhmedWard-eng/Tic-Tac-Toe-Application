@@ -1,5 +1,6 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -7,12 +8,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class FXMLLoginBase extends AnchorPane {
 
     protected final Button buttonBackHome;
     protected final AnchorPane anchorPane;
-    protected final Button ButtonLoginID;
+    protected final Button ButtonLogin;
     protected final TextField TextFieldMail;
     protected final TextField TextFiellPassword;
     protected final Rectangle rectangle;
@@ -20,17 +22,25 @@ public class FXMLLoginBase extends AnchorPane {
     protected final Rectangle rectangle0;
     protected final Rectangle rectangle1;
 
-    public FXMLLoginBase() {
+    public FXMLLoginBase(Stage stage) {
 
         buttonBackHome = new Button();
         anchorPane = new AnchorPane();
-        ButtonLoginID = new Button();
+        ButtonLogin = new Button();
         TextFieldMail = new TextField();
         TextFiellPassword = new TextField();
         rectangle = new Rectangle();
         text = new Text();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
+        
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLHomeBase(stage));
+        });
+        
+        ButtonLogin.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLAvailableUsersBase(stage));
+        });
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -52,16 +62,16 @@ public class FXMLLoginBase extends AnchorPane {
         anchorPane.setPrefWidth(331.0);
         anchorPane.setStyle("-fx-border-color: white; -fx-background-color: #12947F;");
 
-        ButtonLoginID.setLayoutX(109.0);
-        ButtonLoginID.setLayoutY(326.0);
-        ButtonLoginID.setMnemonicParsing(false);
-        ButtonLoginID.setPrefHeight(49.0);
-        ButtonLoginID.setPrefWidth(120.0);
-        ButtonLoginID.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
-        ButtonLoginID.setText("Login");
-        ButtonLoginID.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        ButtonLoginID.setFont(new Font("Comic Sans MS", 18.0));
-        ButtonLoginID.setCursor(Cursor.CLOSED_HAND);
+        ButtonLogin.setLayoutX(109.0);
+        ButtonLogin.setLayoutY(326.0);
+        ButtonLogin.setMnemonicParsing(false);
+        ButtonLogin.setPrefHeight(49.0);
+        ButtonLogin.setPrefWidth(120.0);
+        ButtonLogin.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
+        ButtonLogin.setText("Login");
+        ButtonLogin.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        ButtonLogin.setFont(new Font("Comic Sans MS", 18.0));
+        ButtonLogin.setCursor(Cursor.CLOSED_HAND);
 
         TextFieldMail.setLayoutX(51.0);
         TextFieldMail.setLayoutY(159.0);
@@ -120,7 +130,7 @@ public class FXMLLoginBase extends AnchorPane {
         rectangle1.setWidth(201.0);
 
         getChildren().add(buttonBackHome);
-        anchorPane.getChildren().add(ButtonLoginID);
+        anchorPane.getChildren().add(ButtonLogin);
         anchorPane.getChildren().add(TextFieldMail);
         anchorPane.getChildren().add(TextFiellPassword);
         anchorPane.getChildren().add(rectangle);

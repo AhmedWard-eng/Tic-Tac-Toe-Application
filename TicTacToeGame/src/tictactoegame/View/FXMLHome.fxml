@@ -20,13 +20,13 @@
       </ImageView>
       <AnchorPane prefHeight="400.0" prefWidth="195.0" style="-fx-background-color: #12947F;">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9900" height="69.0" layoutX="1.0" layoutY="55.0" smooth="false" stroke="#ff9900" strokeLineCap="ROUND" strokeType="INSIDE" width="200.0" />
-            <Label layoutX="58.0" layoutY="64.0" text="Menu" textFill="#f5f3f3">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff9900" height="69.0" layoutX="1.0" layoutY="36.0" smooth="false" stroke="#ff9900" strokeLineCap="ROUND" strokeType="INSIDE" width="200.0" />
+            <Label layoutX="58.0" layoutY="45.0" text="Menu" textFill="#f5f3f3">
                <font>
                   <Font name="Comic Sans MS" size="33.0" />
                </font>
             </Label>
-            <AnchorPane layoutX="28.0" layoutY="134.0" prefHeight="98.0" prefWidth="147.0">
+            <AnchorPane layoutX="25.0" layoutY="104.0" prefHeight="273.0" prefWidth="149.0">
                <children>
                   <Button fx:id="buttonOnePlayer" contentDisplay="CENTER" layoutY="24.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="147.0" style="-fx-background-color: #ff9900; -fx-background-radius: 10;" text="One Player" textAlignment="CENTER" textFill="#fcf6f6">
                      <font>
@@ -50,7 +50,18 @@
                         <Glow />
                      </effect>
                   </Button>
-                  <Button fx:id="buttonOnline" contentDisplay="CENTER" layoutY="150.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="147.0" style="-fx-background-color: #cc0000; -fx-background-radius: 10;" text="Onlline " textAlignment="CENTER" textFill="#fcf6f6">
+                  <Button fx:id="buttonOnline" contentDisplay="CENTER" layoutY="150.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="147.0" style="-fx-background-color: #cc0000; -fx-background-radius: 10;" text="Online " textAlignment="CENTER" textFill="#fcf6f6">
+                     <font>
+                        <Font name="Arial Black" size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="CLOSED_HAND" />
+                     </cursor>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="buttonRecord" contentDisplay="CENTER" layoutX="1.0" layoutY="214.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="147.0" style="-fx-background-color: #cc0000; -fx-background-radius: 10;" text="Record" textAlignment="CENTER" textFill="#fcf6f6">
                      <font>
                         <Font name="Arial Black" size="18.0" />
                      </font>

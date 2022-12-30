@@ -29,7 +29,7 @@
 //       Return int[3] of {score, row, col}  */
 //   private int[] minimax(int depth, Seed player) {
 //      // Generate possible next moves in a List of int[2] of {row, col}.
-//      List<int[]> nextMoves = generateMoves();
+////      List<int[]> nextMoves = generateMoves();
 // 
 //      // mySeed is maximizing; while oppSeed is minimizing
 //      int bestScore = (player == mySeed) ? Integer.MIN_VALUE : Integer.MAX_VALUE;

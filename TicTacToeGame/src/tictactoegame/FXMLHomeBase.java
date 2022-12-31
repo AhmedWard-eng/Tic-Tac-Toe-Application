@@ -1,15 +1,26 @@
 package tictactoegame;
 
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -40,6 +51,18 @@ public class FXMLHomeBase extends AnchorPane {
     protected final Label label2;
     protected final Glow glow4;
 
+    protected final DialogPane dialogPaneName;
+    protected final GridPane gridPane;
+    protected final Label labelFirstPlayer;
+    protected final Label labelSecondPlayer;
+    protected final TextField textFieldFirstPlayer;
+    protected final TextField textFieldSecondPlayer;
+    protected String firstPlayer, secondPlayer;
+    protected Boolean buttonAdded;
+    protected ButtonType OkButtonType;
+    protected ButtonType cancelButtonType;
+    protected Dialog<ButtonType> dialog;
+
     public FXMLHomeBase(Stage stage) {
 
         imageViewLogo = new ImageView();
@@ -64,6 +87,22 @@ public class FXMLHomeBase extends AnchorPane {
         glow3 = new Glow();
         label2 = new Label();
         glow4 = new Glow();
+
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        
+        labelFirstPlayer = new Label("Player 1: ");
+        labelSecondPlayer = new Label("Player 2: ");
+        textFieldFirstPlayer = new TextField();
+        textFieldSecondPlayer = new TextField();
+        buttonAdded = false;
+
+        textFieldFirstPlayer.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
+        textFieldSecondPlayer.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
+        
+        initializeDialogTwoPlayers();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -122,7 +161,6 @@ public class FXMLHomeBase extends AnchorPane {
 
         buttonOnePlayer.setEffect(glow);
 
-        
         buttonTwoPlayer.setContentDisplay(javafx.scene.control.ContentDisplay.CENTER);
         buttonTwoPlayer.setLayoutY(86.0);
         buttonTwoPlayer.setMnemonicParsing(false);
@@ -163,10 +201,9 @@ public class FXMLHomeBase extends AnchorPane {
             stage.setScene(scene);
         });
         buttonTwoPlayer.setOnAction((event) -> {
-            
-            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
-            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            stage.setScene(scene);
+
+            readingPlayerName(stage);
+
         });
 
         rectangle0.setArcHeight(5.0);
@@ -252,5 +289,69 @@ public class FXMLHomeBase extends AnchorPane {
         getChildren().add(label1);
         getChildren().add(label2);
 
+    }
+
+    private void readingPlayerName(Stage stage) {
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+            firstPlayer = textFieldFirstPlayer.getText();
+            secondPlayer = textFieldSecondPlayer.getText();
+
+            if (firstPlayer.equals("")) {
+                firstPlayer = "Player 1";
+            }
+            if (secondPlayer.equals("")) {
+                secondPlayer = "Player 2";
+            }
+
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage, firstPlayer, secondPlayer));
+            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+            stage.setScene(scene);
+
+        } else if (clickedButton.get() == cancelButtonType) {
+            //gridPane.getChildren().clear();
+        }
+    }
+
+    private void initializeDialogTwoPlayers() {
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+        labelSecondPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
+        labelSecondPlayer.setTextFill(Color.WHITE);
+        
+        textFieldFirstPlayer.setPromptText("First player name");
+        textFieldSecondPlayer.setPromptText("Second player name");
+
+        if (gridPane.getChildren().size() < 4) {
+            gridPane.add(labelFirstPlayer, 0, 0);
+            gridPane.add(textFieldFirstPlayer, 1, 0);
+            gridPane.add(labelSecondPlayer, 0, 1);
+            gridPane.add(textFieldSecondPlayer, 1, 1);
+
+        }
+
+        dialogPaneName.setContent(gridPane);
+
+        dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("player names");
+
+        OkButtonType = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        if (!buttonAdded) {
+            dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
+            
+            Node okButton = dialogPaneName.lookupButton(OkButtonType);
+            okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+            Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
+            cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
+            
+            buttonAdded = true;
+        }
     }
 }

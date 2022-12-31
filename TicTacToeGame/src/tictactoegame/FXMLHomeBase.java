@@ -98,8 +98,8 @@ public class FXMLHomeBase extends AnchorPane {
         textFieldSecondPlayer = new TextField();
         buttonAdded = false;
 
-        textFieldFirstPlayer.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
-        textFieldSecondPlayer.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
+        textFieldFirstPlayer.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white; -fx-text-fill: white;");
+        textFieldSecondPlayer.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white; -fx-text-fill: white;");
         dialogPaneName.setStyle("-fx-background-color: #22726e;");
         
         initializeDialogTwoPlayers();
@@ -190,13 +190,13 @@ public class FXMLHomeBase extends AnchorPane {
         buttonOnline.setEffect(glow1);
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLAvailablesBase());
+            Scene scene = new Scene(new FXMLAvailableUsersBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLGameOnePlayerBase());
+            Scene scene = new Scene(new FXMLGameOnePlayerBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
@@ -292,6 +292,9 @@ public class FXMLHomeBase extends AnchorPane {
     }
 
     private void readingPlayerName(Stage stage) {
+        textFieldFirstPlayer.clear();
+        textFieldSecondPlayer.clear();
+        
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
@@ -315,6 +318,7 @@ public class FXMLHomeBase extends AnchorPane {
     }
 
     private void initializeDialogTwoPlayers() {
+       
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
         labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
@@ -322,8 +326,11 @@ public class FXMLHomeBase extends AnchorPane {
         labelSecondPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
         labelSecondPlayer.setTextFill(Color.WHITE);
         
+        
         textFieldFirstPlayer.setPromptText("First player name");
         textFieldSecondPlayer.setPromptText("Second player name");
+        
+        
 
         if (gridPane.getChildren().size() < 4) {
             gridPane.add(labelFirstPlayer, 0, 0);
@@ -335,6 +342,8 @@ public class FXMLHomeBase extends AnchorPane {
 
         dialogPaneName.setContent(gridPane);
 
+        
+        
         dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("player names");

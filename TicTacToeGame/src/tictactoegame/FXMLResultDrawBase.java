@@ -19,7 +19,7 @@ public class FXMLResultDrawBase extends AnchorPane {
     MediaPlayer player;
     Media media;
 
-    public FXMLResultDrawBase(Stage stage) {
+    public FXMLResultDrawBase(Stage stage, AnchorPane anchorPane) {
 
         mediaViewVideoDraw = new MediaView();
         buttonBackHome = new Button();
@@ -70,20 +70,20 @@ public class FXMLResultDrawBase extends AnchorPane {
         player = new MediaPlayer(media);
         mediaViewVideoDraw.setMediaPlayer(player);
         player.play();
-        
-         buttonReplay.setOnAction((ActionEvent event) -> {
+
+        buttonReplay.setOnAction((ActionEvent event) -> {
             player.stop();
-            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            Scene scene = new Scene(anchorPane);
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             player.stop();
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
-        
+
     }
 }

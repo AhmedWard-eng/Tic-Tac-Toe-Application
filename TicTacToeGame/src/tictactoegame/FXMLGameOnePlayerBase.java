@@ -29,6 +29,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import navigationLogic.Navigation;
 
 public class FXMLGameOnePlayerBase extends AnchorPane {
 
@@ -406,7 +407,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
                         setTextEnabled();
                         if (gameManager.isPlayerOWon()) {
                             gameManager.saveRecord();
-                            navigateToResultScreen(new FXMLResultLoseBase(stage, new FXMLGameOnePlayerBase(stage)));
+                            Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLGameOnePlayerBase(stage)));
                             setTextDisabled();
                         }
 
@@ -435,16 +436,16 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
             public void handle(MouseEvent event) {
                 toggleButtonRecord.setDisable(true);
                 int index = Integer.parseInt(label.getId());
-                gameManager.setCell(index ,Seed.CROSS);
+                gameManager.setCell(index, Seed.CROSS);
                 label.setText(gameManager.getCell(index).content.getIcon());
                 label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                 label.setMouseTransparent(true);
                 if (gameManager.isPlayerXWon()) {
                     gameManager.saveRecord();
-                    navigateToResultScreen(new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameOnePlayerBase(stage)));
+                    Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameOnePlayerBase(stage)));
                 } else if (gameManager.isDraw()) {
                     gameManager.saveRecord();
-                    navigateToResultScreen(new FXMLResultDrawBase(stage, new FXMLGameOnePlayerBase(stage)));
+                    Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLGameOnePlayerBase(stage)));
 
                 } else {
                     computerTurn();
@@ -455,24 +456,24 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
         });
     }
 
-    private void navigateToResultScreen(AnchorPane anchorPane) {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(FXMLGameOnePlayerBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        navigateToResultScreen(anchorPane);
-                    }
-                });
-            }
-
-        }.start();
-
-    }
+//    private void navigateToResultScreen(AnchorPane anchorPane) {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(500);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(FXMLGameOnePlayerBase.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                Platform.runLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        navigateToResultScreen(anchorPane);
+//                    }
+//                });
+//            }
+//
+//        }.start();
+//
+//    }
 }

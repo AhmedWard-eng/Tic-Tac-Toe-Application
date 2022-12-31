@@ -9,12 +9,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
  *
- * @author AhmedWard
+ * @authors AhmedWard, Marina AbdelMalek, Nada Elsayed, Hossam Fadaly
  */
 public class TicTacToeGame extends Application {
     
@@ -31,6 +32,7 @@ public class TicTacToeGame extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         
+        stage.getIcons().add(new Image(tictactoegame.TicTacToeGame.class.getResource("Resources/Capture.PNG").toExternalForm()));
         stage.show();
     }
 

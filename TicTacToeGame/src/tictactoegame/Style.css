@@ -38,3 +38,11 @@
 #Record:selected {
     -fx-text-fill: linear-gradient(to bottom, #ffa620,#ffa620);
 }
+
+#okButton {
+  -fx-background-color: #ff9900;
+  -fx-border-radius: 15;
+  -fx-background-radius: 15;
+  -fx-fontfamily: 'Comic Sans MS';
+  
+}

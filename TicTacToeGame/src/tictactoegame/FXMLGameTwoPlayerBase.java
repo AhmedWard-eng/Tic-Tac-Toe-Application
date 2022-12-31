@@ -71,10 +71,13 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
     String winnerSymbol;
 
     Stage stage;
+    String player1name, player2name;
 
-    public FXMLGameTwoPlayerBase(Stage stage) {
+    public FXMLGameTwoPlayerBase(Stage stage, String playerOneName, String playerTwoName) {
 
         this.stage = stage;
+        player1name = playerOneName;
+        player2name = playerTwoName;
 
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
@@ -298,7 +301,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         labelPlayer.setId("labelPlayer");
         labelPlayer.setLayoutX(76.0);
         labelPlayer.setLayoutY(122.0);
-        labelPlayer.setText("Player 1");
+        labelPlayer.setText(player1name);
         labelPlayer.setTextFill(javafx.scene.paint.Color.valueOf("#ededed"));
         labelPlayer.setFont(new Font("Arial Black", 22.0));
 
@@ -312,7 +315,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         labelPlayer2.setId("labelPlayer2");
         labelPlayer2.setLayoutX(76.0);
         labelPlayer2.setLayoutY(240.0);
-        labelPlayer2.setText("Player 2");
+        labelPlayer2.setText(player2name);
         labelPlayer2.setTextFill(javafx.scene.paint.Color.valueOf("#eeeeee"));
         labelPlayer2.setFont(new Font("Arial Black", 22.0));
 
@@ -367,11 +370,8 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
             label.setFocusTraversable(false);
         });
 
-        readingPlayerName();
-        System.out.println("tictactoegame.FXMLGameTwoPlayer.<init>()");
-
         buttonRestart.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage));
+            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage, playerOneName, playerTwoName));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
@@ -484,15 +484,21 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
     public void checkEndGame() {
         if (gameManager.isPlayerXWon()) {
 
-            Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameTwoPlayerBase(stage)));
+            Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
         } else if (gameManager.isPlayerOWon()) {
-            Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.NOUGHT.getIcon(), new FXMLGameTwoPlayerBase(stage)));
+            Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.NOUGHT.getIcon(), new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
 
         } else if (gameManager.isDraw()) {
-            Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLGameTwoPlayerBase(stage)));
-
+            Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
         }
 
+    }
+
+    protected String getWinnerName(String winnerSymbol) {
+        if (winnerSymbol.equals("X")) {
+            return player1name;
+        }
+        return player2name;
     }
 
 }

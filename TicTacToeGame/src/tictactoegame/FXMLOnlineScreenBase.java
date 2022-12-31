@@ -1,11 +1,13 @@
 package tictactoegame;
 
+import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class FXMLOnlineScreenBase extends AnchorPane {
 
@@ -16,7 +18,7 @@ public class FXMLOnlineScreenBase extends AnchorPane {
     protected final Glow glow0;
     protected final Button buttonBackHome;
 
-    public FXMLOnlineScreenBase() {
+    public FXMLOnlineScreenBase(Stage stage) {
 
         text = new Text();
         ButtonLogin = new Button();
@@ -37,6 +39,18 @@ public class FXMLOnlineScreenBase extends AnchorPane {
         text.setStrokeWidth(0.0);
         text.setText("Online");
         text.setFont(new Font("Comic Sans MS Bold", 45.0));
+        
+        ButtonLogin.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLLoginBase(stage));
+        });
+        
+        ButtonSignUp.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLSignUpBase(stage));
+        });
+        
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage,new FXMLHomeBase(stage));
+        });
 
         ButtonLogin.setLayoutX(240.0);
         ButtonLogin.setLayoutY(157.0);

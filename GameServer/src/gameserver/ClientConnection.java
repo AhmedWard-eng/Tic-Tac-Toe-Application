@@ -36,19 +36,19 @@ public class ClientConnection {
         try {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
-            readMessages();
+            signup();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void readMessages() {
+    public void readMessages(){
         new Thread() {
             @Override
             public void run() {
                 while (socket.isConnected()) {
-                    
-                        System.out.println("readMessage is running.......");
+
+                    System.out.println("readMessage is running.......");
                     try {
                         String s = bufferReader.readLine();
                         s = s.replaceAll("\r?\n", "");
@@ -65,7 +65,32 @@ public class ClientConnection {
             }
 
         }.start();
+    }
 
+    public void signup() {
+        new Thread() {
+            @Override
+            public void run() {
+                while (socket.isConnected()) {
+
+                    System.out.println("readMessage is running.......");
+                    try {
+                        String s = bufferReader.readLine();
+                        s = s.replaceAll("\r?\n", "");
+                        System.out.println(s);
+                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(s));
+                        JsonObject object = jsonReader.readObject();
+//                        System.out.println("b3d");
+                        if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
+                            System.out.println("status = " + object.getString("password"));
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
+        }.start();
     }
 
 }

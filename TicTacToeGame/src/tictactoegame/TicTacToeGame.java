@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @authors AhmedWard, Marina AbdelMalek, Nada Elsayed, Hossam Fadaly
+ * @authors AhmedWard, Marina AbdelMalek, NadaElsayed, HossamFadaly
  */
 public class TicTacToeGame extends Application {
     

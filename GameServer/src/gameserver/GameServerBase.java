@@ -37,17 +37,20 @@ public class GameServerBase extends AnchorPane {
     protected final Pane paneview;
     ServerSocket serverSocket;
     Socket s;
-    DataInputStream dis ;
+    DataInputStream dis;
     PrintStream ps;
-     private void loadData(){
+    Server server;
+
+    private void loadData() {
         paneview.getChildren().clear();
-        ObservableList<PieChart.Data> list=FXCollections.observableArrayList();
-        list.add(new PieChart.Data("Online",5000));
-        list.add(new PieChart.Data("Offline",7000));
-        PieChart piechart=new PieChart(list);
+        ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+        list.add(new PieChart.Data("Online", 5000));
+        list.add(new PieChart.Data("Offline", 7000));
+        PieChart piechart = new PieChart(list);
         piechart.setTitle("Players Chart");
         paneview.getChildren().add(piechart);
     }
+
     public GameServerBase(Stage stage) throws IOException {
 
         rectangle = new Rectangle();
@@ -61,31 +64,25 @@ public class GameServerBase extends AnchorPane {
         glow0 = new Glow();
         label = new Label();
         paneview = new Pane();
-        
-        
-        buttonOn.setOnAction(new EventHandler<ActionEvent>(){
+        buttonOff.setDisable(true);
+
+        buttonOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    serverSocket = new ServerSocket(5005);
-                    
-                    while(true)
-                    {
-                         s = serverSocket.accept();                 
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                buttonOn.setDisable(true);
+                server = new Server();
+                buttonOff.setDisable(false);
             }
         });
-        
-        buttonOff.setOnAction(new EventHandler<ActionEvent>(){
+
+        buttonOff.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    s.close();
-                    serverSocket.close();
-                    
+                    server.closeConnection();
+                    buttonOn.setDisable(false);
+                    buttonOff.setDisable(true);
+
                 } catch (IOException ex) {
                     Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }

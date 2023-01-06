@@ -216,6 +216,8 @@ public class FXMLHomeBase extends AnchorPane {
         });
 
         buttonOnline.setOnAction((ActionEvent event) -> {
+
+            NetworkConnection network = new NetworkConnection();
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
         });
 

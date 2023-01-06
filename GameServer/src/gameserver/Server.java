@@ -40,15 +40,6 @@ public class Server {
         if (clientConnection != null) {
             Socket socket = clientConnection.socket;
             socket.close();
-//            Runtime.getRuntime().addShutdownHook(new Thread(){
-//                public void run(){
-//                    try {
-//                        socket.close();
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            });
         }         //ToDo: close all sockets of all clients
     }
 
@@ -59,11 +50,9 @@ public class Server {
                 
                 while (!serverSocket.isClosed()) {
                     try {
-                        if (!serverSocket.isClosed()) {
-                            System.out.println(serverSocket.isClosed());
                             Socket socket = serverSocket.accept();
                             clientConnection = new ClientConnection(socket);
-                        }
+                        
                         System.out.println("Accept new Client is running.......");
                     } catch (IOException ex) {
                         

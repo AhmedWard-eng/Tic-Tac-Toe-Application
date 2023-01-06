@@ -5,6 +5,10 @@
  */
 package gameserver;
 
+import DataBaseLayer.DataAccessLayer;
+import beans.SignUpBean;
+import beans.UserBean;
+import com.google.gson.Gson;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.BufferedReader;
@@ -19,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonStructure;
+import networkOperations.NetworkOperation;
 
 /**
  *
@@ -30,25 +35,27 @@ public class ClientConnection {
     BufferedReader bufferReader;
     PrintStream printStream;
     String ip;
+    NetworkOperation networkOperation;
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
+        networkOperation = new NetworkOperation();
         try {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
-            readMessages();
+            signup();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void readMessages() {
+    public void readMessages(){
         new Thread() {
             @Override
             public void run() {
                 while (socket.isConnected()) {
-                    
-                        System.out.println("readMessage is running.......");
+
+                    System.out.println("readMessage is running.......");
                     try {
                         String s = bufferReader.readLine();
                         s = s.replaceAll("\r?\n", "");
@@ -65,7 +72,35 @@ public class ClientConnection {
             }
 
         }.start();
-
     }
+
+    public void signup() {
+        new Thread() {
+            @Override
+            public void run() {
+                while (!socket.isClosed()) {
+
+                    System.out.println("readMessage is running......."+socket.isClosed());
+                    try {
+                        String s = bufferReader.readLine();
+                        s = s.replaceAll("\r?\n", "");
+                        System.out.println(s);
+                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(s));
+                        JsonObject object = jsonReader.readObject();
+                        if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
+                            System.out.println("status = " + object.getString("password"));
+                        }
+                       networkOperation.signUp(new Gson().fromJson(s, SignUpBean.class),socket.getInetAddress().getHostAddress());
+                    } catch (IOException ex) {
+//                        ex.printStackTrace();
+                    }
+                }
+            }
+
+        }.start();
+    }
+    
+
+             
 
 }

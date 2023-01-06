@@ -31,9 +31,6 @@ public class NetworkConnection {
             socket = new Socket(InetAddress.getLocalHost(), 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
-            sendMessage("{\"status\" : \"online\",\"operation\": {\"userName\" : \"John\", \"password\": \"Smith\"}}");
-//            sendMessage("hello");
-//            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

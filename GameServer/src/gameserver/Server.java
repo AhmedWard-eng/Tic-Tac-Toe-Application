@@ -8,6 +8,7 @@ package gameserver;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,22 +34,11 @@ public class Server {
     }
 
     public void closeConnection() throws IOException {
-        System.out.println(serverSocket.isClosed());
         serverSocket.close();
-        System.out.println(serverSocket.isClosed());
         isOpened = false;
         if (clientConnection != null) {
             Socket socket = clientConnection.socket;
             socket.close();
-//            Runtime.getRuntime().addShutdownHook(new Thread(){
-//                public void run(){
-//                    try {
-//                        socket.close();
-//                    } catch (IOException ex) {
-//                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            });
         }         //ToDo: close all sockets of all clients
     }
 
@@ -56,19 +46,16 @@ public class Server {
         new Thread() {
             @Override
             public void run() {
-                
+
                 while (!serverSocket.isClosed()) {
                     try {
-                        if (!serverSocket.isClosed()) {
-                            System.out.println(serverSocket.isClosed());
                             Socket socket = serverSocket.accept();
                             clientConnection = new ClientConnection(socket);
-                        }
                         System.out.println("Accept new Client is running.......");
+                    } catch (SocketException ex) {
+                        System.out.println("socket is closed");
                     } catch (IOException ex) {
-                        
-                        //Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 

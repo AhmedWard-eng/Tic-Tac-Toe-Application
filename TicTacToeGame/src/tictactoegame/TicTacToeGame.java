@@ -24,9 +24,6 @@ public class TicTacToeGame extends Application {
     public void start(Stage stage) throws Exception {
 
         Parent root = new FXMLHomeBase(stage);
-        
-
-
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         stage.setTitle("Tic-Tac-Toe Game");

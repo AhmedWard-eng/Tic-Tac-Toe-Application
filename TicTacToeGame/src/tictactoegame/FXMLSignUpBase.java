@@ -1,5 +1,13 @@
 package tictactoegame;
 
+import beans.SignUpBean;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -26,8 +34,9 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final TextField TextFieldpassword;
     protected final TextField TextFieldConfirmPassword;
     protected final Button buttonBackHome;
-
-    public FXMLSignUpBase(Stage stage) {
+    PrintStream printStream ;
+    Socket mySocket ;
+    public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
@@ -42,12 +51,30 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldConfirmPassword = new TextField();
         buttonBackHome = new Button();
         
-        buttonBackHome.setOnAction((ActionEvent event) -> {
-            navigationLogic.Navigation.navigate(stage,new FXMLHomeBase(stage));
-        });
+        mySocket = new Socket(InetAddress.getLocalHost(), 5005);
+        printStream = new PrintStream(mySocket.getOutputStream());
         
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
+        });
+
         ButtonSignUp.setOnAction((ActionEvent event) -> {
-            navigationLogic.Navigation.navigate(stage,new FXMLOnlineScreenBase(stage));
+            Gson gson = new GsonBuilder().create();
+            boolean check;
+            SignUpBean signup = new SignUpBean(TextFieldMail.getText(),
+                    TextFieldpassword.getText(),
+                    TextFieldConfirmPassword.getText());
+            check = signup.checkPassword(TextFieldpassword.getText(),
+                    TextFieldConfirmPassword.getText());
+            if (!check) {
+                System.out.println("not matched passtext and confirmpasstaxt ");
+            } else {
+                String h=gson.toJson(signup);
+                System.out.println(h);
+                printStream.println(h);
+                System.out.println("data is sent ");
+                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            }
         });
 
         setMaxHeight(USE_PREF_SIZE);

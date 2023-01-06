@@ -371,9 +371,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         });
 
         buttonRestart.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLGameTwoPlayerBase(stage, playerOneName, playerTwoName));
-            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            stage.setScene(scene);
+            newGame();
         });
 
         buttonBackHome.setOnAction((ActionEvent event) -> {
@@ -499,6 +497,15 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
             return player1name;
         }
         return player2name;
+    }
+    void newGame() {
+        for (int i = 0; i < borderLabel.size(); i++) {
+            borderLabel.get(i).setText(" ");
+            borderLabel.get(i).setMouseTransparent(false);
+        }
+        toggleButtonRecord.setDisable(false);
+        toggleButtonRecord.setSelected(false);
+        gameManager.newGame();
     }
 
 }

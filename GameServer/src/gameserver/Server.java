@@ -8,6 +8,7 @@ package gameserver;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,9 +55,10 @@ public class Server {
                             clientConnection = new ClientConnection(socket);
                         
                         System.out.println("Accept new Client is running.......");
+                    } catch (SocketException ex) {
+                        System.out.println("socket is closed");
                     } catch (IOException ex) {
-
-                        //Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 

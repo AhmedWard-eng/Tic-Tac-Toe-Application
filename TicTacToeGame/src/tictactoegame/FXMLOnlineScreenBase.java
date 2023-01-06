@@ -1,5 +1,8 @@
 package tictactoegame;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -45,7 +48,11 @@ public class FXMLOnlineScreenBase extends AnchorPane {
         });
         
         ButtonSignUp.setOnAction((ActionEvent event) -> {
-            navigationLogic.Navigation.navigate(stage,new FXMLSignUpBase(stage));
+            try {
+                navigationLogic.Navigation.navigate(stage,new FXMLSignUpBase(stage));
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLOnlineScreenBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
         
         buttonBackHome.setOnAction((ActionEvent event) -> {

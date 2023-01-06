@@ -56,7 +56,7 @@ public class Server {
         new Thread() {
             @Override
             public void run() {
-                
+
                 while (!serverSocket.isClosed()) {
                     try {
                         if (!serverSocket.isClosed()) {
@@ -66,9 +66,8 @@ public class Server {
                         }
                         System.out.println("Accept new Client is running.......");
                     } catch (IOException ex) {
-                        
-                        //Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
 
+                        //Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 

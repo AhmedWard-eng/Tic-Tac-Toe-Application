@@ -78,22 +78,21 @@ public class ClientConnection {
         new Thread() {
             @Override
             public void run() {
-                while (socket.isConnected()) {
+                while (!socket.isClosed()) {
 
-                    System.out.println("readMessage is running.......");
+                    System.out.println("readMessage is running......."+socket.isClosed());
                     try {
                         String s = bufferReader.readLine();
                         s = s.replaceAll("\r?\n", "");
                         System.out.println(s);
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(s));
                         JsonObject object = jsonReader.readObject();
-//                        System.out.println("b3d");
                         if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
                             System.out.println("status = " + object.getString("password"));
                         }
                        networkOperation.signUp(new Gson().fromJson(s, SignUpBean.class),socket.getInetAddress().getHostAddress());
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+//                        ex.printStackTrace();
                     }
                 }
             }

@@ -34,9 +34,7 @@ public class Server {
     }
 
     public void closeConnection() throws IOException {
-        System.out.println(serverSocket.isClosed());
         serverSocket.close();
-        System.out.println(serverSocket.isClosed());
         isOpened = false;
         if (clientConnection != null) {
             Socket socket = clientConnection.socket;
@@ -53,7 +51,6 @@ public class Server {
                     try {
                             Socket socket = serverSocket.accept();
                             clientConnection = new ClientConnection(socket);
-                        
                         System.out.println("Accept new Client is running.......");
                     } catch (SocketException ex) {
                         System.out.println("socket is closed");

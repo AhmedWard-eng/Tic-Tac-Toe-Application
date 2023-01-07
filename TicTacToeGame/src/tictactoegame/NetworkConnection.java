@@ -42,7 +42,7 @@ public class NetworkConnection {
             @Override
             public void run() {
                 try {
-                    while (socket.isConnected()) {
+                    while (socket.isClosed()) {
                         System.out.print(bufferedReader.readLine());
                     }
                 } catch (IOException ex) {

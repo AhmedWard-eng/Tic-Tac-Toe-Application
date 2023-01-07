@@ -3,6 +3,8 @@
 /TicTacToeGame/build/
 /TicTacToeGame/dist/
 
+/TicTacToeGame/recordedGames
+
 *.class
 
 /Server/GmeeServer/nbproject

@@ -8,7 +8,7 @@ package game;
 import java.util.Random;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import tictactoegame.FXMLGameOnePlayerBase;
+import tictactoegame.FXMLGameOnePlayerEasyBase;
 import tictactoegame.FXMLResultLoseBase;
 
 /**

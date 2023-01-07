@@ -5,7 +5,11 @@
  */
 package game;
 
+import com.google.gson.Gson;
+import fileOperation.FileOperation;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -14,18 +18,31 @@ import java.util.ArrayList;
 public class GameManager {
 
     public static final int TOTAL_NUM_CELLS = 9;
-    private ArrayList<Cell> recordedGame;
+    private String playerOne;
+    private String playerTwo;
+    private Record record;
     private ArrayList<Cell> board;
     boolean isRecorded;
     int counterGames;
+    FileOperation fileOperation;
 
     public GameManager() {
+        init();
+        playerOne = "YOU";
+        playerTwo = "Computer";
+    }
+
+    public GameManager(String playerOne, String playerTwo) {
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
         init();
     }
 
     private void init() {
-        recordedGame = new ArrayList<>();
+        record = new Record(playerOne, playerTwo);
         board = new ArrayList<>();
+
+        fileOperation = new FileOperation();
         counterGames = 0;
         for (int i = 0; i < TOTAL_NUM_CELLS; i++) {
             board.add(new Cell());
@@ -42,13 +59,10 @@ public class GameManager {
 
     public void setCell(int index, Seed seed) {
         if (isRecorded) {
-            recordedGame.add(new Cell(seed, index));
+            record.board.add(new Cell(seed, index));
         }
         board.get(index).content = seed;
         counterGames++;
-
-        System.out.println(counterGames + " in set Cell");
-
     }
 
     public Cell getCell(int index) {
@@ -108,7 +122,15 @@ public class GameManager {
 
     public void saveRecord() {
         if (isRecorded) {
-            System.out.println("save Record");
+            String recordString = new Gson().toJson(record);
+            File dir = new File("recordedGames");
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File file = new File("recordedGames\\" + playerOne + "##" + String.valueOf(new Date()).replace(":", "--") + "##" + playerTwo + ".json");
+
+            fileOperation.saveFile(recordString.getBytes(), file);
+
         }
     }
 

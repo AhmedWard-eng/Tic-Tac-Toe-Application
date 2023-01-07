@@ -44,12 +44,13 @@ public class ClientConnection {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
             signup();
+            System.out.println("........");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void readMessages(){
+    public void readMessages() {
         new Thread() {
             @Override
             public void run() {
@@ -64,6 +65,10 @@ public class ClientConnection {
 //                        System.out.println("b3d");
                         if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
                             System.out.println("status = " + object.getString("status"));
+                        }
+
+                        if (object.getString("status") == "signUp") {
+//                            networkOperation.signUp(new Gson().fromJson(s, UserBean.class), s);
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -80,7 +85,7 @@ public class ClientConnection {
             public void run() {
                 while (!socket.isClosed()) {
 
-                    System.out.println("readMessage is running......."+socket.isClosed());
+                    System.out.println("readMessage is running......." + socket.isClosed());
                     try {
                         String s = bufferReader.readLine();
                         s = s.replaceAll("\r?\n", "");
@@ -90,7 +95,7 @@ public class ClientConnection {
                         if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
                             System.out.println("status = " + object.getString("password"));
                         }
-                       networkOperation.signUp(new Gson().fromJson(s, SignUpBean.class),socket.getInetAddress().getHostAddress());
+                        networkOperation.signUp(new Gson().fromJson(s, SignUpBean.class), socket.getInetAddress().getHostAddress());
                     } catch (IOException ex) {
 //                        ex.printStackTrace();
                     }
@@ -99,8 +104,15 @@ public class ClientConnection {
 
         }.start();
     }
-    
 
-             
+    private void sendMessage(String message) {
+        new Thread() {
+            @Override
+            public void run() {
+                printStream.println(message);
+            }
+
+        }.start();
+    }
 
 }

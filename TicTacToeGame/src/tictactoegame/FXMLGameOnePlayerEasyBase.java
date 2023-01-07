@@ -31,7 +31,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import navigationLogic.Navigation;
 
-public class FXMLGameOnePlayerBase extends AnchorPane {
+public class FXMLGameOnePlayerEasyBase extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Pane pane;
@@ -62,7 +62,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
     private GameManager gameManager;
     private ComputerPlayer computerPlayer;
 
-    public FXMLGameOnePlayerBase(Stage stage) {
+    public FXMLGameOnePlayerEasyBase(Stage stage) {
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
         line = new Line();
@@ -395,7 +395,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
                 try {
                     Thread.sleep(300);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(FXMLGameOnePlayerBase.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FXMLGameOnePlayerEasyBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 Platform.runLater(new Runnable() {
@@ -407,7 +407,7 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
                         setTextEnabled();
                         if (gameManager.isPlayerOWon()) {
                             gameManager.saveRecord();
-                            Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLGameOnePlayerBase(stage)));
+                            Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLGameOnePlayerEasyBase(stage)));
                             setTextDisabled();
                         }
 
@@ -442,10 +442,10 @@ public class FXMLGameOnePlayerBase extends AnchorPane {
                 label.setMouseTransparent(true);
                 if (gameManager.isPlayerXWon()) {
                     gameManager.saveRecord();
-                    Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameOnePlayerBase(stage)));
+                    Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameOnePlayerEasyBase(stage)));
                 } else if (gameManager.isDraw()) {
                     gameManager.saveRecord();
-                    Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLGameOnePlayerBase(stage)));
+                    Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLGameOnePlayerEasyBase(stage)));
 
                 } else {
                     computerTurn();

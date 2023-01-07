@@ -42,6 +42,10 @@ public class DataAccessLayer {
         //put login logic
     }
     
+    public boolean checkvalidSignUp(){
+        return true;
+    }
+    
 //    public ArrayList<UserBean> getOnlineAndBusyUsers(){
 //    
 //    

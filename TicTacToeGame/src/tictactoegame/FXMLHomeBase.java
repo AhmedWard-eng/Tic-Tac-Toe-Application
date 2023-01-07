@@ -222,9 +222,7 @@ public class FXMLHomeBase extends AnchorPane {
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLGameOnePlayerBase(stage));
-            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            stage.setScene(scene);
+            Navigation.navigate(stage, new FXMLChooseGameLevelBase(stage));
         });
         buttonTwoPlayer.setOnAction((event) -> {
 

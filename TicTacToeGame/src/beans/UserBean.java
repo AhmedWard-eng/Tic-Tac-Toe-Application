@@ -17,12 +17,13 @@ public class UserBean {
     public int score;
     public String status;
 
-    public UserBean(String ip, String userName, String pass, String stauts,  int score) {
+    public UserBean(String ip, String userName, String pass, String stauts, int score) {
         this.ip = ip;
         this.userName = userName;
         this.pass = pass;
-        this.score = 0;
         this.status = stauts;
+        this.score = score;
+
     }
 
     public void setIp(String ip) {

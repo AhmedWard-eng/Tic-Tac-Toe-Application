@@ -8,6 +8,8 @@ package networkOperations;
 import DataBaseLayer.DataAccessLayer;
 import beans.SignUpBean;
 import beans.UserBean;
+import com.google.gson.Gson;
+import java.sql.SQLException;
 
 /**
  *
@@ -22,9 +24,15 @@ public class NetworkOperation {
         dataAccessLayer = new DataAccessLayer();
     }
 
-    public void signUp(SignUpBean signUpBean, String hostAddress) {
-        UserBean userBean = new UserBean(hostAddress, signUpBean.getUsername(), signUpBean.getPassword(), "Online", 0);
-        dataAccessLayer.signUp(userBean);
+//    public void signUp(UserBean user) throws SQLException {
+//        // UserBean userBean = new UserBean(hostAddress, signUpBean.getUsername(), signUpBean.getPassword(), "Online", 0);
+//        dataAccessLayer.signUp(user);
+//    }
+
+    public void signUp(String message,String ip) throws SQLException {
+        SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
+        UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "online", 0);
+        dataAccessLayer.signUp(user);
     }
 
 }

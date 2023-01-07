@@ -2,6 +2,7 @@ package tictactoegame;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -33,7 +34,8 @@ public class FXMLChooseGameLevelBase extends AnchorPane {
     protected final ImageView imageView5;
     protected final ImageView imageView6;
     protected final ImageView imageView7;
-
+    protected final Button buttonBackHome;
+    
     public FXMLChooseGameLevelBase(Stage stage) {
         DropShadow dropShadow = new DropShadow();
         dropShadow.setOffsetX(-10.0);
@@ -58,7 +60,12 @@ public class FXMLChooseGameLevelBase extends AnchorPane {
         imageView5 = new ImageView();
         imageView6 = new ImageView();
         imageView7 = new ImageView();
+        buttonBackHome = new Button();
 
+        buttonBackHome.setOnAction((ActionEvent event) -> {
+            navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
+        });
+        
         setId("AnchorPane");
         setPrefHeight(400.0);
         setPrefWidth(600.0);
@@ -75,8 +82,20 @@ public class FXMLChooseGameLevelBase extends AnchorPane {
         buttonHard.setPrefWidth(150.0);
         buttonHard.setStyle("-fx-background-color: #cc0000; -fx-background-radius: 20;");
         buttonHard.setEffect(dropShadow);
+        buttonHard.setCursor(Cursor.CLOSED_HAND);
+        
         anchorPane.setPrefHeight(200.0);
         anchorPane.setPrefWidth(200.0);
+
+        buttonBackHome.setLayoutX(20.0);
+        buttonBackHome.setLayoutY(340.0);
+        buttonBackHome.setMnemonicParsing(false);
+        buttonBackHome.setPrefHeight(26.0);
+        buttonBackHome.setPrefWidth(42.0);
+        buttonBackHome.setStyle("-fx-background-radius: 50; -fx-background-color: #ff9900; -fx-border-radius: 50;");
+        buttonBackHome.setText("<");
+        buttonBackHome.setFont(new Font("Arial Black", 20.0));
+        buttonBackHome.setCursor(Cursor.CLOSED_HAND);
 
         label.setLayoutX(41.0);
         label.setLayoutY(107.0);
@@ -120,6 +139,9 @@ public class FXMLChooseGameLevelBase extends AnchorPane {
         buttonMedium.setPrefWidth(150.0);
         buttonMedium.setStyle("-fx-background-color: #ee5007; -fx-background-radius: 20;");
         buttonMedium.setEffect(dropShadow);
+        buttonMedium.setCursor(Cursor.CLOSED_HAND);
+        buttonEasy.setCursor(Cursor.CLOSED_HAND);
+        
         anchorPane0.setPrefHeight(200.0);
         anchorPane0.setPrefWidth(200.0);
 
@@ -177,7 +199,18 @@ public class FXMLChooseGameLevelBase extends AnchorPane {
                 Navigation.navigate(stage, new FXMLGameOnePlayerEasyBase(stage));
             }
         });
-
+        buttonHard.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Navigation.navigate(stage, new HardLevelAI(stage));
+            }
+        });
+        buttonMedium.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Navigation.navigate(stage, new MediumLevelAI(stage));
+            }
+        });
         label1.setLayoutX(41.0);
         label1.setLayoutY(108.0);
         label1.setText("Easy");
@@ -224,6 +257,7 @@ public class FXMLChooseGameLevelBase extends AnchorPane {
         anchorPane1.getChildren().add(imageView6);
         anchorPane1.getChildren().add(imageView7);
         getChildren().add(buttonEasy);
+        getChildren().add(buttonBackHome);
 
     }
 }

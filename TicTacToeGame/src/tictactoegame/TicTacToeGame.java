@@ -6,6 +6,7 @@
 package tictactoegame;
 
 import game.Seed;
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +27,8 @@ public class TicTacToeGame extends Application {
         Parent root = new FXMLHomeBase(stage);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-//        System.out.println(getClass().getPackage().);
+        File file = new File(getClass().getResource("").toExternalForm());
+        System.out.println(file.getParentFile().getAbsolutePath());
         stage.setTitle("Tic-Tac-Toe Game");
 
         stage.setScene(scene);

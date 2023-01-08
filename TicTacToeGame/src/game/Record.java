@@ -12,14 +12,14 @@ import java.util.ArrayList;
  * @author AhmedWard
  */
 public class Record {
-
+    
     public String player1;
     public String player2;
     public ArrayList<Cell> board;
 
     public String getPlayer1() {
         return player1;
-    }
+}
 
     public String getPlayer2() {
         return player2;
@@ -29,8 +29,8 @@ public class Record {
         return board;
     }
 
-    public Record(String player1, String player2) {
-        board = new ArrayList<>();
+    public Record(ArrayList<Cell> board,String player1, String player2) {
+        this.board = board;
         this.player1 = player1;
         this.player2 = player2;
     }

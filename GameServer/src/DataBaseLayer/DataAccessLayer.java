@@ -27,7 +27,7 @@ public class DataAccessLayer {
     public DataAccessLayer() {
         try {
             DriverManager.registerDriver(new ClientDriver());
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/Contact", "root", "root");
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/game", "root", "root");
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }

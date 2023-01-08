@@ -211,7 +211,7 @@ public class FXMLHomeBase extends AnchorPane {
         buttonRecord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Navigation.navigate(stage, new FXMLGameOnlineBase(stage));
+                Navigation.navigate(stage, new FXMLGameHistoryBase(stage));
             }
         });
 

@@ -10,6 +10,7 @@ import beans.UserBean;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -61,6 +62,19 @@ public class DataAccessLayer {
 //    
 //    
 //    }
+
+    public boolean checkIfUserExist(String userName) throws SQLException {
+        String sql=" SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
+        PreparedStatement pst = connection.prepareStatement (sql);
+        pst.setString(1,userName);
+        ResultSet rs = pst.executeQuery();
+        boolean found=false;
+        if(rs!=null)
+        {
+            found=true;
+        }
+        return found;
+    }
     
     
     

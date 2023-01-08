@@ -67,7 +67,12 @@ public class ClientConnection {
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
                         if (object.getString("operation").equals("signup")) {
-                            networkOperation.signUp(message, ip);
+                            boolean exist = networkOperation.signUp(message, ip);
+                            System.out.println("clint exist= "+exist);
+                            sendMessage("Exist ");
+                            if(exist){
+                                sendMessage("Exist username");
+                            }
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();

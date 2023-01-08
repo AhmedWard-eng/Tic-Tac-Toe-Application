@@ -45,15 +45,16 @@ public class FXMLSignUpBase extends AnchorPane {
     
     protected final DialogPane dialogPaneName;
     protected final GridPane gridPane;
-    protected final Label labelFirstPlayer;
+    protected final Label labelmatched;
+    protected final Label labelempty;
     NetworkConnection network;
     
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
-        labelFirstPlayer = new Label("Password Doesn't match Confirm password.");
-        
+        labelmatched= new Label("Password Doesn't match Confirm password.");
+        labelempty =new Label("Please Enter all Cells.");
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
@@ -77,17 +78,20 @@ public class FXMLSignUpBase extends AnchorPane {
             SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
                     TextFieldpassword.getText(),
                     TextFieldConfirmPassword.getText());
-            
-            check = checkPassword(TextFieldpassword.getText(),
-                    TextFieldConfirmPassword.getText());
-            if (!check) {
-                matchDialog();
-            } else {
-                network=new NetworkConnection();
-                network.sendMessage(gson.toJson(person));
-                
-                System.out.println("data is sent ");
-                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            if(TextFieldMail.getText()!=null&&TextFieldpassword.getText()!=null&& TextFieldConfirmPassword.getText()!=null){
+                check = checkPassword(TextFieldpassword.getText(),
+                        TextFieldConfirmPassword.getText());
+                if (!check) {
+                    matchDialog();
+                } else {
+                    network=new NetworkConnection();
+                    network.sendMessage(gson.toJson(person));
+
+                    System.out.println("data is sent ");
+                    //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+                } 
+            } else{
+                  matchDialog(); 
             }
         });
 
@@ -236,12 +240,30 @@ public class FXMLSignUpBase extends AnchorPane {
         dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
-        gridPane.add(labelFirstPlayer, 0, 0);
+        gridPane.add(labelmatched, 0, 0);
         dialogPaneName.setContent(gridPane);
         
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("Match");
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+    }
+    private void emptyCell() {
+        dialogPaneName.setHeaderText(" ERROR ! ");
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        gridPane.add(labelempty, 0, 0);
+        dialogPaneName.setContent(gridPane);
+        
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("Empty Cells");
 
         ButtonType OkButtonType = new ButtonType("Ok");
 

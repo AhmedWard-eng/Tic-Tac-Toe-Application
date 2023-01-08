@@ -9,6 +9,7 @@ import DataBaseLayer.DataAccessLayer;
 import beans.SignUpBean;
 import beans.UserBean;
 import com.google.gson.Gson;
+import gameserver.ClientConnection;
 import java.sql.SQLException;
 
 /**
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 public class NetworkOperation {
 
     DataAccessLayer dataAccessLayer;
+    ClientConnection clientconnection;
 
     public NetworkOperation() {
 
@@ -29,10 +31,18 @@ public class NetworkOperation {
 //        dataAccessLayer.signUp(user);
 //    }
 
-    public void signUp(String message,String ip) throws SQLException {
+    public boolean signUp(String message,String ip) throws SQLException {
         SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
         UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "online", 0);
-        dataAccessLayer.signUp(user);
+        boolean found=dataAccessLayer.checkIfUserExist(user.getUserName());
+        System.out.println("found from Check="+found);
+        if(found){
+            return true;       
+        }
+        else{
+            dataAccessLayer.signUp(user);
+            return false;
+        }
     }
 
 }

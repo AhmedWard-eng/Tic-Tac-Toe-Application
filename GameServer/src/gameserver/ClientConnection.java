@@ -35,19 +35,28 @@ public class ClientConnection {
     BufferedReader bufferReader;
     PrintStream printStream;
     String ip;
+
+    
     NetworkOperation networkOperation;
+    
+    
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
         networkOperation = new NetworkOperation();
+        ip=socket.getInetAddress().getHostAddress();
         try {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
-            signup();
+           // signup();
+           readMessages();
             System.out.println("........");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    public String getIp() {
+        return ip;
     }
 
     public void readMessages() {
@@ -56,7 +65,7 @@ public class ClientConnection {
             public void run() {
                 while (socket.isConnected()) {
 
-                    System.out.println("readMessage is running.......");
+                    System.out.println("readMessage is running......."+ "::  "+ip);
                     try {
                         String s = bufferReader.readLine();
                         s = s.replaceAll("\r?\n", "");
@@ -66,10 +75,14 @@ public class ClientConnection {
                         if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
                             System.out.println("status = " + object.getString("status"));
                         }
+                        
 
                         if (object.getString("status") == "signUp") {
 //                            networkOperation.signUp(new Gson().fromJson(s, UserBean.class), s);
+                        }else if(object.getString("status") == "requestPlaying"){
+                            networkOperation.requestPlay(s,ip);
                         }
+                       
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -105,7 +118,7 @@ public class ClientConnection {
         }.start();
     }
 
-    private void sendMessage(String message) {
+    public void sendMessage(String message) {
         new Thread() {
             @Override
             public void run() {

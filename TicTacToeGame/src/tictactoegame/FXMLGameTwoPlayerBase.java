@@ -477,8 +477,8 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
             seed = Seed.CROSS;
         }
 
-    }
 
+    }
     public void checkEndGame() {
         if (gameManager.isPlayerXWon()) {
 

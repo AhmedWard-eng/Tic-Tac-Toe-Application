@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +20,10 @@ import java.util.logging.Logger;
 public class Server {
 
     ServerSocket serverSocket;
-    ClientConnection clientConnection;
+    //ClientConnection clientConnection;
     boolean isOpened;
 
+    public static Vector<ClientConnection> clientsVector = new Vector<ClientConnection>();
     public Server() {
 
         try {
@@ -36,10 +38,11 @@ public class Server {
     public void closeConnection() throws IOException {
         serverSocket.close();
         isOpened = false;
-        if (clientConnection != null) {
-            Socket socket = clientConnection.socket;
+//        if (clientConnection != null) {
+        for (int i = 0; i < clientsVector.size(); i++) {
+            Socket socket = clientsVector.get(i).socket;
             socket.close();
-        }         //ToDo: close all sockets of all clients
+        }         
     }
 
     private void acceptNewClient() {
@@ -50,7 +53,8 @@ public class Server {
                 while (!serverSocket.isClosed()) {
                     try {
                             Socket socket = serverSocket.accept();
-                            clientConnection = new ClientConnection(socket);
+                            clientsVector.add(new ClientConnection(socket));
+                            
                         System.out.println("Accept new Client is running.......");
                     } catch (SocketException ex) {
                         System.out.println("socket is closed");

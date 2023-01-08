@@ -25,6 +25,8 @@ public class NetworkConnection {
     Socket socket;
     BufferedReader bufferedReader;
     PrintStream ps;
+    
+    
 
     public NetworkConnection() {
         try {

@@ -42,19 +42,19 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final TextField TextFieldpassword;
     protected final TextField TextFieldConfirmPassword;
     protected final Button buttonBackHome;
-    
+
     protected final DialogPane dialogPaneName;
     protected final GridPane gridPane;
     protected final Label labelmatched;
     protected final Label labelempty;
     NetworkConnection network;
-    
+
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
-        labelmatched= new Label("Password Doesn't match Confirm password.");
-        labelempty =new Label("Please Enter all Cells.");
+        labelmatched = new Label("Password Doesn't match Confirm password.");
+        labelempty = new Label("Please Enter all Cells.");
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
@@ -67,7 +67,7 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldpassword = new TextField();
         TextFieldConfirmPassword = new TextField();
         buttonBackHome = new Button();
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
         });
@@ -75,24 +75,24 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
-            SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
+            SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
                     TextFieldpassword.getText(),
                     TextFieldConfirmPassword.getText());
-//            if(TextFieldMail.getText().isEmpty()&&TextFieldpassword.getText().isEmpty()&& TextFieldConfirmPassword.getText().isEmpty()){
+            if (TextFieldMail.getText() != null && TextFieldpassword.getText() != null && TextFieldConfirmPassword.getText() != null) {
                 check = checkPassword(TextFieldpassword.getText(),
                         TextFieldConfirmPassword.getText());
-//                if (!check) {
-//                    matchDialog();
-//                } else {
-                    network=new NetworkConnection();
+                if (!check) {
+                    matchDialog();
+                } else {
+                    network = NetworkConnection.getInstance();
                     network.sendMessage(gson.toJson(person));
 
                     System.out.println("data is sent ");
                     //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
-//                } 
-//            } else{
-//                  matchDialog(); 
-//            }
+                }
+            } else {
+                matchDialog();
+            }
         });
 
         setMaxHeight(USE_PREF_SIZE);
@@ -230,19 +230,22 @@ public class FXMLSignUpBase extends AnchorPane {
         getChildren().add(buttonBackHome);
 
     }
-    public boolean checkPassword(String password, String confirmpassword) { 
-        if(password.equals(confirmpassword))
+
+    public boolean checkPassword(String password, String confirmpassword) {
+        if (password.equals(confirmpassword)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
+
     private void matchDialog() {
         dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
         gridPane.add(labelmatched, 0, 0);
         dialogPaneName.setContent(gridPane);
-        
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("Match");
@@ -254,13 +257,14 @@ public class FXMLSignUpBase extends AnchorPane {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
     }
+
     private void emptyCell() {
         dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
         gridPane.add(labelempty, 0, 0);
         dialogPaneName.setContent(gridPane);
-        
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("Empty Cells");

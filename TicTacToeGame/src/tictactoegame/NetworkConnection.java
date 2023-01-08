@@ -24,13 +24,19 @@ import javafx.scene.control.TextArea;
  */
 public class NetworkConnection {
 
-    Socket socket;
-    BufferedReader bufferedReader;
-    PrintStream ps;
-    
-    
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintStream ps;
+    private static NetworkConnection networkConnection;
 
-    public NetworkConnection() {
+    public static NetworkConnection getInstance() {
+        if (networkConnection == null) {
+            networkConnection = new NetworkConnection();
+        }
+        return networkConnection;
+    }
+
+    private NetworkConnection() {
         try {
             socket = new Socket(InetAddress.getLocalHost(), 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -42,27 +48,27 @@ public class NetworkConnection {
     }
 
     public void readMessage() {
-        RepeatedUserDialog r=new RepeatedUserDialog();
+        RepeatedUserDialog r = new RepeatedUserDialog();
         new Thread() {
             @Override
             public void run() {
                 try {
                     while (socket.isConnected()) {
-                        String str= bufferedReader.readLine();
-                        System.out.println("client recived= "+ str);
-                        if(str.equals("Exist username")){
+                        String str = bufferedReader.readLine();
+                        System.out.println("client recived= " + str);
+                        if (str.equals("Exist username")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     r.ExistDialog();
                                 }
                             });
-                            
+
                         }
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
-                    
+
                 }
             }
         }.start();

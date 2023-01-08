@@ -38,8 +38,9 @@ public class FXMLLoginBase extends AnchorPane {
     protected final Text text;
     protected final Rectangle rectangle0;
     protected final Rectangle rectangle1;
-    PrintStream printStream;
-    Socket mySocket;
+//    PrintStream printStream;
+//    Socket mySocket;
+    NetworkConnection networkConnection;
 
     public FXMLLoginBase(Stage stage) {
 
@@ -52,15 +53,16 @@ public class FXMLLoginBase extends AnchorPane {
         text = new Text();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
+        networkConnection = NetworkConnection.getInstance();
 
-        try {
-            mySocket = new Socket(InetAddress.getLocalHost(), 5005);
-            printStream = new PrintStream(mySocket.getOutputStream());
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(FXMLLoginBase.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FXMLLoginBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            mySocket = new Socket(InetAddress.getLocalHost(), 5005);
+//            printStream = new PrintStream(mySocket.getOutputStream());
+//        } catch (UnknownHostException ex) {
+//            Logger.getLogger(FXMLLoginBase.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(FXMLLoginBase.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         buttonBackHome.setOnAction((ActionEvent event) -> {
             navigationLogic.Navigation.navigate(stage,new FXMLHomeBase(stage));
@@ -172,7 +174,8 @@ public class FXMLLoginBase extends AnchorPane {
             LoginBean loginBean = new LoginBean("login", TextFieldUserName.getText(), TextFieldPassword.getText());
             String h = gson.toJson(loginBean);
             System.out.println(h);
-            printStream.println(h);
+//            printStream.println(h);
+            networkConnection.sendMessage(h);
             System.out.println("data is sent ");
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
         });

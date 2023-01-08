@@ -6,6 +6,7 @@
 package gameserver;
 
 import DataBaseLayer.DataAccessLayer;
+import beans.LoginBean;
 import beans.SignUpBean;
 import beans.UserBean;
 import com.google.gson.Gson;
@@ -43,7 +44,8 @@ public class ClientConnection {
         try {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
-            signup();
+            //signup();
+            readMessages();
             System.out.println("........");
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -62,13 +64,15 @@ public class ClientConnection {
                         s = s.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(s));
                         JsonObject object = jsonReader.readObject();
-//                        System.out.println("b3d");
-                        if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
-                            System.out.println("status = " + object.getString("status"));
-                        }
 
                         if (object.getString("status") == "signUp") {
-//                            networkOperation.signUp(new Gson().fromJson(s, UserBean.class), s);
+//                            networkOperation.signUp(s);
+                        }
+                        
+                        if (object.getString("status").equals("login")) {
+                            //TODO update ip + status in the database
+                            LoginBean loginBean = new LoginBean(null,object.getString("username"), object.getString("password"));
+                            networkOperation.login(loginBean, "1123.456.789");
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();

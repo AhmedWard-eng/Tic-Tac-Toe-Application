@@ -3,17 +3,25 @@ package tictactoegame;
 import beans.SignUpBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import static com.sun.javafx.scene.control.skin.Utils.getResource;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -34,10 +42,19 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final TextField TextFieldpassword;
     protected final TextField TextFieldConfirmPassword;
     protected final Button buttonBackHome;
-    PrintStream printStream ;
-    Socket mySocket ;
+    
+    protected final DialogPane dialogPaneName;
+    protected final GridPane gridPane;
+    protected final Label labelmatched;
+    protected final Label labelempty;
+    NetworkConnection network;
+    
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelmatched= new Label("Password Doesn't match Confirm password.");
+        labelempty =new Label("Please Enter all Cells.");
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
@@ -51,9 +68,6 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldConfirmPassword = new TextField();
         buttonBackHome = new Button();
         
-        mySocket = new Socket(InetAddress.getLocalHost(), 5005);
-        printStream = new PrintStream(mySocket.getOutputStream());
-        
         buttonBackHome.setOnAction((ActionEvent event) -> {
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
         });
@@ -61,19 +75,23 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
-            SignUpBean signup = new SignUpBean(TextFieldMail.getText(),
+            SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
                     TextFieldpassword.getText(),
                     TextFieldConfirmPassword.getText());
-            check = signup.checkPassword(TextFieldpassword.getText(),
-                    TextFieldConfirmPassword.getText());
-            if (!check) {
-                System.out.println("not matched passtext and confirmpasstaxt ");
-            } else {
-                String h=gson.toJson(signup);
-                System.out.println(h);
-                printStream.println(h);
-                System.out.println("data is sent ");
-                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            if(TextFieldMail.getText()!=null&&TextFieldpassword.getText()!=null&& TextFieldConfirmPassword.getText()!=null){
+                check = checkPassword(TextFieldpassword.getText(),
+                        TextFieldConfirmPassword.getText());
+                if (!check) {
+                    matchDialog();
+                } else {
+                    network=new NetworkConnection();
+                    network.sendMessage(gson.toJson(person));
+
+                    System.out.println("data is sent ");
+                    //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+                } 
+            } else{
+                  matchDialog(); 
             }
         });
 
@@ -210,6 +228,48 @@ public class FXMLSignUpBase extends AnchorPane {
         getChildren().add(TextFieldpassword);
         getChildren().add(TextFieldConfirmPassword);
         getChildren().add(buttonBackHome);
+
+    }
+    public boolean checkPassword(String password, String confirmpassword) { 
+        if(password.equals(confirmpassword))
+            return true;
+        else
+            return false;
+    }
+    private void matchDialog() {
+        dialogPaneName.setHeaderText(" ERROR ! ");
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        gridPane.add(labelmatched, 0, 0);
+        dialogPaneName.setContent(gridPane);
+        
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("Match");
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+    }
+    private void emptyCell() {
+        dialogPaneName.setHeaderText(" ERROR ! ");
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        gridPane.add(labelempty, 0, 0);
+        dialogPaneName.setContent(gridPane);
+        
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("Empty Cells");
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
 
     }
 }

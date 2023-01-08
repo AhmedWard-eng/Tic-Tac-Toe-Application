@@ -66,16 +66,32 @@ public class DataAccessLayer {
         }
     }
 
-    public void signUp(UserBean userBean) {
-        //put login logic
+    public void signUp(UserBean userBean) throws SQLException {
+
+        String sqlinsert = "INSERT INTO ROOT.\"game\"(ROOT.\"game\".\"ip\",ROOT.\"game\".\"username\",ROOT.\"game\".\"password\",ROOT.\"game\".\"status\")VALUES (?,?,?,?)";
+        PreparedStatement pst = connection.prepareStatement(sqlinsert);
+        pst.setString(1, userBean.getIp());
+        pst.setString(2, userBean.getUserName());
+        pst.setString(3, userBean.getPass());
+        pst.setString(4, userBean.getStatus());
+        int rs = pst.executeUpdate();
+        if (rs == 0) {
+            System.out.println("0");
+        } else {
+            System.out.println("1");
+        }
     }
 
-    public boolean checkvalidSignUp() {
-        return true;
+    public boolean checkIfUserExist(String userName) throws SQLException {
+        String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, userName);
+        ResultSet rs = pst.executeQuery();
+        boolean found = false;
+        if (rs != null) {
+            found = true;
+        }
+        return found;
     }
 
-//    public ArrayList<UserBean> getOnlineAndBusyUsers(){
-//    
-//    
-//    }
 }

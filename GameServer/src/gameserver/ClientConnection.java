@@ -18,8 +18,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.StringReader;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -40,11 +42,12 @@ public class ClientConnection {
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
+        ip = socket.getInetAddress().getHostAddress();
         networkOperation = new NetworkOperation();
         try {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
-            //signup();
+
             readMessages();
             System.out.println("........");
         } catch (IOException ex) {
@@ -60,48 +63,28 @@ public class ClientConnection {
 
                     System.out.println("readMessage is running.......");
                     try {
-                        String s = bufferReader.readLine();
-                        s = s.replaceAll("\r?\n", "");
-                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(s));
-                        JsonObject object = jsonReader.readObject();
 
-                        if (object.getString("status") == "signUp") {
-//                            networkOperation.signUp(s);
+                        String message = bufferReader.readLine();
+                        message = message.replaceAll("\r?\n", "");
+                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
+                        JsonObject object = jsonReader.readObject();
+                        if (object.getString("operation").equals("signup")) {
+                            boolean exist = networkOperation.signUp(message, ip);
+                            System.out.println("clint exist= " + exist);
+                            sendMessage("Exist ");
+                            if (exist) {
+                                sendMessage("Exist username");
+                            }
                         }
-                        
                         if (object.getString("status").equals("login")) {
                             //TODO update ip + status in the database
-                            LoginBean loginBean = new LoginBean(null,object.getString("username"), object.getString("password"));
+                            LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
                             networkOperation.login(loginBean, "1123.456.789");
                         }
                     } catch (IOException ex) {
                         ex.printStackTrace();
-                    }
-                }
-            }
-
-        }.start();
-    }
-
-    public void signup() {
-        new Thread() {
-            @Override
-            public void run() {
-                while (!socket.isClosed()) {
-
-                    System.out.println("readMessage is running......." + socket.isClosed());
-                    try {
-                        String s = bufferReader.readLine();
-                        s = s.replaceAll("\r?\n", "");
-                        System.out.println(s);
-                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(s));
-                        JsonObject object = jsonReader.readObject();
-                        if (object.getValueType() == JsonStructure.ValueType.OBJECT) {
-                            System.out.println("status = " + object.getString("password"));
-                        }
-                        networkOperation.signUp(new Gson().fromJson(s, SignUpBean.class), socket.getInetAddress().getHostAddress());
-                    } catch (IOException ex) {
-//                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }

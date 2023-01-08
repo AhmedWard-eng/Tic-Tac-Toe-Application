@@ -78,21 +78,21 @@ public class FXMLSignUpBase extends AnchorPane {
             SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
                     TextFieldpassword.getText(),
                     TextFieldConfirmPassword.getText());
-            if(TextFieldMail.getText()!=null&&TextFieldpassword.getText()!=null&& TextFieldConfirmPassword.getText()!=null){
+//            if(TextFieldMail.getText().isEmpty()&&TextFieldpassword.getText().isEmpty()&& TextFieldConfirmPassword.getText().isEmpty()){
                 check = checkPassword(TextFieldpassword.getText(),
                         TextFieldConfirmPassword.getText());
-                if (!check) {
-                    matchDialog();
-                } else {
+//                if (!check) {
+//                    matchDialog();
+//                } else {
                     network=new NetworkConnection();
                     network.sendMessage(gson.toJson(person));
 
                     System.out.println("data is sent ");
                     //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
-                } 
-            } else{
-                  matchDialog(); 
-            }
+//                } 
+//            } else{
+//                  matchDialog(); 
+//            }
         });
 
         setMaxHeight(USE_PREF_SIZE);

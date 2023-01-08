@@ -13,6 +13,9 @@ import com.google.gson.Gson;
 import gameserver.ClientConnection;
 import java.sql.SQLException;
 
+import gameserver.Server;
+
+
 /**
  *
  * @author AhmedWard
@@ -23,14 +26,8 @@ public class NetworkOperation {
     ClientConnection clientconnection;
 
     public NetworkOperation() {
-
         dataAccessLayer = new DataAccessLayer();
     }
-
-//    public void signUp(UserBean user) throws SQLException {
-//        // UserBean userBean = new UserBean(hostAddress, signUpBean.getUsername(), signUpBean.getPassword(), "Online", 0);
-//        dataAccessLayer.signUp(user);
-//    }
 
     public boolean signUp(String message,String ip) throws SQLException {
         SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
@@ -46,7 +43,21 @@ public class NetworkOperation {
         }
     }
 
+
     public void login(LoginBean loginBean, String hostAddress) {
         dataAccessLayer.login(loginBean, hostAddress);
     }
+
+    public void requestPlay(String s,String ip) {
+        //parse string 
+        //get ip of the second player
+        //send request to the second palyer
+        for(int i = 0;  i < Server.clientsVector.size(); i++ ){
+            if(Server.clientsVector.get(i).getIp() == ip){
+                Server.clientsVector.get(i).sendMessage("message");
+            }
+        }
+    }
+
+
 }

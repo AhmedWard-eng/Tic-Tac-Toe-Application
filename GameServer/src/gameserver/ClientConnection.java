@@ -38,21 +38,27 @@ public class ClientConnection {
     BufferedReader bufferReader;
     PrintStream printStream;
     String ip;
+    int portNum;
     NetworkOperation networkOperation;
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
         ip = socket.getInetAddress().getHostAddress();
+        portNum = socket.getPort();
         networkOperation = new NetworkOperation();
         try {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
-
             readMessages();
+
             System.out.println("........");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getIp() {
+        return ip;
     }
 
     public void readMessages() {
@@ -61,9 +67,8 @@ public class ClientConnection {
             public void run() {
                 while (socket.isConnected()) {
 
-                    System.out.println("readMessage is running.......");
+                    System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
                     try {
-
                         String message = bufferReader.readLine();
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
@@ -75,12 +80,14 @@ public class ClientConnection {
                             if (exist) {
                                 sendMessage("Exist username");
                             }
-                        }
-                        if (object.getString("status").equals("login")) {
+                        } else if (object.getString("status").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
-                            networkOperation.login(loginBean, "1123.456.789");
+                            networkOperation.login(loginBean, ip);
+                        } else if (object.getString("status") == "requestPlaying") {
+                            networkOperation.requestPlay(message, ip);
                         }
+
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (SQLException ex) {
@@ -88,11 +95,10 @@ public class ClientConnection {
                     }
                 }
             }
-
         }.start();
     }
 
-    private void sendMessage(String message) {
+    public void sendMessage(String message) {
         new Thread() {
             @Override
             public void run() {

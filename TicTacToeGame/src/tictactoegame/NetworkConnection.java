@@ -27,6 +27,8 @@ public class NetworkConnection {
     Socket socket;
     BufferedReader bufferedReader;
     PrintStream ps;
+    
+    
 
     public NetworkConnection() {
         try {
@@ -49,7 +51,6 @@ public class NetworkConnection {
                         String str= bufferedReader.readLine();
                         System.out.println("client recived= "+ str);
                         if(str.equals("Exist username")){
-                            
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {

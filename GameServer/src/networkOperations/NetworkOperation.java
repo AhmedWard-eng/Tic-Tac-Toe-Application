@@ -6,6 +6,7 @@
 package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
+import beans.LoginBean;
 import beans.SignUpBean;
 import beans.UserBean;
 
@@ -27,4 +28,7 @@ public class NetworkOperation {
         dataAccessLayer.signUp(userBean);
     }
 
+    public void login(LoginBean loginBean, String hostAddress) {
+        dataAccessLayer.login(loginBean, hostAddress);
+    }
 }

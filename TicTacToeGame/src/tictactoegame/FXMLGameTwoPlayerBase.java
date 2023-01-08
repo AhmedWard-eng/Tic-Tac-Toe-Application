@@ -449,7 +449,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
                         public void run() {
 
                             checkEndGame();
-
                         }
                     });
                 }

@@ -75,23 +75,24 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
-            SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
-                    TextFieldpassword.getText(),
-                    TextFieldConfirmPassword.getText());
-            if(TextFieldMail.getText()!=null&&TextFieldpassword.getText()!=null&& TextFieldConfirmPassword.getText()!=null){
+            if((TextFieldMail.getText()=="")||(TextFieldpassword.getText()=="")||(TextFieldConfirmPassword.getText()=="")){
+                Dialog(labelempty);   
+            } else{ 
                 check = checkPassword(TextFieldpassword.getText(),
                         TextFieldConfirmPassword.getText());
-                if (!check) {
-                    matchDialog();
-                } else {
+                if (check) {
+                    SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
+                    TextFieldpassword.getText(),
+                    TextFieldConfirmPassword.getText()); 
                     network=new NetworkConnection();
                     network.sendMessage(gson.toJson(person));
 
                     System.out.println("data is sent ");
+                    
+                } else {
+                    Dialog(labelmatched);
                     //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
-                } 
-            } else{
-                  matchDialog(); 
+                }
             }
         });
 
@@ -236,35 +237,19 @@ public class FXMLSignUpBase extends AnchorPane {
         else
             return false;
     }
-    private void matchDialog() {
+    
+
+    private void Dialog(Label label) {
         dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
-        gridPane.add(labelmatched, 0, 0);
+        gridPane.add(label, 0, 0);
         dialogPaneName.setContent(gridPane);
         
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
-        dialog.setTitle("Match");
-
-        ButtonType OkButtonType = new ButtonType("Ok");
-
-        dialogPaneName.getButtonTypes().addAll(OkButtonType);
-
-        Optional<ButtonType> clickedButton = dialog.showAndWait();
-
-    }
-    private void emptyCell() {
-        dialogPaneName.setHeaderText(" ERROR ! ");
-        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-
-        gridPane.add(labelempty, 0, 0);
-        dialogPaneName.setContent(gridPane);
+        dialog.setTitle("Dialog");
         
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setDialogPane(dialogPaneName);
-        dialog.setTitle("Empty Cells");
-
         ButtonType OkButtonType = new ButtonType("Ok");
 
         dialogPaneName.getButtonTypes().addAll(OkButtonType);

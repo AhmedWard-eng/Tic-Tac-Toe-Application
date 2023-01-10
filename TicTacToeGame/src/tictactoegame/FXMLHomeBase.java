@@ -1,5 +1,7 @@
 package tictactoegame;
 
+import beans.RequestGameBean;
+import com.google.gson.Gson;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -64,6 +66,7 @@ public class FXMLHomeBase extends AnchorPane {
     protected ButtonType OkButtonType;
     protected ButtonType cancelButtonType;
     protected Dialog<ButtonType> dialog;
+    protected NetworkConnection networkConnection;
 
     public FXMLHomeBase(Stage stage) {
 
@@ -216,8 +219,13 @@ public class FXMLHomeBase extends AnchorPane {
         });
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-           
+
+            networkConnection = NetworkConnection.getInstance();
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", "192.168.1.1", "10.145.18.83"));
+            networkConnection.sendMessage(s);
+            System.out.println(s);
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {

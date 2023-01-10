@@ -7,6 +7,7 @@ package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
+import beans.RequestGameBean;
 import beans.SignUpBean;
 import beans.UserBean;
 import com.google.gson.Gson;
@@ -14,7 +15,6 @@ import gameserver.ClientConnection;
 import java.sql.SQLException;
 
 import gameserver.Server;
-
 
 /**
  *
@@ -29,35 +29,37 @@ public class NetworkOperation {
         dataAccessLayer = new DataAccessLayer();
     }
 
-    public boolean signUp(String message,String ip) throws SQLException {
+    public boolean signUp(String message, String ip) throws SQLException {
         SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
         UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "online", 0);
-        boolean found=dataAccessLayer.checkIfUserExist(user.getUserName());
-        System.out.println("found from Check="+found);
-        if(found){
-            return true;       
-        }
-        else{
+        boolean found = dataAccessLayer.checkIfUserExist(user.getUserName());
+        System.out.println("found from Check=" + found);
+        if (found) {
+            return true;
+        } else {
             dataAccessLayer.signUp(user);
             return false;
         }
     }
 
-
     public void login(LoginBean loginBean, String hostAddress) {
         dataAccessLayer.login(loginBean, hostAddress);
     }
 
-    public void requestPlay(String s,String ip) {
-        //parse string 
-        //get ip of the second player
-        //send request to the second palyer
-        for(int i = 0;  i < Server.clientsVector.size(); i++ ){
-            if(Server.clientsVector.get(i).getIp() == ip){
+    public void requestPlay(String s, String ip) {
+
+        RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
+        for (int i = 0; i < Server.clientsVector.size(); i++) {
+            if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp)) {
+                System.out.println(Server.clientsVector.get(i).getIp());
+                System.out.println(requestGameBean.otherPlayerIp);
                 Server.clientsVector.get(i).sendMessage("message");
             }
+
+            System.out.println(Server.clientsVector.get(i).getIp());
+            System.out.println(requestGameBean.otherPlayerIp);
+            System.out.println(Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp));
         }
     }
-
 
 }

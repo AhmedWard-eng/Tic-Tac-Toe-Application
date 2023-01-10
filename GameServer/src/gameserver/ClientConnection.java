@@ -22,6 +22,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -51,7 +53,6 @@ public class ClientConnection {
             printStream = new PrintStream(socket.getOutputStream());
             readMessages();
 
-            System.out.println("........");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -65,26 +66,38 @@ public class ClientConnection {
         new Thread() {
             @Override
             public void run() {
-                while (socket.isConnected()) {
+                while (!socket.isClosed()) {
 
-                    System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
+//                    System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
                     try {
                         String message = bufferReader.readLine();
+//                        System.out.println(message);
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
+
+                        System.out.println(object.getString("operation"));
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
                             sendMessage("Exist ");
                             if (exist) {
-                                sendMessage("Exist username");
+//                                Map<String, String> map = new HashMap<>();
+//                                map.put("operation", "1oginResponse");
+//                                map.put("name", "Alice");
+//
+//                                JsonReader jsonReader = (JsonReader) Json.createReader(map);
+//                                JsonObject object1 = new JsonObject(map);
+//                                new Gson().toJson(mab);
+//                                sendMessage("Exist username");
                             }
-                        } else if (object.getString("status").equals("login")) {
+                        } else if (object.getString("operation").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
                             networkOperation.login(loginBean, ip);
-                        } else if (object.getString("status") == "requestPlaying") {
+                        }
+                        if (object.getString("operation").equals("requestPlaying")) {
+                            System.out.println(message);
                             networkOperation.requestPlay(message, ip);
                         }
 

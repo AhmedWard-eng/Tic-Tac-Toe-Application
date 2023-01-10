@@ -84,11 +84,11 @@ public class DataAccessLayer {
 
     public boolean checkIfUserExist(String userName) throws SQLException {
         String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
-        PreparedStatement pst = connection.prepareStatement(sql);
+        PreparedStatement pst = connection.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
         pst.setString(1, userName);
         ResultSet rs = pst.executeQuery();
         boolean found = false;
-        if (rs != null) {
+        if (rs.first()) {
             found = true;
         }
         return found;

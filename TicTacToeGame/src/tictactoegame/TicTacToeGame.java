@@ -21,9 +21,17 @@ import javafx.stage.Stage;
  */
 public class TicTacToeGame extends Application {
     
+    private static Stage guiStage;
+
+    public static Stage getStage() {
+        return guiStage;
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
 
+        guiStage = stage;
+        
         Parent root = new FXMLHomeBase(stage);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());

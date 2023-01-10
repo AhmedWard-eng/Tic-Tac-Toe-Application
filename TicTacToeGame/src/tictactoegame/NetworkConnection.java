@@ -6,6 +6,7 @@
 package tictactoegame;
 
 import com.sun.jndi.dns.DnsContextFactory;
+import game.Seed;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -16,7 +17,10 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
+import navigationLogic.Navigation;
 
 /**
  *
@@ -38,7 +42,7 @@ public class NetworkConnection {
 
     private NetworkConnection() {
         try {
-            socket = new Socket(InetAddress.getLocalHost(), 5005);
+            socket = new Socket("10.145.19.104", 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
             readMessage();
@@ -55,12 +59,29 @@ public class NetworkConnection {
                 try {
                     while (socket.isConnected()) {
                         String str = bufferedReader.readLine();
-                        System.out.println("client recived= " + str);
+                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + str);
                         if (str.equals("Exist username")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     r.ExistDialog();
+                                }
+                            });
+
+                        }else if (str.equals("invalid data! please try to login again..") || str.equals("this username is not reistered")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    r.loginUnsuccessDialog(str);
+                                }
+                            });
+
+                        }else if (str.equals("login successfully")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Stage stage = TicTacToeGame.getStage();
+                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage));
                                 }
                             });
 

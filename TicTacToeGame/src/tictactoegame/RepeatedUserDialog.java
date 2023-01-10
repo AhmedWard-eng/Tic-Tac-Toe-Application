@@ -7,6 +7,7 @@ package tictactoegame;
 
 import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -22,6 +23,10 @@ public class RepeatedUserDialog   {
     protected DialogPane dialogPaneName;
     protected GridPane gridPane;
     protected Label labelFirstPlayer;
+
+    
+    
+    
     
     public void ExistDialog() {
         dialogPaneName = new DialogPane();
@@ -42,6 +47,34 @@ public class RepeatedUserDialog   {
 
         dialogPaneName.getButtonTypes().addAll(OkButtonType);
 
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+    }
+    
+    public void loginUnsuccessDialog(String message) {
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label(message);
+        
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+        
+        dialogPaneName.setHeaderText(" ERROR ! ");
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+        
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        //dialog.setTitle(message);
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+        
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+        
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
     }

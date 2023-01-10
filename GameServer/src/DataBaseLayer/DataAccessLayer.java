@@ -34,9 +34,7 @@ public class DataAccessLayer {
         }
     }
 
-    public void login(LoginBean loginBean, String Ip) {
-        System.out.println("username bean = " + loginBean.getUsername());
-        System.out.println("password bean = " + loginBean.getPassword());
+    public String login(LoginBean loginBean, String Ip) {
         //put login logic
         try {
             PreparedStatement pst = connection.prepareStatement("Select root.\"game\".\"password\" FROM root.\"game\" where root.\"game\".\"username\" = ?");
@@ -50,20 +48,22 @@ public class DataAccessLayer {
                     pst = connection.prepareStatement("update root.\"game\" set root.\"game\".\"status\" = 'online' where root.\"game\".\"username\" = ?");
                     pst.setString(1, "hossam");
                     pst.executeUpdate();
-                    System.out.println("login successfully");
+                    connection.close();
+                    pst.close();
+                    return "login successfully";
                 } else {
-                    System.out.println("invalid data! please try to login again..");
+                    return "invalid data! please try to login again..";
                 }
             } else {
-                System.out.println("this username is not reistered");
+                return "this username is not reistered";
             }
-
-            pst.close();
-            connection.close();
+            
             //TODO handle no user found
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
+   
+        return null;
     }
 
     public void signUp(UserBean userBean) throws SQLException {

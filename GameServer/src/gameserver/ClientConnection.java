@@ -94,9 +94,10 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
-                            networkOperation.login(loginBean, ip);
-                        }
-                        if (object.getString("operation").equals("requestPlaying")) {
+                            String loginResponse = networkOperation.login(loginBean, ip);
+                            System.out.println(loginResponse);
+                            sendMessage(loginResponse);
+                        } else if (object.getString("operation").equals("requestPlaying")) {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);
                         }

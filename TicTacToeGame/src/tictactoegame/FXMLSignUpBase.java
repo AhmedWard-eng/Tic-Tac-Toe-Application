@@ -88,7 +88,7 @@ public class FXMLSignUpBase extends AnchorPane {
                     network.sendMessage(gson.toJson(person));
 
                     System.out.println("data is sent ");
-                    //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+                    navigationLogic.Navigation.navigate(stage, new FXMLAvailableUsersBase(stage));
 //                } 
 //            } else{
 //                  matchDialog(); 

@@ -1,5 +1,7 @@
 package tictactoegame;
 
+import beans.UserOnline;
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXListView;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -16,6 +18,7 @@ import tictactoegame.FXMLUserItemBase;
 
 public class FXMLAvailableUsersBase extends AnchorPane {
 
+    
     protected final JFXListView listViewAvailableUsers;
     protected final Rectangle rectangle;
     protected final Label label;
@@ -23,8 +26,11 @@ public class FXMLAvailableUsersBase extends AnchorPane {
     protected final Label label1;
     protected final Button buttonBackHome;
 
+NetworkConnection networkConnection;
+    
     public FXMLAvailableUsersBase(Stage stage) {
-
+        
+        
         listViewAvailableUsers = new JFXListView();
         rectangle = new Rectangle();
         label = new Label();
@@ -93,6 +99,14 @@ public class FXMLAvailableUsersBase extends AnchorPane {
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
+            
+         //   userOnline.getUserName();
+        networkConnection=new NetworkConnection();
+        NetworkConnection.listPlayer.toArray();
+        System.out.println("NetworkConnection.list.get(0).getUserName();.."+NetworkConnection.listPlayer.get(1).toString());
+         Gson g = new Gson();
+//        String str = NetworkConnection.listPlayer.get(0).toString();
+//        UserOnline p = g.fromJson(str, UserOnline.class);
 
         });
 

@@ -10,6 +10,7 @@ import beans.LoginBean;
 import beans.SignUpBean;
 import beans.UserBean;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.BufferedReader;
@@ -69,18 +70,39 @@ public class ClientConnection {
 
                     System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
                     try {
+                        
                         String message = bufferReader.readLine();
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
+
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
-                            sendMessage("Exist ");
+                            // sendMessage("Exist ");
+                            // System.out.println("exist???????"+exist);
+                            exist = false;
                             if (exist) {
-                                sendMessage("Exist username");
+                                //  sendMessage("Exist username");
+                            } else {
+                                //////*****/////****//--Online--//****//////****////****             
+                                System.out.println("Marinaaaaaaaaaaaa");
+                                try {
+                                    JsonArray jesonOnlineList = networkOperation.onlinePlayer();
+                                    for (int i = 0; i < jesonOnlineList.size(); i++) {
+                                        System.out.println("String jeson online: " + jesonOnlineList.get(i)+"Size = "+jesonOnlineList.size());
+                                        String jsonString = jesonOnlineList.get(i).toString();
+                                        sendMessage(jsonString);
+                                        System.out.println("send message" + jsonString);
+                                    }
+                                    System.out.println("online::==>" + networkOperation.onlinePlayer());
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                        } else if (object.getString("status").equals("login")) {
+                     ///////////*********//////////*************/////////////****//
+                     
+                        } else if (object.getString("operation").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
                             networkOperation.login(loginBean, ip);
@@ -97,7 +119,6 @@ public class ClientConnection {
             }
         }.start();
     }
-
     public void sendMessage(String message) {
         new Thread() {
             @Override

@@ -58,6 +58,12 @@ public class NetworkOperation {
             }
         }
     }
+    
+    public com.google.gson.JsonArray onlinePlayer() throws SQLException {
+        //  dataAccessLayer.getOnlinePlayers();
+        System.out.println("onlinePlayer::::");
+        return dataAccessLayer.getOnlinePlayers();
+    }
 
 
 }

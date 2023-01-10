@@ -44,8 +44,8 @@ public class NetworkOperation {
     }
 
 
-    public void login(LoginBean loginBean, String hostAddress) {
-        dataAccessLayer.login(loginBean, hostAddress);
+    public String login(LoginBean loginBean, String hostAddress) {
+        return dataAccessLayer.login(loginBean, hostAddress);
     }
 
     public void requestPlay(String s,String ip) {

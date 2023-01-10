@@ -80,10 +80,12 @@ public class ClientConnection {
                             if (exist) {
                                 sendMessage("Exist username");
                             }
-                        } else if (object.getString("status").equals("login")) {
+                        } else if (object.getString("operation").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
-                            networkOperation.login(loginBean, ip);
+                            String loginResponse = networkOperation.login(loginBean, ip);
+                            System.out.println(loginResponse);
+                            sendMessage(loginResponse);
                         } else if (object.getString("status") == "requestPlaying") {
                             networkOperation.requestPlay(message, ip);
                         }

@@ -41,7 +41,7 @@ public class FXMLLoginBase extends AnchorPane {
 //    PrintStream printStream;
 //    Socket mySocket;
     NetworkConnection networkConnection;
-
+//@FXML private AnchorPane ap;
     public FXMLLoginBase(Stage stage) {
 
         buttonBackHome = new Button();
@@ -177,7 +177,7 @@ public class FXMLLoginBase extends AnchorPane {
 //            printStream.println(h);
             networkConnection.sendMessage(h);
             System.out.println("data is sent ");
-            navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
         });
 
     }

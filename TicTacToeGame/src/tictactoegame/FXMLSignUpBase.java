@@ -78,6 +78,7 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
+
             if ((!TextFieldMail.getText().equals("")) && (!TextFieldpassword.getText().equals("")) && (!TextFieldConfirmPassword.getText().equals(""))) {
                 if ((TextFieldMail.getText().length() < 90) && (TextFieldpassword.getText().length() < 18) && (TextFieldConfirmPassword.getText().length() < 18)) {
                     check = checkPassword(TextFieldpassword.getText(),
@@ -104,6 +105,7 @@ public class FXMLSignUpBase extends AnchorPane {
                 System.out.println("enter all cells");
                 dialogEmptyCell();
             }
+
         });
 
         setMaxHeight(USE_PREF_SIZE);

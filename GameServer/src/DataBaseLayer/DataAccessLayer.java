@@ -7,6 +7,9 @@ package DataBaseLayer;
 
 import beans.LoginBean;
 import beans.UserBean;
+import beans.UserOnline;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -98,6 +101,37 @@ public class DataAccessLayer {
         }
         return found;
     }
+    public ArrayList<UserOnline> getOnlinePlayers() throws SQLException {
+
+        ArrayList<UserOnline> onlinePlayers = new ArrayList<>();
+
+        String sql = " SELECT * FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"='online' ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+
+        ResultSet resultSet = pst.executeQuery();
+        Gson gson = new GsonBuilder().create();
+        while (resultSet.next()) {
+            onlinePlayers.add(new UserOnline(
+                    resultSet.getString("ip"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    resultSet.getString("status"),
+                    resultSet.getInt("score") 
+                    ));
+
+//            System.out.println("in wile" + onlinePlayers.get(0) + "ResultStatment" + resultSet);
+//            username = resultSet.getString("username");
+//            status = resultSet.getString("status");
+        }
+//        com.google.gson.JsonArray array = gson.toJsonTree(onlinePlayers).getAsJsonArray();
+//        System.out.println("jeson online " + gson.toJsonTree(onlinePlayers).getAsJsonArray());
+//        System.out.println("****array jeson***" + array);
+//        System.out.println("online: ArrayList" + onlinePlayers.get(0) + "\n userName" + username + "\nstatus" + status);
+        // return onlinePlayers;
+        return onlinePlayers;
+
+    }
+
 
     public int getOnlineRate() throws SQLException {
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";

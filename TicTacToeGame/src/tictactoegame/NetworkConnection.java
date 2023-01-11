@@ -8,6 +8,11 @@ package tictactoegame;
 import beans.RequestGameBean;
 import com.google.gson.Gson;
 import game.Seed;
+import beans.UserOnline;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.sun.jndi.dns.DnsContextFactory;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -17,10 +22,14 @@ import java.io.PrintStream;
 import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import javafx.stage.Stage;
 import javax.json.Json;
@@ -42,6 +51,8 @@ public class NetworkConnection {
     RepeatedUserDialog r;
     String message;
 
+    public static ArrayList<UserOnline> list;
+
     public static NetworkConnection getInstance() {
         if (networkConnection == null) {
             networkConnection = new NetworkConnection();
@@ -51,10 +62,13 @@ public class NetworkConnection {
 
     private NetworkConnection() {
         try {
+
             socket = new Socket(InetAddress.getLocalHost(), 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
+
             r = new RepeatedUserDialog();
+
             readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -62,6 +76,7 @@ public class NetworkConnection {
     }
 
     public void readMessage() {
+
         new Thread() {
             @Override
             public void run() {
@@ -74,7 +89,15 @@ public class NetworkConnection {
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
-
+                        list = new ArrayList<>();
+                        JsonParser jsonParser = new JsonParser();
+//                        JsonArray jsonArray = (JsonArray) jsonParser.parse(message);
+//                        for (int i = 0; i < jsonArray.size(); i++) {
+//                            UserOnline p = new Gson().fromJson(jsonArray.get(i).toString(), UserOnline.class);
+//                            list.add(p);
+//                            System.out.println("done.." + p.getUserName());
+//                            System.out.println("CCCCCCCCLLIInt" + list.toString());
+//                        }
 //                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + message);
                         if (object.getString("operation").equals("signup")) {
                             String str = object.getString("message");
@@ -121,6 +144,7 @@ public class NetworkConnection {
                             });
 
                         }
+
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();

@@ -108,7 +108,7 @@ public class RepeatedUserDialog {
         Label labelFirstPlayer;
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
-        labelFirstPlayer = new Label(bean.userName + " want to play with you..");
+        labelFirstPlayer = new Label(bean.myUserName + " want to play with you..");
 
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
@@ -135,9 +135,8 @@ public class RepeatedUserDialog {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
-
-//            Navigation.navigate(stage, anchorPane);
-//            networkConnection.sendMessage(message);
+            RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.otherPlayerIp, bean.myUserName,bean.myIp);
+            networkConnection.sendMessage(new Gson().toJson(requestGameBean));
         } else if (clickedButton.get() == cancelButtonType) {
             //gridPane.getChildren().clear();
         }

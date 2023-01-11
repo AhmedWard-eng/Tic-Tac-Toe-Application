@@ -220,13 +220,6 @@ public class FXMLHomeBase extends AnchorPane {
         });
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-
-            networkConnection = NetworkConnection.getInstance();
-
-            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", "192.168.1.5", "192.168.1.5"));
-            networkConnection.sendMessage(s);
-
-            System.out.println(s);
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
 
         });

@@ -4,6 +4,7 @@ import beans.UserOnline;
 import com.google.gson.Gson;
 import beans.LoginBean;
 import beans.LogoutBean;
+import beans.RequestGameBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jfoenix.controls.JFXListView;
@@ -32,9 +33,8 @@ public class FXMLAvailableUsersBase extends AnchorPane {
     NetworkConnection networkConnection;
 
     //  Gson g = new Gson();
-    ArrayList<UserOnline> array;
-
-    public FXMLAvailableUsersBase(Stage stage) {
+//    ArrayList<UserOnline> users;
+    public FXMLAvailableUsersBase(Stage stage, ArrayList<UserOnline> users) {
 
         listViewAvailableUsers = new JFXListView();
         rectangle = new Rectangle();
@@ -56,18 +56,17 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         //listViewAvailableUsers.setOpaqueInsets(new Insets(0.0));
         listViewAvailableUsers.setPrefSize(585, 290);
 
-        array = NetworkConnection.list;
-        System.out.println("Size: "+array.size());
-        for (int i = 0; i < array.size(); i++) {
-            System.out.println("drcftgvh"+array.get(i).getUserName());
-            //UserOnline p = g.fromJson(NetworkConnection.listPlayer.get(i), UserOnline.class);
-            // System.out.println("OnlineBean...avaliable user.." + p.getUserName());
-            // listViewAvailableUsers.getItems().add(new FXMLUserItemBase(p.getUserName(), p.getStatus(), p.getScore()));
-            listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + array.get(i).getUserName(), array.get(i).getStatus(), array.get(i).getScore()));
-            
+        System.out.println("Size: " + users.size());
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println("drcftgvh" + users.get(i).getUserName());
+            listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+
         }
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
+            int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
 
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", networkConnection.getIp(), users.get(index).getIp()));
+            networkConnection.sendMessage(s);
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
         });
 
@@ -99,7 +98,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#fffafa"));
         label1.setFont(new Font("Arial Black", 20.0));
         buttonBackHome.setOnAction((ActionEvent event) -> {
-            
+
 //            Gson gson = new GsonBuilder().create();
 //            LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
 //            String h = gson.toJson(logoutBean);

@@ -185,7 +185,7 @@ public class FXMLHomeBase extends AnchorPane {
         buttonOnline.setPrefHeight(45.0);
         buttonOnline.setPrefWidth(147.0);
         buttonOnline.setStyle("-fx-background-color: #cc0000; -fx-background-radius: 10;");
-        buttonOnline.setText("Onlline ");
+        buttonOnline.setText("Online ");
         buttonOnline.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         buttonOnline.setTextFill(javafx.scene.paint.Color.valueOf("#fcf6f6"));
         buttonOnline.setFont(new Font("Arial Black", 18.0));
@@ -211,7 +211,7 @@ public class FXMLHomeBase extends AnchorPane {
         buttonRecord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Navigation.navigate(stage, new FXMLGameOnlineBase(stage));
+                Navigation.navigate(stage, new FXMLGameHistoryBase(stage));
             }
         });
 

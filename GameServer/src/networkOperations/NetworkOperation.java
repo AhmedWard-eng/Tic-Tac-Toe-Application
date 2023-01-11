@@ -6,11 +6,15 @@
 package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
+import beans.LoginBean;
 import beans.SignUpBean;
 import beans.UserBean;
 import com.google.gson.Gson;
 import gameserver.ClientConnection;
 import java.sql.SQLException;
+
+import gameserver.Server;
+
 
 /**
  *
@@ -22,18 +26,13 @@ public class NetworkOperation {
     ClientConnection clientconnection;
 
     public NetworkOperation() {
-
         dataAccessLayer = new DataAccessLayer();
     }
-
-//    public void signUp(UserBean user) throws SQLException {
-//        // UserBean userBean = new UserBean(hostAddress, signUpBean.getUsername(), signUpBean.getPassword(), "Online", 0);
-//        dataAccessLayer.signUp(user);
-//    }
 
     public boolean signUp(String message,String ip) throws SQLException {
         SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
         UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "online", 0);
+        System.out.println("user name before check data"+signuser.getUsername());
         boolean found=dataAccessLayer.checkIfUserExist(user.getUserName());
         System.out.println("found from Check="+found);
         if(found){
@@ -44,5 +43,22 @@ public class NetworkOperation {
             return false;
         }
     }
+
+
+    public void login(LoginBean loginBean, String hostAddress) {
+        dataAccessLayer.login(loginBean, hostAddress);
+    }
+
+    public void requestPlay(String s,String ip) {
+        //parse string 
+        //get ip of the second player
+        //send request to the second palyer
+        for(int i = 0;  i < Server.clientsVector.size(); i++ ){
+            if(Server.clientsVector.get(i).getIp() == ip){
+                Server.clientsVector.get(i).sendMessage("message");
+            }
+        }
+    }
+
 
 }

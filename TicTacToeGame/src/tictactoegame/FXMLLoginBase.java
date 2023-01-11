@@ -1,10 +1,27 @@
 package tictactoegame;
 
+import beans.LoginBean;
+import beans.SignUpBean;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -15,33 +32,43 @@ public class FXMLLoginBase extends AnchorPane {
     protected final Button buttonBackHome;
     protected final AnchorPane anchorPane;
     protected final Button ButtonLogin;
-    protected final TextField TextFieldMail;
-    protected final TextField TextFiellPassword;
+    protected final TextField TextFieldUserName;
+    protected final TextField TextFieldPassword;
     protected final Rectangle rectangle;
     protected final Text text;
     protected final Rectangle rectangle0;
     protected final Rectangle rectangle1;
+    PrintStream printStream;
+    Socket mySocket;
 
     public FXMLLoginBase(Stage stage) {
 
         buttonBackHome = new Button();
         anchorPane = new AnchorPane();
         ButtonLogin = new Button();
-        TextFieldMail = new TextField();
-        TextFiellPassword = new TextField();
+        TextFieldUserName = new TextField();
+        TextFieldPassword = new TextField();
         rectangle = new Rectangle();
         text = new Text();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
-        
+
+        try {
+            mySocket = new Socket(InetAddress.getLocalHost(), 5005);
+            printStream = new PrintStream(mySocket.getOutputStream());
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(FXMLLoginBase.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLLoginBase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             navigationLogic.Navigation.navigate(stage,new FXMLHomeBase(stage));
         });
-        
-        ButtonLogin.setOnAction((ActionEvent event) -> {
-            navigationLogic.Navigation.navigate(stage,new FXMLAvailableUsersBase(stage));
-        });
 
+//        ButtonLogin.setOnAction((ActionEvent event) -> {
+//            navigationLogic.Navigation.navigate(stage,new FXMLAvailableUsersBase(stage));
+//        });
         setId("AnchorPane");
         setPrefHeight(400.0);
         setPrefWidth(600.0);
@@ -73,21 +100,21 @@ public class FXMLLoginBase extends AnchorPane {
         ButtonLogin.setFont(new Font("Comic Sans MS", 18.0));
         ButtonLogin.setCursor(Cursor.CLOSED_HAND);
 
-        TextFieldMail.setLayoutX(51.0);
-        TextFieldMail.setLayoutY(159.0);
-        TextFieldMail.setPrefHeight(41.0);
-        TextFieldMail.setPrefWidth(237.0);
-        TextFieldMail.setPromptText("E-mail");
-        TextFieldMail.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
-        TextFieldMail.setFont(new Font(16.0));
+        TextFieldUserName.setLayoutX(51.0);
+        TextFieldUserName.setLayoutY(159.0);
+        TextFieldUserName.setPrefHeight(41.0);
+        TextFieldUserName.setPrefWidth(237.0);
+        TextFieldUserName.setPromptText("Username");
+        TextFieldUserName.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
+        TextFieldUserName.setFont(new Font(16.0));
 
-        TextFiellPassword.setLayoutX(51.0);
-        TextFiellPassword.setLayoutY(238.0);
-        TextFiellPassword.setPrefHeight(41.0);
-        TextFiellPassword.setPrefWidth(237.0);
-        TextFiellPassword.setPromptText("Password");
-        TextFiellPassword.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
-        TextFiellPassword.setFont(new Font(16.0));
+        TextFieldPassword.setLayoutX(51.0);
+        TextFieldPassword.setLayoutY(238.0);
+        TextFieldPassword.setPrefHeight(41.0);
+        TextFieldPassword.setPrefWidth(237.0);
+        TextFieldPassword.setPromptText("Password");
+        TextFieldPassword.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
+        TextFieldPassword.setFont(new Font(16.0));
 
         rectangle.setArcHeight(5.0);
         rectangle.setArcWidth(5.0);
@@ -131,13 +158,24 @@ public class FXMLLoginBase extends AnchorPane {
 
         getChildren().add(buttonBackHome);
         anchorPane.getChildren().add(ButtonLogin);
-        anchorPane.getChildren().add(TextFieldMail);
-        anchorPane.getChildren().add(TextFiellPassword);
+        anchorPane.getChildren().add(TextFieldUserName);
+        anchorPane.getChildren().add(TextFieldPassword);
         anchorPane.getChildren().add(rectangle);
         anchorPane.getChildren().add(text);
         getChildren().add(anchorPane);
         getChildren().add(rectangle0);
         getChildren().add(rectangle1);
+
+        ButtonLogin.setOnAction((ActionEvent event) -> {
+            Gson gson = new GsonBuilder().create();
+
+            LoginBean loginBean = new LoginBean("login", TextFieldUserName.getText(), TextFieldPassword.getText());
+            String h = gson.toJson(loginBean);
+            System.out.println(h);
+            printStream.println(h);
+            System.out.println("data is sent ");
+            navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+        });
 
     }
 }

@@ -121,7 +121,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </Button>
-            <Button fx:id="buttonRestartRecord" layoutX="132.0" layoutY="321.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="83.0" style="-fx-background-radius: 50; -fx-background-color: #ff9900; -fx-border-radius: 50;" text="Restart">
+            <Button fx:id="buttonRestartRecord" layoutX="132.0" layoutY="321.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="83.0" style="-fx-background-radius: 50; -fx-background-color: #ff9900; -fx-border-radius: 50;" text="Replay">
                <font>
                   <Font name="Arial Bold" size="15.0" />
                </font>

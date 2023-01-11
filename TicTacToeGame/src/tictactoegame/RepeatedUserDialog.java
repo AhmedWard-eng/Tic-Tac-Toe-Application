@@ -7,12 +7,14 @@ package tictactoegame;
 
 import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -23,27 +25,33 @@ public class RepeatedUserDialog   {
     protected GridPane gridPane;
     protected Label labelFirstPlayer;
     
-    public void ExistDialog() {
-        dialogPaneName = new DialogPane();
-        gridPane = new GridPane();
-        labelFirstPlayer = new Label("Repeated UserName try another one !");
-        
-        dialogPaneName.setHeaderText(" ERROR ! ");
-        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-
-        gridPane.add(labelFirstPlayer, 0, 0);
-        dialogPaneName.setContent(gridPane);
-        
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setDialogPane(dialogPaneName);
-        dialog.setTitle("Existed UserName");
-
-        ButtonType OkButtonType = new ButtonType("Ok");
-
-        dialogPaneName.getButtonTypes().addAll(OkButtonType);
-
-        Optional<ButtonType> clickedButton = dialog.showAndWait();
-
+   
+    public void dialogRepeated() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("Sorry repeated username");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+            }
+        });
     }
     
+    public void dialogSignUp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("OK, an Information Dialog");
+        alert.setContentText("SignUp Succeded");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+                Stage stage=TicTacToeGame.getStage();
+                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            }
+        });
+    }
+
 }
+    
+

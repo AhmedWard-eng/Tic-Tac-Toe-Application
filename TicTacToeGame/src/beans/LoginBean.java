@@ -7,7 +7,7 @@ package beans;
 
 /**
  *
- * @author AhmedWard
+ * @author user
  */
 public class LoginBean {
     private String status;

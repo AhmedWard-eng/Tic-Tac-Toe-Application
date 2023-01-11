@@ -1,5 +1,6 @@
 package tictactoegame;
 
+import game.GameInfo;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,7 +14,7 @@ public class FXMLGameHistoryItemBase extends AnchorPane {
     protected final Label playerNameLabel,playerTwoNameLabel;
     
 
-    public FXMLGameHistoryItemBase() {
+    public FXMLGameHistoryItemBase(GameInfo gameInfo) {
 
         gameNameLabel = new Label();
         playerNameLabel = new Label();
@@ -26,9 +27,9 @@ public class FXMLGameHistoryItemBase extends AnchorPane {
         setStyle("-fx-background-color: #12947F;");
 
         gameNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
-        gameNameLabel.setLayoutX(150.0);
+        gameNameLabel.setLayoutX(130.0);
         gameNameLabel.setLayoutY(29.0);
-        gameNameLabel.setText("Sat Jan 07 13:18:57 EET 2023");
+        gameNameLabel.setText(gameInfo.date);
         gameNameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         gameNameLabel.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         gameNameLabel.setWrapText(true);
@@ -38,7 +39,7 @@ public class FXMLGameHistoryItemBase extends AnchorPane {
         playerNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         playerNameLabel.setLayoutX(14.0);
         playerNameLabel.setLayoutY(30.0);
-        playerNameLabel.setText("Marina");
+        playerNameLabel.setText(gameInfo.playerOne);
         playerNameLabel.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         playerNameLabel.setWrapText(true);
         playerNameLabel.setFont(new Font("Arial Black", 18.0));
@@ -46,7 +47,7 @@ public class FXMLGameHistoryItemBase extends AnchorPane {
         playerTwoNameLabel.setAlignment(javafx.geometry.Pos.CENTER);
         playerTwoNameLabel.setLayoutX(480.0);
         playerTwoNameLabel.setLayoutY(30.0);
-        playerTwoNameLabel.setText("Wardward");
+        playerTwoNameLabel.setText(gameInfo.playetTwo);
         playerTwoNameLabel.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         playerTwoNameLabel.setWrapText(true);
         playerTwoNameLabel.setFont(new Font("Arial Black", 18.0));

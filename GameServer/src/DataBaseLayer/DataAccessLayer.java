@@ -6,6 +6,7 @@
 package DataBaseLayer;
 
 import beans.LoginBean;
+import beans.LogoutBean;
 import beans.UserBean;
 import beans.UserOnline;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import org.apache.derby.jdbc.ClientDriver;
 public class DataAccessLayer {
 
     private Connection connection;
+    PreparedStatement pst;
 
     public DataAccessLayer() {
         try {
@@ -49,16 +51,15 @@ public class DataAccessLayer {
 
                 if (rs.getString(1).equals(loginBean.getPassword())) {
                     pst = connection.prepareStatement("update root.\"game\" set root.\"game\".\"status\" = 'online' where root.\"game\".\"username\" = ?");
-                    pst.setString(1, "hossam");
+                    pst.setString(1, loginBean.getUsername());
                     pst.executeUpdate();
-                    connection.close();
-                    pst.close();
+
                     return "login successfully";
                 } else {
-                    return "invalid data! please try to login again..";
+                    return "Invalid data! please try to login again..";
                 }
             } else {
-                return "this username is not reistered";
+                return "This username is not reistered";
             }
 
             //TODO handle no user found
@@ -87,7 +88,8 @@ public class DataAccessLayer {
 
     public boolean checkIfUserExist(String userName) throws SQLException {
         String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
-        PreparedStatement pst = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+        PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, userName);
         ResultSet rs = pst.executeQuery();
         boolean found = false;
@@ -155,6 +157,28 @@ public class DataAccessLayer {
             count = rs.getInt("total");
         }
         return count;
+    }
+
+        public void logout(LogoutBean logoutBean, String Ip) {
+        try {
+
+            System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getOperation());
+            System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getUsername());
+            
+            
+            pst = connection.prepareStatement("update root.\"game\" set root.\"game\".\"status\" = 'offline' where root.\"game\".\"username\" = ?");
+            pst.setString(1, logoutBean.getUsername());
+            
+            System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getOperation());
+            System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getUsername());
+            pst.executeUpdate();
+            connection.close();
+            pst.close();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
 }

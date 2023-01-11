@@ -7,6 +7,7 @@ package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
+import beans.LogoutBean;
 import beans.RequestGameBean;
 import beans.SignUpBean;
 import beans.UserBean;
@@ -49,6 +50,11 @@ public class NetworkOperation {
         return dataAccessLayer.login(loginBean, hostAddress);
 
     }
+    
+    public void logout(LogoutBean logoutBean, String hostAddress) {
+        dataAccessLayer.logout(logoutBean, hostAddress);
+
+    }
 
     public void requestPlay(String s, String ip) {
 
@@ -61,6 +67,7 @@ public class NetworkOperation {
         }
     }
     
+
     public String onlinePlayer() throws SQLException {
         //  dataAccessLayer.getOnlinePlayers();
         System.out.println("onlinePlayer::::");
@@ -68,5 +75,6 @@ public class NetworkOperation {
         String message = new Gson().toJson(dataAccessLayer.getOnlinePlayers());
         return message;
     }
+
 
 }

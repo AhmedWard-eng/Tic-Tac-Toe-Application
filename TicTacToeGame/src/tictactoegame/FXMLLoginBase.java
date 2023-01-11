@@ -41,6 +41,7 @@ public class FXMLLoginBase extends AnchorPane {
 //    PrintStream printStream;
 //    Socket mySocket;
     NetworkConnection networkConnection;
+    public static String playerOneName;
 //@FXML private AnchorPane ap;
     public FXMLLoginBase(Stage stage) {
 
@@ -54,6 +55,8 @@ public class FXMLLoginBase extends AnchorPane {
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
         networkConnection = NetworkConnection.getInstance();
+        
+        
 
 //        try {
 //            mySocket = new Socket(InetAddress.getLocalHost(), 5005);
@@ -172,9 +175,9 @@ public class FXMLLoginBase extends AnchorPane {
             Gson gson = new GsonBuilder().create();
 
             LoginBean loginBean = new LoginBean("login", TextFieldUserName.getText(), TextFieldPassword.getText());
+            playerOneName = TextFieldUserName.getText();
             String h = gson.toJson(loginBean);
             System.out.println(h);
-//            printStream.println(h);
             networkConnection.sendMessage(h);
             System.out.println("data is sent ");
             //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));

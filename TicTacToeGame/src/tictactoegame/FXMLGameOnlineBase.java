@@ -35,13 +35,9 @@ public class FXMLGameOnlineBase extends AnchorPane {
     Socket socket;
     DataInputStream dis;
     public PrintStream ps;
-
     String msg;
     Thread thread;
-    //decleration array list to cary label
-    ArrayList<Label> borderLabel;
-    private GameManager gameManager;
-    private Seed seed;
+    private GameManager gameManager
 
     int playerTurn = 0;
 
@@ -110,6 +106,7 @@ public class FXMLGameOnlineBase extends AnchorPane {
         labelPlayer2Score = new Label();
 
         this.getStyleClass().add("Pane");
+        gameManager = new GameManager();
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);

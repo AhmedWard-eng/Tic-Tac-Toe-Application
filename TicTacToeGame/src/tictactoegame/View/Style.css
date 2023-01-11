@@ -1,0 +1,48 @@
+.AnchorPane{
+    
+    -fx-background-color: #22726e;
+}
+.list-cell {
+    -fx-padding: 0.2em 0.4em 0.2em 0.4em;
+    -fx-background-color:  #22726e;
+}
+
+#labelCharO{
+  
+    -fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);
+}
+#labelCharX{
+
+   -fx-text-fill: linear-gradient(to top,ff9900,#ff9900);
+     
+}
+
+#labelPlayer{
+     -fx-text-fill:#f0f0f0 ;
+}
+#labelPlayer2{
+    
+     -fx-text-fill:#f0f0f0 ;
+}
+/*
+#labelCumputer{
+    -fx-text-fill: linear-gradient(to bottom, #a17d7d, #ffffff);
+}
+#labelVS{
+    -fx-text-fill: linear-gradient(to bottom, #5d6f0c, #e4e8c3);
+}*/
+
+#Record{
+    -fx-text-fill: linear-gradient(to bottom, #ffa620,#ffa620);
+}
+#Record:selected {
+    -fx-text-fill: linear-gradient(to bottom, #ffa620,#ffa620);
+}
+
+#okButton {
+  -fx-background-color: #ff9900;
+  -fx-border-radius: 15;
+  -fx-background-radius: 15;
+  -fx-fontfamily: 'Comic Sans MS';
+  
+}

@@ -5,6 +5,8 @@
  */
 package tictactoegame;
 
+import game.Cell;
+
 /**
  *
  * @author AhmedWard

@@ -23,7 +23,7 @@ import org.apache.derby.jdbc.ClientDriver;
 
 /**
  *
- * @author AhmedWard
+ * @author Ward Fadaly Marina Nada
  */
 public class DataAccessLayer {
 
@@ -172,8 +172,8 @@ public class DataAccessLayer {
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getOperation());
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getUsername());
             pst.executeUpdate();
-            connection.close();
-            pst.close();
+//            connection.close();
+//            pst.close();
             
         } catch (SQLException ex) {
             ex.printStackTrace();

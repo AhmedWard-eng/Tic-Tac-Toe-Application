@@ -100,17 +100,18 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label1.setFont(new Font("Arial Black", 20.0));
         buttonBackHome.setOnAction((ActionEvent event) -> {
             
-            Gson gson = new GsonBuilder().create();
-
-            LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
-            String h = gson.toJson(logoutBean);
-            System.out.println(h);
-            networkConnection.sendMessage(h);
-            System.out.println("data is sent ");
-            //dialog
-            Scene scene = new Scene(new FXMLHomeBase(stage));
-            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            stage.setScene(scene);
+//            Gson gson = new GsonBuilder().create();
+//            LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
+//            String h = gson.toJson(logoutBean);
+//            System.out.println(h);
+//            networkConnection.sendMessage(h);
+//            System.out.println("data is sent ");
+//            //dialog
+//            Scene scene = new Scene(new FXMLHomeBase(stage));
+//            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+//            stage.setScene(scene);
+            RepeatedUserDialog r = new RepeatedUserDialog();
+            r.logoutDialog("Do you want to logout?");
 
             //   userOnline.getUserName();
             //  networkConnection=new NetworkConnection();

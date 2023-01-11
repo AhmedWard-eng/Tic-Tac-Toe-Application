@@ -67,7 +67,7 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
 
-            socket = new Socket("192.168.1.8", 5005);
+            socket = new Socket("192.168.1.9", 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
             ip = socket.getInetAddress().getHostAddress();
@@ -158,8 +158,9 @@ public class NetworkConnection {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Stage stage = TicTacToeGame.getStage();
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
-                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean);
+                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean, stage);
                                 }
                             });
                         } else if (object.getString("operation").equals("accept")) {
@@ -176,11 +177,10 @@ public class NetworkConnection {
                                 @Override
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
-                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean);
+                                    RepeatedUserDialog.dialogRefuse(requestGameBean);
                                 }
                             });
                         }
-         
 
 //////
                     }

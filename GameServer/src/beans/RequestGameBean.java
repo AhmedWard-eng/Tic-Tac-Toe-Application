@@ -12,15 +12,21 @@ package beans;
 public class RequestGameBean {
 
     public String operation;
-    public String userName;
+    public String myUserName;
+    public String otherPlayerUN;
     public String myIp;
     public String otherPlayerIp;
 
-    public RequestGameBean(String operation, String userName, String myIp, String otherPlayerIp) {
+    public RequestGameBean(String operation, String myUserName, String otherPlayerUN, String myIp, String otherPlayerIp) {
         this.otherPlayerIp = otherPlayerIp;
         this.myIp = myIp;
         this.operation = operation;
-        this.userName = userName;
+        this.myUserName = myUserName;
+        this.otherPlayerUN = otherPlayerUN;
     }
+
+    public RequestGameBean() {
+    }
+    
 
 }

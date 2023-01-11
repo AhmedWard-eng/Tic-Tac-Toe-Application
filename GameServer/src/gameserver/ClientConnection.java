@@ -134,7 +134,14 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("requestPlaying")) {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);
+                        } else if (object.getString("operation").equals("accept")) {
+                            System.out.println(message);
+                            networkOperation.requestPlay(message, ip);
+                        }else if (object.getString("operation").equals("refuse")) {
+                            System.out.println(message);
+                            networkOperation.requestPlay(message, ip);
                         }
+                        
 
                     } catch (IOException ex) {
                         ex.printStackTrace();

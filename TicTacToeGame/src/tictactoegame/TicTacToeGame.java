@@ -5,6 +5,7 @@
  */
 package tictactoegame;
 
+import beans.RequestGameBean;
 import game.Seed;
 import java.io.File;
 import javafx.application.Application;
@@ -32,7 +33,7 @@ public class TicTacToeGame extends Application {
 
         guiStage = stage;
 
-        Parent root = new FXMLGameOnlineBase(stage);
+        Parent root = new FXMLGameOnlineBase(stage,new RequestGameBean());
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         File file = new File(getClass().getResource("").toExternalForm());

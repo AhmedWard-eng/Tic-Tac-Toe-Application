@@ -1,5 +1,6 @@
 package tictactoegame;
 
+import beans.RequestGameBean;
 import com.jfoenix.controls.JFXToggleButton;
 import game.Cell;
 import game.ComputerPlayer;
@@ -79,7 +80,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     protected final Label labelPlayer2Score;
     private ArrayList<Label> labelsBoard;
 
-    public FXMLGameOnlineBase(Stage stage) {
+    public FXMLGameOnlineBase(Stage stage,RequestGameBean requestGameBean) {
 
         this.stage = stage;
 

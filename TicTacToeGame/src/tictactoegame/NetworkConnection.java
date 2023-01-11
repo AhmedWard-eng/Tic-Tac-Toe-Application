@@ -67,7 +67,7 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
 
-            socket = new Socket(InetAddress.getLocalHost(), 5005);
+            socket = new Socket("192.168.1.8", 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
             ip = socket.getInetAddress().getHostAddress();
@@ -156,7 +156,24 @@ public class NetworkConnection {
                                     Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers() ));
                                 }
                             });
-                        }else if(object.getString("operation").equals("requestPlaying")){
+                        } else if (object.getString("operation").equals("requestPlaying")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
+                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean);
+                                }
+                            });
+                        } else if (object.getString("operation").equals("accept")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
+                                    Stage stage = TicTacToeGame.getStage();
+                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean));
+                                }
+                            });
+                        } else if (object.getString("operation").equals("refuse")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -165,6 +182,7 @@ public class NetworkConnection {
                                 }
                             });
                         }
+         
 
 //////
                     }

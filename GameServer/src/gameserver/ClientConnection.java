@@ -7,9 +7,11 @@ package gameserver;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
+import beans.LogoutBean;
 import beans.SignUpBean;
 import beans.UserBean;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.BufferedReader;
@@ -76,7 +78,7 @@ public class ClientConnection {
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
 
-                        System.out.println(object.getString("operation"));
+                        System.out.println("operationnnnnnnn"+object.getString("operation"));
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
@@ -92,11 +94,23 @@ public class ClientConnection {
 //                                sendMessage("Exist username");
                             }
                         } else if (object.getString("operation").equals("login")) {
-                            //TODO update ip + status in the database
+                            //TODO update ip in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
                             String loginResponse = networkOperation.login(loginBean, ip);
                             System.out.println(loginResponse);
-                            sendMessage(loginResponse);
+
+                            Map<String, String> map = new HashMap<>();
+                            map.put("operation", "loginResponse");
+                            map.put("msg", loginResponse);
+                            message = new GsonBuilder().create().toJson(map);
+
+                            sendMessage(message);
+                            
+                        } else if (object.getString("operation").equals("logout")) {
+                            //TODO update ip in the database
+                            LogoutBean logoutBean = new LogoutBean("logout", object.getString("username"));
+                            networkOperation.logout(logoutBean, ip);
+                            
                         } else if (object.getString("operation").equals("requestPlaying")) {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);

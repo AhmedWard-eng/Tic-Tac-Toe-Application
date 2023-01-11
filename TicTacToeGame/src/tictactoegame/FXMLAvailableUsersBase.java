@@ -1,5 +1,9 @@
 package tictactoegame;
 
+import beans.LoginBean;
+import beans.LogoutBean;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jfoenix.controls.JFXListView;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -22,6 +26,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
     protected final Label label0;
     protected final Label label1;
     protected final Button buttonBackHome;
+    NetworkConnection networkConnection;
 
     public FXMLAvailableUsersBase(Stage stage) {
 
@@ -31,6 +36,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label0 = new Label();
         label1 = new Label();
         buttonBackHome = new Button();
+        networkConnection = NetworkConnection.getInstance();
 
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -90,6 +96,15 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#fffafa"));
         label1.setFont(new Font("Arial Black", 20.0));
         buttonBackHome.setOnAction((ActionEvent event) -> {
+            
+            Gson gson = new GsonBuilder().create();
+
+            LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
+            String h = gson.toJson(logoutBean);
+            System.out.println(h);
+            networkConnection.sendMessage(h);
+            System.out.println("data is sent ");
+            //dialog
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);

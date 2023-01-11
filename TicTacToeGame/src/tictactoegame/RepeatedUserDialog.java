@@ -14,6 +14,8 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -56,17 +58,22 @@ public class RepeatedUserDialog   {
         gridPane = new GridPane();
         labelFirstPlayer = new Label(message);
         
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+        
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
         
-        dialogPaneName.setHeaderText(" ERROR ! ");
+        //dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+        
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
 
         gridPane.add(labelFirstPlayer, 0, 0);
         dialogPaneName.setContent(gridPane);
         
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
-        //dialog.setTitle(message);
+        dialog.setTitle("Error!");
 
         ButtonType OkButtonType = new ButtonType("Ok");
         

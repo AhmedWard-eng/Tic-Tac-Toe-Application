@@ -98,7 +98,7 @@ public class DataAccessLayer {
        return found; 
     }
     
-    public int getOnlineRate() throws SQLException {
+    public double getOnlineRate() throws SQLException {
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1,"online");
@@ -110,7 +110,7 @@ public class DataAccessLayer {
       return count;
     }
     
-    public int getOfflineRate() throws SQLException {
+    public double getOfflineRate() throws SQLException {
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1,"offline");

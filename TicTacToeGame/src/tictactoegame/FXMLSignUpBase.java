@@ -184,7 +184,7 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldMail.setLayoutY(134.0);
         TextFieldMail.setPrefHeight(41.0);
         TextFieldMail.setPrefWidth(237.0);
-        TextFieldMail.setPromptText("E-mail");
+        TextFieldMail.setPromptText("UserName");
         TextFieldMail.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
         TextFieldMail.setFont(new Font(16.0));
 

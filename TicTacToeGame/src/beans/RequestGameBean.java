@@ -17,11 +17,12 @@ public class RequestGameBean {
     public String myIp;
     public String otherPlayerIp;
 
-    public RequestGameBean(String operation, String userName, ,String myIp, String otherPlayerIp) {
+    public RequestGameBean(String operation, String myUserName, String otherPlayerUN, String myIp, String otherPlayerIp) {
         this.otherPlayerIp = otherPlayerIp;
         this.myIp = myIp;
         this.operation = operation;
-        this.myUserName = userName;
+        this.myUserName = myUserName;
+        this.otherPlayerUN = otherPlayerUN;
     }
 
 }

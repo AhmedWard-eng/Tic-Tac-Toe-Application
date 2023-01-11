@@ -31,7 +31,7 @@ public class NetworkOperation {
 
     public boolean signUp(String message,String ip) throws SQLException {
         SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
-        UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "online", 0);
+        UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "offline", 0);
         System.out.println("user name before check data"+signuser.getUsername());
         boolean found=dataAccessLayer.checkIfUserExist(user.getUserName());
         System.out.println("found from Check="+found);

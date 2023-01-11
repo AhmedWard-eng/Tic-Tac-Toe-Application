@@ -7,6 +7,7 @@ package gameserver;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
+import beans.LoginResponseBean;
 import beans.LogoutBean;
 import beans.SignUpBean;
 import beans.UserBean;
@@ -117,9 +118,11 @@ public class ClientConnection {
                             map.put("msg", loginResponse);
                             message = new GsonBuilder().create().toJson(map);
                             if (loginResponse.equals("login successfully")) {
+                                //TODO
+                                //LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", "ward", "55",);
                                 sendMessage(networkOperation.onlinePlayer());
                             }
-                            sendMessage(message);
+//                            sendMessage(message);
                           
                             System.out.println("ipppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"+ip);
 

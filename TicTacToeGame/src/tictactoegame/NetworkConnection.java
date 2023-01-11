@@ -147,11 +147,13 @@ public class NetworkConnection {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    System.out.println(message);
+//                                    System.out.println("mmmmmmmmmmmmmesssssaggggeeee"+message);
                                     UsersResponseBean usersResponseBean = new Gson().fromJson(message, UsersResponseBean.class);
-                                    System.out.println("users" + usersResponseBean.getUsers().size());
+                                    
+//                                    System.out.println("users" + usersResponseBean.getUsers().size());
                                     Stage stage = TicTacToeGame.getStage();
-                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers()));
+                                    //TODO
+                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers() ));
                                 }
                             });
                         }else if(object.getString("operation").equals("requestPlaying")){

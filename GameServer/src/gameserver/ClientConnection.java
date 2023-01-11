@@ -23,6 +23,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -70,7 +72,7 @@ public class ClientConnection {
 
                     System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
                     try {
-                        
+
                         String message = bufferReader.readLine();
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
@@ -90,18 +92,17 @@ public class ClientConnection {
                                 try {
                                     JsonArray jesonOnlineList = networkOperation.onlinePlayer();
                                     for (int i = 0; i < jesonOnlineList.size(); i++) {
-                                        System.out.println("String jeson online: " + jesonOnlineList.get(i)+"Size = "+jesonOnlineList.size());
+                                        System.out.println("SERVER::=>String jeson online: " + jesonOnlineList.get(i) + "Size = " + jesonOnlineList.size());
                                         String jsonString = jesonOnlineList.get(i).toString();
                                         sendMessage(jsonString);
                                         System.out.println("send message" + jsonString);
                                     }
-                                    System.out.println("online::==>" + networkOperation.onlinePlayer());
                                 } catch (SQLException ex) {
                                     Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
-                     ///////////*********//////////*************/////////////****//
-                     
+                            ///////////*********//////////*************/////////////****//
+
                         } else if (object.getString("operation").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
@@ -119,6 +120,7 @@ public class ClientConnection {
             }
         }.start();
     }
+
     public void sendMessage(String message) {
         new Thread() {
             @Override

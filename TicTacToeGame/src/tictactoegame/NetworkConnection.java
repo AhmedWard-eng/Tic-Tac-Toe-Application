@@ -40,8 +40,7 @@ public class NetworkConnection {
             socket = new Socket(InetAddress.getLocalHost(), 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
-            list=new ArrayList<>();
-            listPlayer=new ArrayList<>();
+           
             readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -59,29 +58,26 @@ public class NetworkConnection {
                         String str = bufferedReader.readLine();
                      //   String json_string = str.replaceAll("\r?\n", "");
                      //   System.out.println("AttaySjson_stringteeeeeeeeeeeeeeesssst" + json_string);
-                        listPlayer.add(str);
-                         System.out.println("ListPlayerrrrrrr:::::ioj"+listPlayer.get(0).toString());
-                            System.out.println("AttayString..." + listPlayer.get(0));
+                         
+           // listPlayer=new ArrayList<>();
+              //       listPlayer.add(str);
+               //          System.out.println("ListPlayerrrrrrr:::::ioj"+listPlayer.get(0).toString());
+               //             System.out.println("AttayString..." + listPlayer.get(0));
                      Gson g = new Gson();
                         UserOnline p = g.fromJson(str, UserOnline.class);
+                      //  while(p.getStatus().equals("online")){
                         if (p.getStatus().equals("online")) {
- 
-                            
-                            /////////////////////   
+                            list=new ArrayList<>();
                             list.add(p);
-                            for(int i=0;i<list.size();i++)
-System.out.println("toString array list : "+list.get(0));
-                            /////////////////////
-                            System.out.println("jjjjeeeeeesssssson: " + p.getStatus() );
-//
-//                            for (int i = 0; i < list.size(); i++) {
-//                                System.out.println(list.size() + "SIZE");
-//                            }
-                        } else {
-                            System.out.println("string without jesson....!!!");
-                        }
-
-                        System.out.println("client recived...= " + str);
+                            System.out.println("done.."+p.getUserName());
+                            System.out.println("CCCCCCCCLLIInt"+list.toString());
+                        
+                         }   
+//                        } else {
+//                            System.out.println("string without jesson....!!!");
+//                        }
+                        
+                       // System.out.println("client recived...= " + str);
                         if (str.equals("Exist username")) {
                             Platform.runLater(new Runnable() {
                                 @Override

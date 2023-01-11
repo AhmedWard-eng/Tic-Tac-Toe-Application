@@ -56,7 +56,7 @@ public class NetworkOperation {
 
     }
 
-    public void requestPlay(String s, String ip,ClientConnection cc) {
+    public void requestPlay(String s, String ip) {
 
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
         for (int i = 0; i < Server.clientsVector.size(); i++) {

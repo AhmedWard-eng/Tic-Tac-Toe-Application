@@ -65,7 +65,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
 
-            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", users.get(index).getIp(), networkConnection.getIp(), users.get(index).getIp()));
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", users.get(index).getUserName(), "192.168.1.8", users.get(index).getIp()));
             networkConnection.sendMessage(s);
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
         });

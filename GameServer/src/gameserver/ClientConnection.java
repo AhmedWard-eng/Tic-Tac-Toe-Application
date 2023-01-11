@@ -122,7 +122,8 @@ public class ClientConnection {
                             message = new GsonBuilder().create().toJson(map);
 
                             sendMessage(message);
-                            
+                          
+                            System.out.println("ipppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp"+ip);
                         } else if (object.getString("operation").equals("logout")) {
                             //TODO update ip in the database
                             LogoutBean logoutBean = new LogoutBean("logout", object.getString("username"));

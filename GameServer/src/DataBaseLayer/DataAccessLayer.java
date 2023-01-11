@@ -54,6 +54,13 @@ public class DataAccessLayer {
                     pst.setString(1, loginBean.getUsername());
                     pst.executeUpdate();
 
+                    System.out.println("login bean"+loginBean);
+                    
+                    pst = connection.prepareStatement("update root.\"game\" set root.\"game\".\"ip\" = ? where root.\"game\".\"username\" = ?");
+                    pst.setString(1, Ip);
+                    pst.setString(2, loginBean.getUsername());
+                    pst.executeUpdate();
+                    
                     return "login successfully";
                 } else {
                     return "Invalid data! please try to login again..";

@@ -50,7 +50,7 @@ public class NetworkOperation {
         return dataAccessLayer.login(loginBean, hostAddress);
 
     }
-    
+
     public void logout(LogoutBean logoutBean, String hostAddress) {
         dataAccessLayer.logout(logoutBean, hostAddress);
 
@@ -66,15 +66,12 @@ public class NetworkOperation {
 
         }
     }
-    
 
     public String onlinePlayer() throws SQLException {
-        //  dataAccessLayer.getOnlinePlayers();
         System.out.println("onlinePlayer::::");
-        UsersResponseBean userArray=new UsersResponseBean("onlinList",dataAccessLayer.getOnlinePlayers());
-        String message = new Gson().toJson(dataAccessLayer.getOnlinePlayers());
+        UsersResponseBean userArray = new UsersResponseBean("onlineList", dataAccessLayer.getOnlinePlayers());
+        String message = new Gson().toJson(userArray);
         return message;
     }
-
 
 }

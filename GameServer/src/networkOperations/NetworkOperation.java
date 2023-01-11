@@ -9,6 +9,7 @@ import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
 import beans.SignUpBean;
 import beans.UserBean;
+import beans.UsersResponseBean;
 import com.google.gson.Gson;
 import gameserver.ClientConnection;
 import java.sql.SQLException;
@@ -59,10 +60,12 @@ public class NetworkOperation {
         }
     }
     
-    public com.google.gson.JsonArray onlinePlayer() throws SQLException {
+    public String onlinePlayer() throws SQLException {
         //  dataAccessLayer.getOnlinePlayers();
         System.out.println("onlinePlayer::::");
-        return dataAccessLayer.getOnlinePlayers();
+        UsersResponseBean userArray=new UsersResponseBean("onlinList",dataAccessLayer.getOnlinePlayers());
+        String message = new Gson().toJson(dataAccessLayer.getOnlinePlayers());
+        return message;
     }
 
 

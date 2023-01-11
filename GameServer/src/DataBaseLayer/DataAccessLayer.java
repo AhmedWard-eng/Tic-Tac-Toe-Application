@@ -96,7 +96,7 @@ public class DataAccessLayer {
         }
         return found;
     }
-    public com.google.gson.JsonArray getOnlinePlayers() throws SQLException {
+    public ArrayList<UserOnline> getOnlinePlayers() throws SQLException {
 
         ArrayList<UserOnline> onlinePlayers = new ArrayList<>();
 
@@ -104,8 +104,6 @@ public class DataAccessLayer {
         PreparedStatement pst = connection.prepareStatement(sql);
 
         ResultSet resultSet = pst.executeQuery();
-//        String username = "";
-//        String status = "";
         Gson gson = new GsonBuilder().create();
         while (resultSet.next()) {
             onlinePlayers.add(new UserOnline(
@@ -120,12 +118,12 @@ public class DataAccessLayer {
 //            username = resultSet.getString("username");
 //            status = resultSet.getString("status");
         }
-        com.google.gson.JsonArray array = gson.toJsonTree(onlinePlayers).getAsJsonArray();
-        System.out.println("jeson online " + gson.toJsonTree(onlinePlayers).getAsJsonArray());
-        System.out.println("****array jeson***" + array);
+//        com.google.gson.JsonArray array = gson.toJsonTree(onlinePlayers).getAsJsonArray();
+//        System.out.println("jeson online " + gson.toJsonTree(onlinePlayers).getAsJsonArray());
+//        System.out.println("****array jeson***" + array);
 //        System.out.println("online: ArrayList" + onlinePlayers.get(0) + "\n userName" + username + "\nstatus" + status);
         // return onlinePlayers;
-        return array;
+        return onlinePlayers;
 
     }
 

@@ -51,13 +51,14 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         listViewAvailableUsers.setPrefSize(585, 290);
 
         array = NetworkConnection.list;
+        System.out.println("Size: "+array.size());
         for (int i = 0; i < array.size(); i++) {
-
+            System.out.println("drcftgvh"+array.get(i).getUserName());
             //UserOnline p = g.fromJson(NetworkConnection.listPlayer.get(i), UserOnline.class);
             // System.out.println("OnlineBean...avaliable user.." + p.getUserName());
             // listViewAvailableUsers.getItems().add(new FXMLUserItemBase(p.getUserName(), p.getStatus(), p.getScore()));
-            listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    "+array.get(i).getUserName(), array.get(i).getStatus(), array.get(i).getScore()));
-
+            listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + array.get(i).getUserName(), array.get(i).getStatus(), array.get(i).getScore()));
+            
         }
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
 

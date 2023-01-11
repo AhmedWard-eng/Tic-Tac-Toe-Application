@@ -36,14 +36,14 @@ import networkOperations.NetworkOperation;
  * @author AhmedWard
  */
 public class ClientConnection {
-
+    
     Socket socket;
     BufferedReader bufferReader;
     PrintStream printStream;
     String ip;
     int portNum;
     NetworkOperation networkOperation;
-
+    
     public ClientConnection(Socket socket) {
         this.socket = socket;
         ip = socket.getInetAddress().getHostAddress();
@@ -53,31 +53,31 @@ public class ClientConnection {
             bufferReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
             readMessages();
-
+            
             System.out.println("........");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-
+    
     public String getIp() {
         return ip;
     }
-
+    
     public void readMessages() {
         new Thread() {
             @Override
             public void run() {
                 while (socket.isConnected()) {
-
+                    
                     System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
                     try {
-
+                        
                         String message = bufferReader.readLine();
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
-
+                        
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
@@ -89,17 +89,19 @@ public class ClientConnection {
                             } else {
                                 //////*****/////****//--Online--//****//////****////****             
                                 System.out.println("Marinaaaaaaaaaaaa");
-                                try {
-                                    JsonArray jesonOnlineList = networkOperation.onlinePlayer();
-                                    for (int i = 0; i < jesonOnlineList.size(); i++) {
-                                        System.out.println("SERVER::=>String jeson online: " + jesonOnlineList.get(i) + "Size = " + jesonOnlineList.size());
-                                        String jsonString = jesonOnlineList.get(i).toString();
-                                        sendMessage(jsonString);
-                                        System.out.println("send message" + jsonString);
-                                    }
-                                } catch (SQLException ex) {
-                                    Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+//                                try {
+//                                    JsonArray jesonOnlineList = networkOperation.onlinePlayer();
+//                                    for (int i = 0; i < jesonOnlineList.size(); i++) {
+//                                        System.out.println("SERVER::=>String jeson online: " + jesonOnlineList.get(i) + "Size = " + jesonOnlineList.size());
+//                                        String jsonString = jesonOnlineList.get(i).toString();
+//                                        sendMessage(jsonString);
+//                                        System.out.println("send message" + jsonString);
+//                                    }
+//                                } catch (SQLException ex) {
+//                                    Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+//                                }
+
+                                sendMessage(networkOperation.onlinePlayer());
                             }
                             ///////////*********//////////*************/////////////****//
 
@@ -110,7 +112,7 @@ public class ClientConnection {
                         } else if (object.getString("status") == "requestPlaying") {
                             networkOperation.requestPlay(message, ip);
                         }
-
+                        
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (SQLException ex) {
@@ -120,15 +122,15 @@ public class ClientConnection {
             }
         }.start();
     }
-
+    
     public void sendMessage(String message) {
         new Thread() {
             @Override
             public void run() {
                 printStream.println(message);
             }
-
+            
         }.start();
     }
-
+    
 }

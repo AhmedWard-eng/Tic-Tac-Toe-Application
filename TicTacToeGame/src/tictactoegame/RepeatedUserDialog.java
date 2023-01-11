@@ -5,40 +5,42 @@
  */
 package tictactoegame;
 
+import beans.RequestGameBean;
 import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import navigationLogic.Navigation;
 
 /**
  *
  * @author Nada Hamed
  */
-public class RepeatedUserDialog   {
+public class RepeatedUserDialog {
+
     protected DialogPane dialogPaneName;
     protected GridPane gridPane;
     protected Label labelFirstPlayer;
 
-    
-    
-    
-    
     public void ExistDialog() {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         labelFirstPlayer = new Label("Repeated UserName try another one !");
-        
+
         dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
         gridPane.add(labelFirstPlayer, 0, 0);
         dialogPaneName.setContent(gridPane);
-        
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("Existed UserName");
@@ -50,33 +52,75 @@ public class RepeatedUserDialog   {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
     }
-    
+
     public void loginUnsuccessDialog(String message) {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         labelFirstPlayer = new Label(message);
-        
+
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-        
+
         dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
         gridPane.add(labelFirstPlayer, 0, 0);
         dialogPaneName.setContent(gridPane);
-        
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         //dialog.setTitle(message);
 
         ButtonType OkButtonType = new ButtonType("Ok");
-        
+
         dialogPaneName.getButtonTypes().addAll(OkButtonType);
 
         Node okButton = dialogPaneName.lookupButton(OkButtonType);
         okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
-        
+
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
     }
-    
+
+    public static void acceptPlaying(NetworkConnection networkConnection,RequestGameBean bean) {
+        DialogPane dialogPaneName;
+        GridPane gridPane;
+        Label labelFirstPlayer;
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label(bean.userName +" want to play with you..");
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setHeaderText("Request palying");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        //dialog.setTitle(message);
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+        ButtonType cancelButtonType = new ButtonType("cancel");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        
+        Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+        cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+
+//            Navigation.navigate(stage, anchorPane);
+//            networkConnection.sendMessage(message);
+        } else if (clickedButton.get() == cancelButtonType) {
+            //gridPane.getChildren().clear();
+        }
+
+    }
+
 }

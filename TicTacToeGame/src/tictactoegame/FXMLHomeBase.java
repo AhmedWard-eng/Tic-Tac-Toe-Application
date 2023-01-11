@@ -83,6 +83,7 @@ public class FXMLHomeBase extends AnchorPane {
         glow1 = new Glow();
         rectangle0 = new Rectangle();
         buttonRecord = new Button();
+//        RepeatedUserDialog.acceptPlaying(networkConnection,new RequestGameBean("", "ward", "ali", "jj"));
 
         label0 = new Label();
         glow2 = new Glow();
@@ -221,7 +222,7 @@ public class FXMLHomeBase extends AnchorPane {
         buttonOnline.setOnAction((ActionEvent event) -> {
 
             networkConnection = NetworkConnection.getInstance();
-            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", "192.168.1.1", "10.145.18.83"));
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", "192.168.1.5", "192.168.1.5"));
             networkConnection.sendMessage(s);
             System.out.println(s);
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));

@@ -66,7 +66,7 @@ public class ClientConnection {
         new Thread() {
             @Override
             public void run() {
-                while (!socket.isClosed()) {
+                while (!socket.isClosed() && socket.isConnected()) {
 
 //                    System.out.println("readMessage is running......." + "::  " + ip + "--" + portNum);
                     try {
@@ -80,7 +80,7 @@ public class ClientConnection {
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
-                            sendMessage("Exist ");
+                            sendMessage("Exist");
                             if (exist) {
 //                                Map<String, String> map = new HashMap<>();
 //                                map.put("operation", "1oginResponse");

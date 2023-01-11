@@ -53,14 +53,9 @@ public class NetworkOperation {
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
         for (int i = 0; i < Server.clientsVector.size(); i++) {
             if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp)) {
-                System.out.println(Server.clientsVector.get(i).getIp());
-                System.out.println(requestGameBean.otherPlayerIp);
-                Server.clientsVector.get(i).sendMessage("message");
+                Server.clientsVector.get(i).sendMessage(s);
             }
 
-            System.out.println(Server.clientsVector.get(i).getIp());
-            System.out.println(requestGameBean.otherPlayerIp);
-            System.out.println(Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp));
         }
     }
 

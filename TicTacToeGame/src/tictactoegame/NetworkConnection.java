@@ -5,7 +5,8 @@
  */
 package tictactoegame;
 
-import com.sun.jndi.dns.DnsContextFactory;
+import beans.RequestGameBean;
+import com.google.gson.Gson;
 import game.Seed;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -20,6 +22,9 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import navigationLogic.Navigation;
 
 /**
@@ -33,6 +38,9 @@ public class NetworkConnection {
     private PrintStream ps;
     private static NetworkConnection networkConnection;
 
+    RepeatedUserDialog r;
+    String message;
+
     public static NetworkConnection getInstance() {
         if (networkConnection == null) {
             networkConnection = new NetworkConnection();
@@ -42,9 +50,10 @@ public class NetworkConnection {
 
     private NetworkConnection() {
         try {
-            socket = new Socket("10.145.19.104", 5005);
+            socket = new Socket("192.168.1.5", 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
+            r = new RepeatedUserDialog();
             readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -52,15 +61,20 @@ public class NetworkConnection {
     }
 
     public void readMessage() {
-        RepeatedUserDialog r = new RepeatedUserDialog();
         new Thread() {
             @Override
             public void run() {
+
                 try {
                     while (socket.isConnected()) {
-                        String str = bufferedReader.readLine();
-                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + str);
-                        if (str.equals("Exist username")) {
+                        message = bufferedReader.readLine();
+
+                        message = message.replaceAll("\r?\n", "");
+                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
+                        JsonObject object = jsonReader.readObject();
+
+                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + message);
+                        if (message.equals("Exist username")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -68,15 +82,15 @@ public class NetworkConnection {
                                 }
                             });
 
-                        }else if (str.equals("invalid data! please try to login again..") || str.equals("this username is not reistered")) {
+                        } else if (message.equals("invalid data! please try to login again..") || message.equals("this username is not reistered")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    r.loginUnsuccessDialog(str);
+                                    r.loginUnsuccessDialog(message);
                                 }
                             });
 
-                        }else if (str.equals("login successfully")) {
+                        } else if (message.equals("login successfully")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -85,6 +99,15 @@ public class NetworkConnection {
                                 }
                             });
 
+                        } else if (object.getString("operation").equals("requestPlaying")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    RepeatedUserDialog.acceptPlaying(NetworkConnection.this, new Gson().fromJson(message, RequestGameBean.class));
+                                }
+                            });
+
+//                            RepeatedUserDialog.acceptPlaying(NetworkConnection.this, new Gson().fromJson(message, RequestGameBean.class));
                         }
                     }
                 } catch (IOException ex) {

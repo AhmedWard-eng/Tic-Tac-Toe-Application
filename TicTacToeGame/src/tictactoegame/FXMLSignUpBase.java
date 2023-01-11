@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -47,6 +49,7 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final GridPane gridPane;
     protected final Label labelmatched;
     protected final Label labelempty;
+
     NetworkConnection network;
 
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
@@ -75,23 +78,31 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
-            SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
-                    TextFieldpassword.getText(),
-                    TextFieldConfirmPassword.getText());
-            if (TextFieldMail.getText() != null && TextFieldpassword.getText() != null && TextFieldConfirmPassword.getText() != null) {
-                check = checkPassword(TextFieldpassword.getText(),
-                        TextFieldConfirmPassword.getText());
-                if (!check) {
-                    matchDialog();
-                } else {
-                    network = NetworkConnection.getInstance();
-                    network.sendMessage(gson.toJson(person));
+            if ((!TextFieldMail.getText().equals("")) && (!TextFieldpassword.getText().equals("")) && (!TextFieldConfirmPassword.getText().equals(""))) {
+                if ((TextFieldMail.getText().length() < 90) && (TextFieldpassword.getText().length() < 18) && (TextFieldConfirmPassword.getText().length() < 18)) {
+                    check = checkPassword(TextFieldpassword.getText(),
+                            TextFieldConfirmPassword.getText());
+                    if (check) {
+                        SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
+                                TextFieldpassword.getText(),
+                                TextFieldConfirmPassword.getText());
 
-                    System.out.println("data is sent ");
-                    //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+                        network = NetworkConnection.getInstance();
+                        network.sendMessage(gson.toJson(person));
+
+                        System.out.println("data is sent ");
+
+                    } else {
+                        System.out.println("not matched paass");
+                        dialogMatchPassword();
+                    }
+                } else {
+                    System.out.println("invalid length");
+                    dialogLength();
                 }
             } else {
-                matchDialog();
+                System.out.println("enter all cells");
+                dialogEmptyCell();
             }
         });
 
@@ -239,41 +250,40 @@ public class FXMLSignUpBase extends AnchorPane {
         }
     }
 
-    private void matchDialog() {
-        dialogPaneName.setHeaderText(" ERROR ! ");
-        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+    private void dialogMatchPassword() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("Not Matched password");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+            }
+        });
+    }
 
-        gridPane.add(labelmatched, 0, 0);
-        dialogPaneName.setContent(gridPane);
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setDialogPane(dialogPaneName);
-        dialog.setTitle("Match");
-
-        ButtonType OkButtonType = new ButtonType("Ok");
-
-        dialogPaneName.getButtonTypes().addAll(OkButtonType);
-
-        Optional<ButtonType> clickedButton = dialog.showAndWait();
+    private void dialogLength() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("invaild length");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+            }
+        });
 
     }
 
-    private void emptyCell() {
-        dialogPaneName.setHeaderText(" ERROR ! ");
-        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-
-        gridPane.add(labelempty, 0, 0);
-        dialogPaneName.setContent(gridPane);
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setDialogPane(dialogPaneName);
-        dialog.setTitle("Empty Cells");
-
-        ButtonType OkButtonType = new ButtonType("Ok");
-
-        dialogPaneName.getButtonTypes().addAll(OkButtonType);
-
-        Optional<ButtonType> clickedButton = dialog.showAndWait();
-
+    private void dialogEmptyCell() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("Enter All Cells");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+            }
+        });
     }
 }

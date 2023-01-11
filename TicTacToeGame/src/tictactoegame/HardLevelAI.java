@@ -344,7 +344,7 @@ public class HardLevelAI extends AnchorPane {
         buttonRestart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Navigation.navigate(stage,new MediumLevelAI(stage));
+                Navigation.navigate(stage,new HardLevelAI(stage));
                 toggleButtonRecord.setDisable(false);
                 toggleButtonRecord.setSelected(false);
             }

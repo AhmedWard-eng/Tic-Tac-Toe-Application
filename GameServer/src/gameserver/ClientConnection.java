@@ -80,17 +80,19 @@ public class ClientConnection {
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
-                            sendMessage("Exist");
-                            if (exist) {
-//                                Map<String, String> map = new HashMap<>();
-//                                map.put("operation", "1oginResponse");
-//                                map.put("name", "Alice");
-//
-//                                JsonReader jsonReader = (JsonReader) Json.createReader(map);
-//                                JsonObject object1 = new JsonObject(map);
-//                                new Gson().toJson(mab);
-//                                sendMessage("Exist username");
-                            }
+                            String found;
+                            if (!exist) {
+                                found="notExist";
+                            }else{
+                                found="exist";
+                            }       
+                            Map<String, String> map = new HashMap<>();
+                            map.put("operation", "signup");
+                            map.put("message",found);
+
+                            message = new Gson().toJson(map);
+                            sendMessage(message);
+                            
                         } else if (object.getString("operation").equals("login")) {
                             //TODO update ip + status in the database
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));

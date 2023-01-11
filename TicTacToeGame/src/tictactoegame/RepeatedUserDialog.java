@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import navigationLogic.Navigation;
+import javafx.stage.Stage;
 
 /**
  *
@@ -81,13 +83,13 @@ public class RepeatedUserDialog {
 
     }
 
-    public static void acceptPlaying(NetworkConnection networkConnection,RequestGameBean bean) {
+    public static void acceptPlaying(NetworkConnection networkConnection, RequestGameBean bean) {
         DialogPane dialogPaneName;
         GridPane gridPane;
         Label labelFirstPlayer;
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
-        labelFirstPlayer = new Label(bean.userName +" want to play with you..");
+        labelFirstPlayer = new Label(bean.userName + " want to play with you..");
 
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
@@ -106,7 +108,7 @@ public class RepeatedUserDialog {
         dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
 
         Node okButton = dialogPaneName.lookupButton(OkButtonType);
-        
+
         Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
         okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
         cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
@@ -120,6 +122,32 @@ public class RepeatedUserDialog {
         } else if (clickedButton.get() == cancelButtonType) {
             //gridPane.getChildren().clear();
         }
+    }
+
+    public void dialogRepeated() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("Sorry repeated username");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+            }
+        });
+    }
+
+    public void dialogSignUp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+        alert.setHeaderText("OK, an Information Dialog");
+        alert.setContentText("SignUp Succeded");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+                Stage stage = TicTacToeGame.getStage();
+                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            }
+        });
 
     }
 

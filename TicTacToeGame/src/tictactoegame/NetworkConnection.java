@@ -21,6 +21,7 @@ import java.util.Scanner;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+
 import javafx.stage.Stage;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -50,7 +51,7 @@ public class NetworkConnection {
 
     private NetworkConnection() {
         try {
-            socket = new Socket("192.168.1.5", 5005);
+            socket = new Socket(InetAddress.getLocalHost(), 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
             r = new RepeatedUserDialog();
@@ -67,21 +68,33 @@ public class NetworkConnection {
 
                 try {
                     while (socket.isConnected()) {
+
                         message = bufferedReader.readLine();
 
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
 
-                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + message);
-                        if (message.equals("Exist username")) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    r.ExistDialog();
-                                }
-                            });
-
+//                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + message);
+                        if (object.getString("operation").equals("signup")) {
+                            String str = object.getString("message");
+                            if (str.equals("notExist")) {
+                                System.out.println("Sign Up succeded");
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        r.dialogSignUp();
+                                    }
+                                });
+                            } else {
+                                System.out.println("Sign Up Failed repeated");
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        r.dialogRepeated();
+                                    }
+                                });
+                            }
                         } else if (message.equals("invalid data! please try to login again..") || message.equals("this username is not reistered")) {
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -107,7 +120,6 @@ public class NetworkConnection {
                                 }
                             });
 
-//                            RepeatedUserDialog.acceptPlaying(NetworkConnection.this, new Gson().fromJson(message, RequestGameBean.class));
                         }
                     }
                 } catch (IOException ex) {
@@ -115,7 +127,8 @@ public class NetworkConnection {
 
                 }
             }
-        }.start();
+        }
+                .start();
     }
 
     public void sendMessage(String message) {

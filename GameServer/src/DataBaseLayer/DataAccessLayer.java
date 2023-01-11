@@ -57,12 +57,12 @@ public class DataAccessLayer {
             } else {
                 return "this username is not reistered";
             }
-            
+
             //TODO handle no user found
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-   
+
         return null;
     }
 
@@ -76,22 +76,51 @@ public class DataAccessLayer {
         pst.setString(4, userBean.getStatus());
         int rs = pst.executeUpdate();
         if (rs == 0) {
-            System.out.println("0");
+            System.out.println("insert faild");
         } else {
-            System.out.println("1");
+            System.out.println("insert succeded");
         }
     }
 
     public boolean checkIfUserExist(String userName) throws SQLException {
         String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
-        PreparedStatement pst = connection.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement pst = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         pst.setString(1, userName);
         ResultSet rs = pst.executeQuery();
         boolean found = false;
-        if (rs.first()) {
-            found = true;
+
+        while (rs.next()) {
+            if (userName.equals(rs.getString("username"))) {
+                System.out.println("the user exist olready");
+                found = true;
+                return found;
+            }
         }
         return found;
+    }
+
+    public int getOnlineRate() throws SQLException {
+        String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "online");
+        int count = 0;
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            count = rs.getInt("total");
+        }
+        return count;
+    }
+
+    public int getOfflineRate() throws SQLException {
+        String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "offline");
+        int count = 0;
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            count = rs.getInt("total");
+        }
+        return count;
     }
 
 }

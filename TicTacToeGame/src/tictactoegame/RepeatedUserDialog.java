@@ -73,15 +73,14 @@ public class RepeatedUserDialog {
 
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
 
-        
         labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
         labelFirstPlayer.setTextFill(Color.WHITE);
         //remove
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-        
+
         //dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-        
+
         dialogPaneName.setStyle("-fx-background-color: #22726e;");
 
         gridPane.add(labelFirstPlayer, 0, 0);
@@ -135,11 +134,26 @@ public class RepeatedUserDialog {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
-            RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.otherPlayerIp, bean.myUserName,bean.myIp);
+            RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.otherPlayerIp, bean.myUserName, bean.myIp);
             networkConnection.sendMessage(new Gson().toJson(requestGameBean));
         } else if (clickedButton.get() == cancelButtonType) {
-            //gridPane.getChildren().clear();
+
+            RequestGameBean requestGameBean = new RequestGameBean("refuse", bean.otherPlayerUN, bean.otherPlayerIp, bean.myUserName, bean.myIp);
+            networkConnection.sendMessage(new Gson().toJson(requestGameBean));
         }
+    }
+    
+    
+    public static void dialogRefuse(RequestGameBean requestGameBean) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("MESSAGE...!");
+//        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText(requestGameBean.myUserName+ " can't play now");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.out.println("Pressed OK.");
+            }
+        });
     }
 
     public void dialogRepeated() {
@@ -169,26 +183,24 @@ public class RepeatedUserDialog {
 
     }
 
-
-    
     public void logoutDialog(String message) {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         labelFirstPlayer = new Label(message);
-        
+
         labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
         labelFirstPlayer.setTextFill(Color.WHITE);
-        
+
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-        
+
         //dialogPaneName.setHeaderText(" ERROR ! ");
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
-        
+
         dialogPaneName.setStyle("-fx-background-color: #22726e;");
 
         gridPane.add(labelFirstPlayer, 0, 0);
         dialogPaneName.setContent(gridPane);
-        
+
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("Logout !");
@@ -197,22 +209,21 @@ public class RepeatedUserDialog {
         ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         //if (!buttonAdded) {
-            dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
+        dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
 
-            Node okButton = dialogPaneName.lookupButton(OkButtonType);
-            okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
 
-            Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
-            cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
+        Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
 
 //            buttonAdded = true;
 //        }
-        
         Optional<ButtonType> clickedButton = dialog.showAndWait();
-        
+
         if (clickedButton.get() == OkButtonType) {
-           //logout and nav
-           Gson gson = new GsonBuilder().create();
+            //logout and nav
+            Gson gson = new GsonBuilder().create();
 
             LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
             String h = gson.toJson(logoutBean);
@@ -223,11 +234,10 @@ public class RepeatedUserDialog {
             //dialog
             Stage stage = TicTacToeGame.getStage();
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
-            
 
         } else if (clickedButton.get() == cancelButtonType) {
-            
+
         }
     }
-    
+
 }

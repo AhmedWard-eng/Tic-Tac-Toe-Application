@@ -71,10 +71,10 @@ public class GameServerBase extends AnchorPane {
                             online.setLayoutY(350.0);
                             online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
                             online.setFont(new Font("Arial Black", 14.0));
-                            
+
                             test = new DataAccessLayer();
                             paneview.getChildren().clear();
-                            
+
                             ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
                             list.add(new PieChart.Data("Online", test.getOnlineRate()));
                             list.add(new PieChart.Data("Offline", test.getOfflineRate()));
@@ -163,26 +163,26 @@ public class GameServerBase extends AnchorPane {
                 server = new Server();
                 buttonOn.setDisable(true);
                 buttonOff.setDisable(false);
-                Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            loadData();  //To change body of generated methods, choose Tools | Templates.
-                        } catch (SQLException ex) {
-                            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
+//                Thread t = new Thread() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            loadData();  //To change body of generated methods, choose Tools | Templates.
+//                        } catch (SQLException ex) {
+//                            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+//
+//                };
+//
+//                while (server.isOpened) {
+//
+//                    if (!t.isAlive()) {
+//                        t.start();
+//                    }
+//
+//                }
 
-                };
-
-                while (server.isOpened) {
-
-                    if (!t.isAlive()) {
-                        t.start();
-                    }
-
-                }
-               
             }
         });
 

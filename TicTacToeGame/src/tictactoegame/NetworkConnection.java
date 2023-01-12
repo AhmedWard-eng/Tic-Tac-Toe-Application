@@ -77,7 +77,7 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
 
-            socket = new Socket("192.168.43.228", 5005);
+            socket = new Socket(InetAddress.getLocalHost(), 5005);
 
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());

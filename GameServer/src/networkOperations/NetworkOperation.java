@@ -60,6 +60,10 @@ public class NetworkOperation {
 
         System.out.println(s);
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
+        if (requestGameBean.operation.equals("accept")) {
+            System.out.println("a7a");
+            dataAccessLayer.makePlayersBusy(requestGameBean.myIp,requestGameBean.otherPlayerIp);
+        }
         for (int i = 0; i < Server.clientsVector.size(); i++) {
             if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp)) {
                 Server.clientsVector.get(i).sendMessage(s);
@@ -71,6 +75,7 @@ public class NetworkOperation {
     public String onlinePlayer() throws SQLException {
         System.out.println("onlinePlayer::::");
         UsersResponseBean userArray = new UsersResponseBean("onlineList", dataAccessLayer.getOnlinePlayers());
+
         String message = new Gson().toJson(userArray);
         return message;
     }

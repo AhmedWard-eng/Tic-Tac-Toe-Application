@@ -61,6 +61,8 @@ public class DataAccessLayer {
                     pst.setString(2, loginBean.getUsername());
                     pst.executeUpdate();
                     
+
+                    updateIp(Ip, loginBean.getUsername());
                     return "login successfully";
                 } else {
                     return "Invalid data! please try to login again..";
@@ -110,6 +112,7 @@ public class DataAccessLayer {
         }
         return found;
     }
+
     public ArrayList<UserOnline> getOnlinePlayers() throws SQLException {
 
         ArrayList<UserOnline> onlinePlayers = new ArrayList<>();
@@ -125,8 +128,8 @@ public class DataAccessLayer {
                     resultSet.getString("username"),
                     resultSet.getString("password"),
                     resultSet.getString("status"),
-                    resultSet.getInt("score") 
-                    ));
+                    resultSet.getInt("score")
+            ));
 
 //            System.out.println("in wile" + onlinePlayers.get(0) + "ResultStatment" + resultSet);
 //            username = resultSet.getString("username");
@@ -140,7 +143,6 @@ public class DataAccessLayer {
         return onlinePlayers;
 
     }
-
 
     public int getOnlineRate() throws SQLException {
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
@@ -166,26 +168,50 @@ public class DataAccessLayer {
         return count;
     }
 
-        public void logout(LogoutBean logoutBean, String Ip) {
+    public void logout(LogoutBean logoutBean, String Ip) {
         try {
 
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getOperation());
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getUsername());
-            
-            
+
             pst = connection.prepareStatement("update root.\"game\" set root.\"game\".\"status\" = 'offline' where root.\"game\".\"username\" = ?");
             pst.setString(1, logoutBean.getUsername());
-            
+
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getOperation());
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getUsername());
             pst.executeUpdate();
 //            connection.close();
 //            pst.close();
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
+    }
+
+    public boolean makePlayersBusy(String ip1, String ip2) {
+        try {
+            String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"status\" = ? where ROOT.\"game\".\"ip\" = ? or ROOT.\"game\".\"ip\" = ?";
+            PreparedStatement pst = connection.prepareStatement(sqlUpdate);
+            pst.setString(1, "busy");
+            pst.setString(2, ip1);
+            pst.setString(3, ip2);
+            int rs = pst.executeUpdate();
+            System.out.println("rs = "+rs);
+            return rs != 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return false;
+        }
+    }
+
+    private void updateIp(String Ip, String userName) throws SQLException {
+        String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"ip\" = ? where ROOT.\"game\".\"username\" = ?";
+        PreparedStatement pst = connection.prepareStatement(sqlUpdate);
+        pst.setString(1, Ip);
+        pst.setString(2, userName);
+        int rs = pst.executeUpdate();
     }
 
 }

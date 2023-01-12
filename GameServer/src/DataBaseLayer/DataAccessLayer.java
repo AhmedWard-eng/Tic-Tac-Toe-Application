@@ -127,23 +127,20 @@ public class DataAccessLayer {
                     resultSet.getString("username"),
                     resultSet.getString("password"),
                     resultSet.getString("status"),
+
                     resultSet.getInt("score")
             ));
 
-//            System.out.println("in wile" + onlinePlayers.get(0) + "ResultStatment" + resultSet);
-//            username = resultSet.getString("username");
-//            status = resultSet.getString("status");
+
         }
-//        com.google.gson.JsonArray array = gson.toJsonTree(onlinePlayers).getAsJsonArray();
-//        System.out.println("jeson online " + gson.toJsonTree(onlinePlayers).getAsJsonArray());
-//        System.out.println("****array jeson***" + array);
-//        System.out.println("online: ArrayList" + onlinePlayers.get(0) + "\n userName" + username + "\nstatus" + status);
-        // return onlinePlayers;
+
         return onlinePlayers;
 
     }
 
-    public int getOnlineRate() throws SQLException {
+    
+    public double getOnlineRate() throws SQLException {
+
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, "online");
@@ -154,8 +151,22 @@ public class DataAccessLayer {
         }
         return count;
     }
+    
+    public double getbusyeRate() throws SQLException {
+        String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "busy");
+        int count = 0;
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            count = rs.getInt("total");
+        }
+        return count;
+    }
 
-    public int getOfflineRate() throws SQLException {
+    
+    public double getOfflineRate() throws SQLException {
+
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, "offline");
@@ -179,8 +190,6 @@ public class DataAccessLayer {
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getOperation());
             System.out.println("DataBaseLayer.DataAccessLayer.logout()  " + logoutBean.getUsername());
             pst.executeUpdate();
-//            connection.close();
-//            pst.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();

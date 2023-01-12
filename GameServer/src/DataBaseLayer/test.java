@@ -19,9 +19,11 @@ import java.util.logging.Logger;
 public class test {
     public static void main(String[] args) {
         try {
-            DataAccessLayer test= new DataAccessLayer();
-            int x=test.getOnlineRate();
+            DataAccessLayer test = new DataAccessLayer();
+            double x = test.getOnlineRate();
+            double y = test.getOfflineRate();
             System.out.println("online players num= "+ x);
+            System.out.println("offline players num= "+ y);
         } catch (SQLException ex) {
             Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
         }

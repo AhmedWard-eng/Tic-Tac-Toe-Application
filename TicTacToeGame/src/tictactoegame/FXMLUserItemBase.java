@@ -1,17 +1,27 @@
 package tictactoegame;
 
+import beans.UserOnline;
+import com.google.gson.Gson;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
-public  class FXMLUserItemBase extends AnchorPane {
+public class FXMLUserItemBase extends AnchorPane {
 
     protected final Label labelScore;
     protected final Label labelName;
     protected final Label labelStatus;
 
-    public FXMLUserItemBase() {
+//    NetworkConnection networkConnection;
+//    Gson g;
+//    UserOnline p;
+
+    public FXMLUserItemBase(String userName, String status, int score) {
+        //  networkConnection=new NetworkConnection();
+//        g = new Gson();
+//        String lis = NetworkConnection.listPlayer.get(0);
+//        p = g.fromJson(lis, UserOnline.class);
 
         labelScore = new Label();
         labelName = new Label();
@@ -26,7 +36,7 @@ public  class FXMLUserItemBase extends AnchorPane {
         labelScore.setAlignment(javafx.geometry.Pos.CENTER);
         labelScore.setLayoutX(23.0);
         labelScore.setLayoutY(12.0);
-        labelScore.setText("2001");
+        labelScore.setText(String.valueOf(score));//String.valueOf(p.getScore())
         labelScore.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         labelScore.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
 
@@ -38,7 +48,7 @@ public  class FXMLUserItemBase extends AnchorPane {
 
         labelName.setLayoutX(160.0);
         labelName.setLayoutY(10.0);
-        labelName.setText("Marina Abd Elmalak");
+        labelName.setText("         "+userName);
         labelName.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         labelName.setWrapText(true);
         labelName.setFont(new Font("Arial Black", 20.0));
@@ -46,15 +56,16 @@ public  class FXMLUserItemBase extends AnchorPane {
         labelStatus.setAlignment(javafx.geometry.Pos.CENTER);
         labelStatus.setLayoutX(455.0);
         labelStatus.setLayoutY(8.0);
-        labelStatus.setText("online");
+        labelStatus.setText(status);
         labelStatus.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         labelStatus.setWrapText(true);
         labelStatus.setFont(new Font("Arial Black", 21.0));
-
 
         getChildren().add(labelScore);
         getChildren().add(labelName);
         getChildren().add(labelStatus);
 
     }
+
+    
 }

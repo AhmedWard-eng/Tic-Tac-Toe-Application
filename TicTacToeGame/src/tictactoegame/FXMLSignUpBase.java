@@ -44,19 +44,20 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final TextField TextFieldpassword;
     protected final TextField TextFieldConfirmPassword;
     protected final Button buttonBackHome;
-    
+
     protected final DialogPane dialogPaneName;
     protected final GridPane gridPane;
     protected final Label labelmatched;
     protected final Label labelempty;
+
     NetworkConnection network;
-    
+
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
-        labelmatched= new Label("Password Doesn't match Confirm password.");
-        labelempty =new Label("Please Enter all Cells.");
+        labelmatched = new Label("Password Doesn't match Confirm password.");
+        labelempty = new Label("Please Enter all Cells.");
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
@@ -69,7 +70,7 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldpassword = new TextField();
         TextFieldConfirmPassword = new TextField();
         buttonBackHome = new Button();
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
         });
@@ -77,34 +78,36 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
-            if((!TextFieldMail.getText().equals(""))&&(!TextFieldpassword.getText().equals(""))&&(!TextFieldConfirmPassword.getText().equals(""))){
-                if( (TextFieldMail.getText().length()<90)&&(TextFieldpassword.getText().length()<18)&&(TextFieldConfirmPassword.getText().length()<18)){
+
+            if ((!TextFieldMail.getText().equals("")) && (!TextFieldpassword.getText().equals("")) && (!TextFieldConfirmPassword.getText().equals(""))) {
+                if ((TextFieldMail.getText().length() < 90) && (TextFieldpassword.getText().length() < 18) && (TextFieldConfirmPassword.getText().length() < 18)) {
                     check = checkPassword(TextFieldpassword.getText(),
                             TextFieldConfirmPassword.getText());
                     if (check) {
-                        SignUpBean person = new SignUpBean("signup",TextFieldMail.getText(),
-                        TextFieldpassword.getText(),
-                        TextFieldConfirmPassword.getText()); 
+                        SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
+                                TextFieldpassword.getText(),
+                                TextFieldConfirmPassword.getText());
 
-                        network=new NetworkConnection();
+                        network = NetworkConnection.getInstance();
                         network.sendMessage(gson.toJson(person));
 
                         System.out.println("data is sent ");
-                        
+
                     } else {
                         System.out.println("not matched paass");
                         dialogMatchPassword();
                     }
-                   } else{
-                       System.out.println("invalid length");
-                        dialogLength(); 
-                   }
-            } else{ 
+                } else {
+                    System.out.println("invalid length");
+                    dialogLength();
+                }
+            } else {
                 System.out.println("enter all cells");
-                dialogEmptyCell();  
+                dialogEmptyCell();
             }
+
         });
-        
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -240,14 +243,14 @@ public class FXMLSignUpBase extends AnchorPane {
         getChildren().add(buttonBackHome);
 
     }
-        
-    public boolean checkPassword(String password, String confirmpassword) { 
-        if(password.equals(confirmpassword))
+
+    public boolean checkPassword(String password, String confirmpassword) {
+        if (password.equals(confirmpassword)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-    
 
     private void dialogMatchPassword() {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -260,7 +263,7 @@ public class FXMLSignUpBase extends AnchorPane {
             }
         });
     }
-    
+
     private void dialogLength() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("MESSAGE...!");
@@ -271,8 +274,9 @@ public class FXMLSignUpBase extends AnchorPane {
                 System.out.println("Pressed OK.");
             }
         });
+
     }
-    
+
     private void dialogEmptyCell() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("MESSAGE...!");
@@ -284,5 +288,4 @@ public class FXMLSignUpBase extends AnchorPane {
             }
         });
     }
-    
 }

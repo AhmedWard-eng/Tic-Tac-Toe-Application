@@ -10,22 +10,22 @@ package beans;
  * @author user
  */
 public class LoginBean {
-    private String status;
+    private String operation;
     private String username;
     private String password;
 
     public LoginBean(String status , String username, String password) {
-        this.status = status;
+        this.operation = status;
         this.username = username;
         this.password = password;
     }
 
     public String getStatus() {
-        return status;
+        return operation;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.operation = status;
     }
 
     public String getUsername() {

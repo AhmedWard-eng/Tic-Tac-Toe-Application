@@ -39,49 +39,68 @@ public class GameServerBase extends AnchorPane {
     protected final Label label;
     protected final Pane paneview;
     protected final Rectangle rect;
-    
+
     ServerSocket serverSocket;
     Socket s;
     DataInputStream dis;
     PrintStream ps;
     Server server;
     DataAccessLayer test;
-   
 
-    private void loadData() {
-        try {
+    private void loadData() throws SQLException {
+        Label online = new Label();
+        Label offline = new Label();
+        offline.setLayoutX(-120.0);
+        offline.setLayoutY(320.0);
+        offline.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+        offline.setFont(new Font("Arial Black", 14.0));
+        online.setLayoutX(-120.0);
+        online.setLayoutY(350.0);
+        online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+        online.setFont(new Font("Arial Black", 14.0));
 
-            Label online = new Label();
-            Label offline = new Label();
-            offline.setLayoutX(-120.0);
-            offline.setLayoutY(320.0);
-            offline.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
-            offline.setFont(new Font("Arial Black", 14.0));
-            online.setLayoutX(-120.0);
-            online.setLayoutY(350.0);
-            online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
-            online.setFont(new Font("Arial Black", 14.0));
-
-            test = new DataAccessLayer();
-            paneview.getChildren().clear();
-            ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
-            list.add(new PieChart.Data("Online", test.getOnlineRate()));
-            list.add(new PieChart.Data("Offline", test.getOfflineRate()));
-            PieChart piechart = new PieChart(list);
-            piechart.setTitle("Players Chart");
-            online.setText("OnLine : " + (int) test.getOnlineRate());
-            offline.setText("OffLine : " + (int) test.getOfflineRate());
-            paneview.getChildren().add(piechart);
-            paneview.getChildren().add(online);
-            paneview.getChildren().add(offline);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        test = new DataAccessLayer();
+        paneview.getChildren().clear();
+        
+        ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+        list.add(new PieChart.Data("Online", test.getOnlineRate()));
+        list.add(new PieChart.Data("Offline", test.getOfflineRate()));
+        PieChart piechart = new PieChart(list);
+        piechart.setTitle("Players Chart");
+        online.setText("OnLine : " + (int) test.getOnlineRate());
+        offline.setText("OffLine : " + (int) test.getOfflineRate());
+        paneview.getChildren().add(piechart);
+        paneview.getChildren().add(online);
+        paneview.getChildren().add(offline);
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                //while ((server.isOpened)&&(!serverSocket.isClosed())) {
+//                try {
+//                    Thread.sleep(100);
+//                    
+//                    ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+//                    list.add(new PieChart.Data("Online", test.getOnlineRate()));
+//                    list.add(new PieChart.Data("Offline", test.getOfflineRate()));
+//                    PieChart piechart = new PieChart(list);
+//                    piechart.setTitle("Players Chart");
+//                    online.setText("OnLine : " + (int) test.getOnlineRate());
+//                    offline.setText("OffLine : " + (int) test.getOfflineRate());
+//                    paneview.getChildren().add(piechart);
+//                    paneview.getChildren().add(online);
+//                    paneview.getChildren().add(offline);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//            //  }
+//        }.start();
 
     }
 
-    public GameServerBase(Stage stage) throws IOException {
+    public GameServerBase(Stage stage) throws IOException, SQLException {
         rect = new Rectangle();
         rectangle = new Rectangle();
         rectangle0 = new Rectangle();
@@ -94,19 +113,41 @@ public class GameServerBase extends AnchorPane {
         glow0 = new Glow();
         label = new Label();
         paneview = new Pane();
-        
-        buttonOff.setDisable(true);
-        
 
-        buttonOn.setOnAction(new EventHandler<ActionEvent>() {
+        buttonOff.setDisable(true);
+
+//        buttonOn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                server = new Server();
+//                buttonOn.setDisable(true);
+//                buttonOff.setDisable(false);
+//                while (server.isOpened) {
+//                    new Thread(){
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                loadData();  //To change body of generated methods, choose Tools | Templates.
+//                            } catch (SQLException ex) {
+//                                Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
+//                        
+//                    }.start();
+//                }
+//            }
+//        });
+
+ buttonOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                buttonOn.setDisable(true);
                 server = new Server();
+                buttonOn.setDisable(true);
                 buttonOff.setDisable(false);
+                }
             }
-        });
-
+        );
+loadData();
         buttonOff.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -120,9 +161,9 @@ public class GameServerBase extends AnchorPane {
                 }
             }
         });
+
         
-        loadData();
-        
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -227,7 +268,7 @@ public class GameServerBase extends AnchorPane {
         paneview.setPrefWidth(10.0);
         paneview.setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
         // System.out.println(paneview.widthProperty().floatValue());
-        
+
         pane.getChildren().add(paneview);
         getChildren().add(rectangle);
         getChildren().add(rectangle0);
@@ -236,7 +277,7 @@ public class GameServerBase extends AnchorPane {
         pane.getChildren().add(rectangle2);
         pane.getChildren().add(label);
         pane.getChildren().add(buttonOn);
-        pane.getChildren().add(buttonOff); 
-        
+        pane.getChildren().add(buttonOff);
+
     }
 }

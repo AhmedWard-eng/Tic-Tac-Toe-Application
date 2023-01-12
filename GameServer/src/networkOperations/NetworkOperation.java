@@ -7,14 +7,16 @@ package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
+import beans.LogoutBean;
+import beans.RequestGameBean;
 import beans.SignUpBean;
 import beans.UserBean;
+import beans.UsersResponseBean;
 import com.google.gson.Gson;
 import gameserver.ClientConnection;
 import java.sql.SQLException;
 
 import gameserver.Server;
-
 
 /**
  *
@@ -29,35 +31,49 @@ public class NetworkOperation {
         dataAccessLayer = new DataAccessLayer();
     }
 
-    public boolean signUp(String message,String ip) throws SQLException {
+    public boolean signUp(String message, String ip) throws SQLException {
         SignUpBean signuser = new Gson().fromJson(message, SignUpBean.class);
+
         UserBean user = new UserBean(ip, signuser.getUsername(), signuser.getPassword(), "offline", 0);
-        System.out.println("user name before check data"+signuser.getUsername());
-        boolean found=dataAccessLayer.checkIfUserExist(user.getUserName());
-        System.out.println("found from Check="+found);
-        if(found){
-            return true;       
-        }
-        else{
+        System.out.println("user name before check data" + signuser.getUsername());
+        boolean found = dataAccessLayer.checkIfUserExist(user.getUserName());
+        System.out.println("found from Check=" + found);
+        if (found) {
+            return true;
+        } else {
             dataAccessLayer.signUp(user);
             return false;
         }
     }
 
+    public String login(LoginBean loginBean, String hostAddress) {
+        return dataAccessLayer.login(loginBean, hostAddress);
 
-    public void login(LoginBean loginBean, String hostAddress) {
-        dataAccessLayer.login(loginBean, hostAddress);
+    }
+    
+    public void logout(LogoutBean logoutBean, String hostAddress) {
+        dataAccessLayer.logout(logoutBean, hostAddress);
+
     }
 
-    public void requestPlay(String s,String ip) {
-        //parse string 
-        //get ip of the second player
-        //send request to the second palyer
-        for(int i = 0;  i < Server.clientsVector.size(); i++ ){
-            if(Server.clientsVector.get(i).getIp() == ip){
-                Server.clientsVector.get(i).sendMessage("message");
+    public void requestPlay(String s, String ip) {
+
+        RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
+        for (int i = 0; i < Server.clientsVector.size(); i++) {
+            if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp)) {
+                Server.clientsVector.get(i).sendMessage(s);
             }
+
         }
+    }
+    
+
+    public String onlinePlayer() throws SQLException {
+        //  dataAccessLayer.getOnlinePlayers();
+        System.out.println("onlinePlayer::::");
+        UsersResponseBean userArray=new UsersResponseBean("onlinList",dataAccessLayer.getOnlinePlayers());
+        String message = new Gson().toJson(dataAccessLayer.getOnlinePlayers());
+        return message;
     }
 
 

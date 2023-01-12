@@ -42,7 +42,7 @@ public class TicTacToeGame extends Application {
 
         stage.setScene(scene);
         stage.setResizable(false);
-
+//        stage.
         stage.getIcons().add(new Image(tictactoegame.TicTacToeGame.class.getResource("Resources/Capture.PNG").toExternalForm()));
         stage.show();
     }

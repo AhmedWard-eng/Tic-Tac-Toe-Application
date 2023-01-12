@@ -228,10 +228,10 @@ public class RepeatedUserDialog {
 
             LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
             String h = gson.toJson(logoutBean);
-            System.out.println(h);
-            networkConnection = NetworkConnection.getInstance();
+//            System.out.println(h);
+            networkConnection = new NetworkConnection();
             networkConnection.sendMessage(h);
-            System.out.println("data is sent ");
+//            System.out.println("data is sent ");
             //dialog
             Stage stage = TicTacToeGame.getStage();
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));

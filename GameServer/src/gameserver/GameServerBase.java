@@ -40,84 +40,94 @@ public class GameServerBase extends AnchorPane {
     protected final Label label;
     protected final Pane paneview;
     protected final Rectangle rect;
-
+    Label online;
+    Label offline;
+    Label busy;
     ServerSocket serverSocket;
     Socket s;
     DataInputStream dis;
     PrintStream ps;
     Server server;
     DataAccessLayer test;
+    Thread t;
 
-    private void loadData() throws SQLException {
-        new Thread(new Runnable() {
+    private void draw(Pane paneview) {
+        online = new Label();
+        offline = new Label();
+        busy = new Label();
+        offline.setLayoutX(-120.0);
+        offline.setLayoutY(320.0);
+        offline.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+        offline.setFont(new Font("Arial Black", 14.0));
+        busy.setLayoutX(-120.0);
+        busy.setLayoutY(380.0);
+        busy.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+        busy.setFont(new Font("Arial Black", 14.0));
+        online.setLayoutX(-120.0);
+        online.setLayoutY(350.0);
+        online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+        online.setFont(new Font("Arial Black", 14.0));
+        ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+        list.add(new PieChart.Data("Offline", 100));
+        list.add(new PieChart.Data("busy", 0));
+        list.add(new PieChart.Data("Online", 0));
+        PieChart piechart = new PieChart(list);
+        piechart.setTitle("Players Chart");
+
+        online.setText("OnLine : " + 0);
+        offline.setText("OffLine : " + 0);
+        busy.setText("busy : " + 0);
+        paneview.getChildren().clear();
+        paneview.getChildren().add(piechart);
+        paneview.getChildren().add(online);
+        paneview.getChildren().add(offline);
+        paneview.getChildren().add(busy);
+    }
+
+    private void loadData(Pane paneview) {
+         t= new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(30);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Label online = new Label();
-                            Label offline = new Label();
-                            offline.setLayoutX(-120.0);
-                            offline.setLayoutY(320.0);
-                            offline.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
-                            offline.setFont(new Font("Arial Black", 14.0));
-                            online.setLayoutX(-120.0);
-                            online.setLayoutY(350.0);
-                            online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
-                            online.setFont(new Font("Arial Black", 14.0));
-
-                            test = new DataAccessLayer();
-                            paneview.getChildren().clear();
-
-                            ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
-                            list.add(new PieChart.Data("Online", test.getOnlineRate()));
-                            list.add(new PieChart.Data("Offline", test.getOfflineRate()));
-                            PieChart piechart = new PieChart(list);
-                            piechart.setTitle("Players Chart");
-                            online.setText("OnLine : " + (int) test.getOnlineRate());
-                            offline.setText("OffLine : " + (int) test.getOfflineRate());
-                            paneview.getChildren().add(piechart);
-                            paneview.getChildren().add(online);
-                            paneview.getChildren().add(offline);
-                        } catch (SQLException ex) {
-                            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                while (server.isOpened) {
+                    try {
+                        Thread.sleep(500);
+//                        System.out.println(" on");
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
                     }
-                });
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(server.isOpened){
+                            try {
+//                                System.out.println("server on");
+                                paneview.getChildren().clear();
+                                ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+                                list.add(new PieChart.Data("Offline", test.getOfflineRate()));
+                                list.add(new PieChart.Data("busy", test.getbusyeRate()));
+                                list.add(new PieChart.Data("Online", test.getOnlineRate()));
+                                PieChart piechart = new PieChart(list);
+                                piechart.setTitle("Players Chart");
+                                online.setText("OnLine : " + (int) test.getOnlineRate());
+                                offline.setText("OffLine : " + (int) test.getOfflineRate());
+                                busy.setText("busy : " + (int) test.getbusyeRate());
+                                 paneview.getChildren().add(piechart);
+                                 paneview.getChildren().add(online);
+                                 paneview.getChildren().add(offline);
+                                 paneview.getChildren().add(busy);
+                            } catch (SQLException ex) {
+//                                System.out.println("server off");
+                                Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                            
+                        }
+                    });
+                }
+                
             }
-        }).start();
-
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                //while ((server.isOpened)&&(!serverSocket.isClosed())) {
-//                try {
-//                    Thread.sleep(100);
-//                    
-//                    ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
-//                    list.add(new PieChart.Data("Online", test.getOnlineRate()));
-//                    list.add(new PieChart.Data("Offline", test.getOfflineRate()));
-//                    PieChart piechart = new PieChart(list);
-//                    piechart.setTitle("Players Chart");
-//                    online.setText("OnLine : " + (int) test.getOnlineRate());
-//                    offline.setText("OffLine : " + (int) test.getOfflineRate());
-//                    paneview.getChildren().add(piechart);
-//                    paneview.getChildren().add(online);
-//                    paneview.getChildren().add(offline);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//            //  }
-//        }.start();
+        });
+        t.start();
     }
 
     public GameServerBase(Stage stage) throws IOException, SQLException {
@@ -133,56 +143,18 @@ public class GameServerBase extends AnchorPane {
         glow0 = new Glow();
         label = new Label();
         paneview = new Pane();
-
+        
+        test = new DataAccessLayer();
+        draw(paneview);
         buttonOff.setDisable(true);
 
-//        buttonOn.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                server = new Server();
-//                buttonOn.setDisable(true);
-//                buttonOff.setDisable(false);
-//                while (server.isOpened) {
-//                    new Thread(){
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                loadData();  //To change body of generated methods, choose Tools | Templates.
-//                            } catch (SQLException ex) {
-//                                Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//                        
-//                    }.start();
-//                }
-//            }
-//        });
         buttonOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 server = new Server();
                 buttonOn.setDisable(true);
                 buttonOff.setDisable(false);
-//                Thread t = new Thread() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            loadData();  //To change body of generated methods, choose Tools | Templates.
-//                        } catch (SQLException ex) {
-//                            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//
-//                };
-//
-//                while (server.isOpened) {
-//
-//                    if (!t.isAlive()) {
-//                        t.start();
-//                    }
-//
-//                }
-
+                loadData(paneview);
             }
         });
 
@@ -193,7 +165,8 @@ public class GameServerBase extends AnchorPane {
                     server.closeConnection();
                     buttonOn.setDisable(false);
                     buttonOff.setDisable(true);
-
+                    //t.stop();
+                    draw(paneview);
                 } catch (IOException ex) {
                     Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }

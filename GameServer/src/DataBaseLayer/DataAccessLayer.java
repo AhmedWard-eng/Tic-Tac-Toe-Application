@@ -137,6 +137,18 @@ public class DataAccessLayer {
         }
         return count;
     }
+    
+    public double getbusyeRate() throws SQLException {
+        String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "busy");
+        int count = 0;
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            count = rs.getInt("total");
+        }
+        return count;
+    }
 
     
     public double getOfflineRate() throws SQLException {

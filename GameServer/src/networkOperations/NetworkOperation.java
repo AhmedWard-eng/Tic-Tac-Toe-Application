@@ -8,6 +8,7 @@ package networkOperations;
 import DataBaseLayer.DataAccessLayer;
 import beans.GameBean;
 import beans.LoginBean;
+import beans.LoginResponseBean;
 import beans.LogoutBean;
 import beans.RequestGameBean;
 import beans.SignUpBean;
@@ -58,10 +59,12 @@ public class NetworkOperation {
     }
 
     public void requestPlay(String s, String ip) {
+
         System.out.println(s);
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
         requestGameBean.myIp = ip;
         if (requestGameBean.operation.equals("accept")) {
+            System.out.println("aaa");
             dataAccessLayer.makePlayersBusy(requestGameBean.myIp,requestGameBean.otherPlayerIp);
         }
         for (int i = 0; i < Server.clientsVector.size(); i++) {
@@ -92,5 +95,19 @@ public class NetworkOperation {
         String message = new Gson().toJson(userArray);
         return message;
     }
+    
+    public String retrievePlayerData(LoginResponseBean loginResponseBean) throws SQLException {
+        System.out.println("onlinePlayer::::");
+        UsersResponseBean userArray = new UsersResponseBean("onlineList", dataAccessLayer.getOnlinePlayers());
+        
+        loginResponseBean.setScore(dataAccessLayer.getPlayerScore(loginResponseBean.getUserName()));
+        loginResponseBean.setUsers(userArray.getUsers());
+        loginResponseBean.setMsg("login successfully");
+        
+        
+        String message = new Gson().toJson(loginResponseBean);
+        return message;
+    }
+    
 
 }

@@ -7,6 +7,7 @@ package gameserver;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.LoginBean;
+import beans.LoginResponseBean;
 import beans.LogoutBean;
 import beans.SignUpBean;
 import beans.UserBean;
@@ -108,6 +109,7 @@ public class ClientConnection {
 
                         } else if (object.getString("operation").equals("login")) {
                             //TODO update ip in the database
+
                             LoginBean loginBean = new LoginBean(null, object.getString("username"), object.getString("password"));
                             String loginResponse = networkOperation.login(loginBean, ip);
                             System.out.println(loginResponse);
@@ -117,9 +119,27 @@ public class ClientConnection {
                             map.put("msg", loginResponse);
                             message = new GsonBuilder().create().toJson(map);
                             if (loginResponse.equals("login successfully")) {
-                                sendMessage(networkOperation.onlinePlayer());
-                            }
-//                            sendMessage(message);
+                                //TODO
+                                //LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", "ward", "55",);
+
+                                LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), null, null,null);
+                                String resMessage = networkOperation.retrievePlayerData(loginResponseBean);
+//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getOperation());
+//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUserName());
+//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getScore());
+//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUsers());
+                                
+                                
+//                                Map<String, String> map2 = new HashMap<>();
+//                                map2.put("operation", "loginResponse");
+//                                map2.put("msg", loginResponseBean);
+//                                message = new GsonBuilder().create().toJson(map2);
+
+                                sendMessage(resMessage);
+                                //sendMessage(networkOperation.onlinePlayer());
+                            }else      sendMessage(message);
+
+                            System.out.println("ipppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp" + ip);
 
                         } else if (object.getString("operation").equals("logout")) {
                             //TODO update ip in the database
@@ -132,7 +152,7 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("accept")) {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);
-                        }else if (object.getString("operation").equals("refuse")) {
+                        } else if (object.getString("operation").equals("refuse")) {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);
                         }
@@ -140,7 +160,7 @@ public class ClientConnection {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);
                         }
-                        
+             
 
                     } catch (IOException ex) {
                         ex.printStackTrace();

@@ -14,12 +14,14 @@ public class LoginBean {
     private String username;
     private String password;
 
+    
     public LoginBean(String status , String username, String password) {
         this.status = status;
         this.username = username;
         this.password = password;
     }
 
+    
     public String getStatus() {
         return status;
     }

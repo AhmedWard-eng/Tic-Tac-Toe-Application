@@ -54,6 +54,13 @@ public class DataAccessLayer {
                     pst.setString(1, loginBean.getUsername());
                     pst.executeUpdate();
 
+                    System.out.println("login bean" + loginBean);
+
+                    pst = connection.prepareStatement("update root.\"game\" set root.\"game\".\"ip\" = ? where root.\"game\".\"username\" = ?");
+                    pst.setString(1, Ip);
+                    pst.setString(2, loginBean.getUsername());
+                    pst.executeUpdate();
+
                     updateIp(Ip, loginBean.getUsername());
                     return "login successfully";
                 } else {
@@ -189,7 +196,7 @@ public class DataAccessLayer {
             pst.setString(2, ip1);
             pst.setString(3, ip2);
             int rs = pst.executeUpdate();
-            System.out.println("rs = "+rs);
+            System.out.println("rs = " + rs);
             return rs != 0;
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,6 +211,19 @@ public class DataAccessLayer {
         pst.setString(1, Ip);
         pst.setString(2, userName);
         int rs = pst.executeUpdate();
+    }
+
+    public String getPlayerScore(String userName) throws SQLException {
+
+        String sql = " SELECT * FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, userName);
+        ResultSet resultSet = pst.executeQuery();
+        Gson gson = new GsonBuilder().create();
+        if (resultSet.next()) {
+            return resultSet.getInt("score")+"";
+        }else
+            return "";        
     }
 
 }

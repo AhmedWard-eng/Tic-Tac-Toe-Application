@@ -15,10 +15,8 @@ import beans.UsersResponseBean;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import com.sun.jndi.dns.DnsContextFactory;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -79,11 +77,12 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
 
-            socket = new Socket("192.168.1.8", 5005);
+            socket = new Socket("192.168.43.228", 5005);
 
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
-            ip = socket.getInetAddress().getHostAddress();
+            ip = socket.getLocalAddress().getHostAddress();
+//            System.out.println(ip);
             r = new RepeatedUserDialog();
 
             readMessage();
@@ -115,7 +114,6 @@ public class NetworkConnection {
 //                            System.out.println("done.." + p.getUserName());
 //                            System.out.println("CCCCCCCCLLIInt" + list.toString());
 //                        }
-                        System.out.println("client recivedddddddddddddddddddddddddddddddd========= " + object.getString("msg"));
                         if (object.getString("operation").equals("signup")) {
                             String str = object.getString("message");
                             if (str.equals("notExist")) {
@@ -152,7 +150,7 @@ public class NetworkConnection {
                                         LoginResponseBean loginResponseBean = new Gson().fromJson(message, LoginResponseBean.class);
                                         //FXMLLoginBase.playerOneName = TextFieldUserName.getText();
                                         Stage stage = TicTacToeGame.getStage();
-                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage,loginResponseBean.getUsers()));
+                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, loginResponseBean.getUsers()));
                                     }
                                 });
 
@@ -163,11 +161,11 @@ public class NetworkConnection {
                                 public void run() {
 //                                    System.out.println("mmmmmmmmmmmmmesssssaggggeeee"+message);
                                     UsersResponseBean usersResponseBean = new Gson().fromJson(message, UsersResponseBean.class);
-                                    
+
 //                                    System.out.println("users" + usersResponseBean.getUsers().size());
                                     Stage stage = TicTacToeGame.getStage();
                                     //TODO
-                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers() ));
+                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers()));
                                 }
                             });
                         } else if (object.getString("operation").equals("requestPlaying")) {
@@ -185,7 +183,7 @@ public class NetworkConnection {
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
                                     Stage stage = TicTacToeGame.getStage();
-                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean,true));
+                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true));
                                 }
                             });
                         } else if (object.getString("operation").equals("refuse")) {

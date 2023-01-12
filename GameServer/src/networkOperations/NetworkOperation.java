@@ -62,7 +62,6 @@ public class NetworkOperation {
 
         System.out.println(s);
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
-        requestGameBean.myIp = ip;
         if (requestGameBean.operation.equals("accept")) {
             System.out.println("aaa");
             dataAccessLayer.makePlayersBusy(requestGameBean.myIp,requestGameBean.otherPlayerIp);

@@ -101,7 +101,7 @@ public class RepeatedUserDialog {
 
     }
 
-    public static void acceptPlaying(NetworkConnection networkConnection, RequestGameBean bean) {
+    public static void acceptPlaying(NetworkConnection networkConnection, RequestGameBean bean,Stage stage) {
         DialogPane dialogPaneName;
         GridPane gridPane;
         Label labelFirstPlayer;
@@ -136,6 +136,7 @@ public class RepeatedUserDialog {
         if (clickedButton.get() == OkButtonType) {
             RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp);
             networkConnection.sendMessage(new Gson().toJson(requestGameBean));
+            Navigation.navigate(stage, new FXMLGameOnlineBase(stage, bean));
         } else if (clickedButton.get() == cancelButtonType) {
 
             RequestGameBean requestGameBean = new RequestGameBean("refuse", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp);

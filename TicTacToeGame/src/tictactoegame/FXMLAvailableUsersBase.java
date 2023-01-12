@@ -57,7 +57,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         listViewAvailableUsers.setPrefSize(585, 290);
 
         System.out.println("Size: " + users.size());
-        for (int i = 0; i < users.size(); i++) {
+         for (int i = 0; i < users.size(); i++) {
             System.out.println("drcftgvh" + users.get(i).getUserName());
             listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
 
@@ -66,6 +66,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
 
             String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", users.get(index).getUserName(), "192.168.1.8", users.get(index).getIp()));
+
             networkConnection.sendMessage(s);
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
         });

@@ -160,8 +160,9 @@ public class NetworkConnection {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Stage stage = TicTacToeGame.getStage();
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
-                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean);
+                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean, stage);
                                 }
                             });
                         } else if (object.getString("operation").equals("accept")) {
@@ -178,11 +179,10 @@ public class NetworkConnection {
                                 @Override
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
-                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean);
+                                    RepeatedUserDialog.dialogRefuse(requestGameBean);
                                 }
                             });
                         }
-         
 
 //////
                     }

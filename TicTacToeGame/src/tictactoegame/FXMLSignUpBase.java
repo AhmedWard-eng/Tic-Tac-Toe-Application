@@ -57,7 +57,6 @@ public class FXMLSignUpBase extends AnchorPane {
 
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
-        
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         labelmatched = new Label("Password Doesn't match Confirm password.");
@@ -103,8 +102,8 @@ public class FXMLSignUpBase extends AnchorPane {
                             dialogMatchPassword();
                         }
                     } else {
-                            System.out.println("enter world from 5to 10 contain number and small,capital litter,@#$%^&+= and number from 0to 9");
-                           RepeatedUserDialog.dialogPatternPassword();
+                        System.out.println("enter world from 5to 10 contain number and small,capital litter,@#$%^&+= and number from 0to 9");
+                       RepeatedUserDialog.dialogPatternPassword("Enter password from 5 to 10 contains characters small, capital ,number from 0 to 9 and any symbol(@#$%^&+=) without any space between.");
                     }
 
                 } else {

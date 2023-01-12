@@ -33,7 +33,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
     NetworkConnection networkConnection;
 
     //  Gson g = new Gson();
-//    ArrayList<UserOnline> users;
+    public static ArrayList<UserOnline> usersList;
     public FXMLAvailableUsersBase(Stage stage, ArrayList<UserOnline> users) {
 
         listViewAvailableUsers = new JFXListView();
@@ -43,7 +43,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label1 = new Label();
         buttonBackHome = new Button();
         networkConnection = NetworkConnection.getInstance();
-
+        usersList = users;
         setId("AnchorPane");
         setPrefHeight(400.0);
         setPrefWidth(600.0);
@@ -65,7 +65,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
 
-            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", users.get(index).getUserName(), networkConnection.getIp(), users.get(index).getIp()));
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", users.get(index).getUserName(), "192.168.1.9", users.get(index).getIp()));
             networkConnection.sendMessage(s);
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
         });

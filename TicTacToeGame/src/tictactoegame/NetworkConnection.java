@@ -5,6 +5,7 @@
  */
 package tictactoegame;
 
+import beans.GameBean;
 import beans.RequestGameBean;
 import com.google.gson.Gson;
 import game.Seed;
@@ -53,6 +54,7 @@ public class NetworkConnection {
 
     RepeatedUserDialog r;
     String message;
+    private static OnlineGameMove ogm;
 
     public static ArrayList<UserOnline> list;
 
@@ -63,11 +65,20 @@ public class NetworkConnection {
         return networkConnection;
     }
 
+    public static NetworkConnection getInstance(OnlineGameMove onlineGameMove) {
+        if (networkConnection == null) {
+            networkConnection = new NetworkConnection();
+        }
+        ogm = onlineGameMove;
+        return networkConnection;
+
+    }
+
     private NetworkConnection() {
         try {
             //"10.145.19.104"
 
-            socket = new Socket("192.168.1.9", 5005);
+            socket = new Socket("192.168.1.8", 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
             ip = socket.getInetAddress().getHostAddress();
@@ -169,7 +180,7 @@ public class NetworkConnection {
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
                                     Stage stage = TicTacToeGame.getStage();
-                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean));
+                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean,true));
                                 }
                             });
                         } else if (object.getString("operation").equals("refuse")) {
@@ -180,6 +191,10 @@ public class NetworkConnection {
                                     RepeatedUserDialog.dialogRefuse(requestGameBean);
                                 }
                             });
+                        } else if (object.getString("operation").equals("gameMove")) {
+                            GameBean gamebean = new Gson().fromJson(message, GameBean.class);
+                            ogm.getMove(gamebean.cell);
+
                         }
 
 //////

@@ -136,6 +136,10 @@ public class ClientConnection {
                             System.out.println(message);
                             networkOperation.requestPlay(message, ip);
                         }
+                        else if (object.getString("operation").equals("gameMove")) {
+                            System.out.println(message);
+                            networkOperation.requestPlay(message, ip);
+                        }
                         
 
                     } catch (IOException ex) {

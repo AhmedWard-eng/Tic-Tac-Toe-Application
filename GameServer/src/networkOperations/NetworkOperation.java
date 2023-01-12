@@ -6,6 +6,7 @@
 package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
+import beans.GameBean;
 import beans.LoginBean;
 import beans.LogoutBean;
 import beans.RequestGameBean;
@@ -59,12 +60,25 @@ public class NetworkOperation {
     public void requestPlay(String s, String ip) {
         System.out.println(s);
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
+        requestGameBean.myIp = ip;
         if (requestGameBean.operation.equals("accept")) {
-            System.out.println("a7a");
             dataAccessLayer.makePlayersBusy(requestGameBean.myIp,requestGameBean.otherPlayerIp);
         }
         for (int i = 0; i < Server.clientsVector.size(); i++) {
             if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp)) {
+                Server.clientsVector.get(i).sendMessage(s);
+            }
+
+        }
+    }
+    
+    
+    public void sendGame(String s, String ip) {
+        System.out.println(s);
+        GameBean gameBean = new Gson().fromJson(s, GameBean.class);
+        
+        for (int i = 0; i < Server.clientsVector.size(); i++) {
+            if (Server.clientsVector.get(i).getIp().equals(gameBean.ip)) {
                 Server.clientsVector.get(i).sendMessage(s);
             }
 

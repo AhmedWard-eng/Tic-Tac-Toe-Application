@@ -1,27 +1,25 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
 import game.GameManager;
 import game.Seed;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -29,7 +27,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import navigationLogic.Navigation;
 
-public class FXMLGameTwoPlayerBase extends AnchorPane {
+/**
+ *
+ * @author Nada Hamed
+ */
+public class HardLevelAI extends AnchorPane {
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Pane pane;
@@ -51,36 +53,14 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
     protected final JFXToggleButton toggleButtonRecord;
     protected final Label labelPlayer;
     protected final Label labelVS;
-    protected final Label labelPlayer2;
+    protected final Label labelCumputer;
     protected final Button buttonBackHome;
     protected final Button buttonRestart;
-
-    protected final DialogPane dialogPaneName;
-    protected final GridPane gridPane;
-    protected final Label labelFirstPlayer;
-    protected final Label labelSecondPlayer;
-    protected final TextField textFieldFirstPlayer;
-    protected final TextField textFieldSecondPlayer;
-    protected String firstPlayer, secondPlayer;
-
-    //decleration array list to cary label
-    ArrayList<Label> borderLabel;
+    int x, y;
+    boolean has_winner;
     private GameManager gameManager;
-    private Seed seed;
-
-    int playerTurn = 0;
-
-    String winnerSymbol;
-
-    Stage stage;
-    String player1name, player2name;
-
-    public FXMLGameTwoPlayerBase(Stage stage, String playerOneName, String playerTwoName) {
-
-        this.stage = stage;
-        player1name = playerOneName;
-        player2name = playerTwoName;
-
+    
+    HardLevelAI(Stage stage) {
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
         line = new Line();
@@ -101,18 +81,31 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         toggleButtonRecord = new JFXToggleButton();
         labelPlayer = new Label();
         labelVS = new Label();
-        labelPlayer2 = new Label();
+        labelCumputer = new Label();
         buttonBackHome = new Button();
         buttonRestart = new Button();
+        has_winner = false;
 
-        dialogPaneName = new DialogPane();
-        gridPane = new GridPane();
-        labelFirstPlayer = new Label("First Player: ");
-        labelSecondPlayer = new Label("Second Player: ");
-        textFieldFirstPlayer = new TextField();
-        textFieldSecondPlayer = new TextField();
+        Label borderLabel [][]={ {label0 , label1 , label2} , { label3,label4,label5 } , {label6,label7,label8} };
 
-        initGame();
+        toggleButtonRecord.setId("Record");
+        toggleButtonRecord.setText("Record");
+        toggleButtonRecord.setToggleColor(Paint.valueOf("#d63333"));
+        toggleButtonRecord.setLayoutX(84.0);
+        toggleButtonRecord.setLayoutY(19.0);
+        toggleButtonRecord.setFont(new Font("Arial Black", 18.0));
+        toggleButtonRecord.setCursor(Cursor.CLOSED_HAND);
+
+        toggleButtonRecord.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (toggleButtonRecord.isSelected()) {
+                    gameManager.setRecorded(true);
+                } else {
+                    gameManager.setRecorded(false);
+                }
+            }
+        });
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -120,8 +113,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         setMinWidth(USE_PREF_SIZE);
         setPrefHeight(400.0);
         setPrefWidth(600.0);
-        //  setStyle("-fx-background-color: #22726e;");
-        this.getStyleClass().add("AnchorPane");
+        setStyle("-fx-background-color: #22726e;");
 
         rectangleBordGameOnePlayer.setArcHeight(5.0);
         rectangleBordGameOnePlayer.setArcWidth(5.0);
@@ -187,7 +179,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label2.setLayoutY(7.0);
         label2.setPrefHeight(82.0);
         label2.setPrefWidth(76.0);
-        label2.setId("2");
         label2.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
@@ -198,7 +189,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label1.setLayoutY(7.0);
         label1.setPrefHeight(72.0);
         label1.setPrefWidth(83.0);
-        label1.setId("1");
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label1.setFont(new Font("Arial Black", 55.0));
         label1.setCursor(Cursor.HAND);
@@ -210,7 +200,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label0.setPrefHeight(62.0);
         label0.setPrefWidth(83.0);
         label0.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label0.setId("0");
         label0.setFont(new Font("Arial Black", 55.0));
         label0.setCursor(Cursor.HAND);
 
@@ -220,8 +209,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label3.setLayoutY(109.0);
         label3.setPrefHeight(82.0);
         label3.setPrefWidth(76.0);
-        label3.setId("3");
-        //label3.setText("x");
         label3.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
@@ -232,8 +219,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label4.setLayoutY(109.0);
         label4.setPrefHeight(82.0);
         label4.setPrefWidth(76.0);
-        //label4.setText("x");
-        label4.setId("4");
         label4.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
@@ -244,8 +229,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label5.setLayoutY(108.0);
         label5.setPrefHeight(82.0);
         label5.setPrefWidth(76.0);
-        //label5.setText("x");
-        label5.setId("5");
         label5.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
@@ -256,8 +239,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label6.setLayoutY(207.0);
         label6.setPrefHeight(72.0);
         label6.setPrefWidth(83.0);
-        //label6.setText("o");
-        label6.setId("6");
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label6.setFont(new Font("Arial Black", 55.0));
         label6.setCursor(Cursor.HAND);
@@ -268,8 +249,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label7.setLayoutY(206.0);
         label7.setPrefHeight(72.0);
         label7.setPrefWidth(83.0);
-        //label7.setText("o");
-        label7.setId("7");
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label7.setFont(new Font("Arial Black", 55.0));
         label7.setCursor(Cursor.HAND);
@@ -280,8 +259,6 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         label8.setLayoutY(206.0);
         label8.setPrefHeight(72.0);
         label8.setPrefWidth(83.0);
-        label8.setId("8");
-        //label8.setText("o");
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label8.setFont(new Font("Arial Black", 55.0));
         label8.setCursor(Cursor.HAND);
@@ -292,18 +269,10 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         pane1.setPrefWidth(229.0);
         pane1.setStyle("-fx-background-color: #12947F; -fx-border-color: white;");
 
-        toggleButtonRecord.setId("Record");
-        toggleButtonRecord.setText("Record");
-        toggleButtonRecord.setToggleColor(Paint.valueOf("#d63333"));
-        toggleButtonRecord.setLayoutX(84.0);
-        toggleButtonRecord.setLayoutY(19.0);
-        toggleButtonRecord.setFont(new Font("Arial Black", 18.0));
-        toggleButtonRecord.setCursor(Cursor.CLOSED_HAND);
-
         labelPlayer.setId("labelPlayer");
         labelPlayer.setLayoutX(76.0);
         labelPlayer.setLayoutY(122.0);
-        labelPlayer.setText(player1name);
+        labelPlayer.setText("Player");
         labelPlayer.setTextFill(javafx.scene.paint.Color.valueOf("#ededed"));
         labelPlayer.setFont(new Font("Arial Black", 22.0));
 
@@ -312,14 +281,14 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         labelVS.setLayoutY(174.0);
         labelVS.setText("VS");
         labelVS.setTextFill(javafx.scene.paint.Color.valueOf("#ee9d12"));
-        labelVS.setFont(new Font("System Bold Italic", 30.0));
+        labelVS.setFont(new Font("Arial Black", 30.0));
 
-        labelPlayer2.setId("labelPlayer2");
-        labelPlayer2.setLayoutX(76.0);
-        labelPlayer2.setLayoutY(240.0);
-        labelPlayer2.setText(player2name);
-        labelPlayer2.setTextFill(javafx.scene.paint.Color.valueOf("#eeeeee"));
-        labelPlayer2.setFont(new Font("Arial Black", 22.0));
+        labelCumputer.setId("labelCumputer");
+        labelCumputer.setLayoutX(55.0);
+        labelCumputer.setLayoutY(236.0);
+        labelCumputer.setText("Computer");
+        labelCumputer.setTextFill(javafx.scene.paint.Color.valueOf("#eeeeee"));
+        labelCumputer.setFont(new Font("Arial Black", 22.0));
 
         buttonBackHome.setLayoutX(34.0);
         buttonBackHome.setLayoutY(341.0);
@@ -358,133 +327,182 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         pane.getChildren().add(pane0);
         getChildren().add(pane);
         pane1.getChildren().add(toggleButtonRecord);
+        // pane1.getChildren().add(toggleButtonRecord);
         pane1.getChildren().add(labelPlayer);
         pane1.getChildren().add(labelVS);
-        pane1.getChildren().add(labelPlayer2);
+        pane1.getChildren().add(labelCumputer);
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
-
-        borderLabel = new ArrayList<>(Arrays.asList(label0, label1, label2, label3, label4, label5, label6, label7, label8));
-
-        borderLabel.forEach(label -> {
-            setupButton(label);
-            label.setFocusTraversable(false);
-        });
-
-        buttonRestart.setOnAction((ActionEvent event) -> {
-            newGame();
-        });
-
+      //  toggleButtonRecord.setDisable(false);
         buttonBackHome.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLHomeBase(stage));
+            Scene scene = new Scene(new FXMLChooseGameLevelBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
 
-        toggleButtonRecord.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        buttonRestart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (toggleButtonRecord.isSelected()) {
-                    gameManager.setRecorded(true);
-                } else {
-                    gameManager.setRecorded(false);
-                }
+            public void handle(ActionEvent event) {
+                Navigation.navigate(stage,new HardLevelAI(stage));
+                toggleButtonRecord.setDisable(false);
+                toggleButtonRecord.setSelected(false);
             }
         });
 
-    }
-
-    private void initGame() {
-        gameManager = new GameManager(player1name,player2name);
-        seed = Seed.CROSS;
-    }
-
-    public void setupButton(Label label) {
-
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                action(stage,borderLabel[i][j], borderLabel);
+            }
+        }
+}
+    public void action(Stage stage ,Label label,Label borderLabel [][]){
         label.setOnMouseClicked(mouseEvent -> {
-
-            label.setMouseTransparent(true);
-
-            setPlayerSymbol(label);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(30);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            checkEndGame();
-                        }
-                    });
+            toggleButtonRecord.setDisable(true);
+           
+            if (!has_winner) {
+                if (label.getText().equals("")) {
+                    label.setText("X");
+                    label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label.setMouseTransparent(true);
+                    int result = minimax(borderLabel, 100, false, true);
+                    System.out.println("result="+result);
+                    has_winner = checkWinner(borderLabel) != 1;
+                } else {
+                    System.out.println("The field is not empty \n");
                 }
-            }).start();
+            }
+            int result = checkWinner(borderLabel);
+            if (result == 0) {
+                System.out.println("Tie \n");
+                Navigation.navigate(stage, new FXMLResultDrawBase(stage, new HardLevelAI(stage)));
+            } else {
+                if (result == 2) {
+                    System.out.println("X is winner");
+                    Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new HardLevelAI(stage)));
+                } else if (result == -2) {
+                    System.out.println("O is winner");
+                    Navigation.navigate(stage, new FXMLResultLoseBase(stage, new HardLevelAI(stage)));
+                } else {
+                    System.out.println("No winner yet");
+                }
+            }
 
-        });
+        });        
+        
     }
+    public int minimax(Label[][] borderLabel, int depth, boolean isMaximizing, boolean firstTime) {
+        int result = checkWinner(borderLabel);
 
-    public void setPlayerSymbol(Label label) {
-        
-        
-        toggleButtonRecord.setDisable(true);
+        if (depth == 0 || result != 1) {
+            return result;
+        }
 
-        //drow x and o
-        if (seed == Seed.CROSS) {
-            gameManager.setCell(Integer.parseInt(label.getId()), Seed.CROSS);
-            label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
-            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
-            labelPlayer.setStyle("-fx-text-fill:#c22115;");
-            labelPlayer2.setStyle("-fx-text-fill:#f0f0f0 ;");
-            seed = Seed.NOUGHT;
+        if (isMaximizing) {
+            int finalScore = -10;
+            int finalI = 0, finalJ = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (borderLabel[i][j].getText() == "") {
+                        borderLabel[i][j].setText("X");
+                        int score = minimax(borderLabel, depth - 1, false, false);
+                        borderLabel[i][j].setText("");
+                        if (score > finalScore) {
+                            finalScore = score;
+                            finalI = i;
+                            finalJ = j;
+                        }
+                        if (firstTime) {
+                            System.out.println("score," + i + "," + j + ": " + score + "\n");
+                        }
+                    }
+                }
+            }
+            if (firstTime) {
+                borderLabel[finalI][finalJ].setText("O");
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                borderLabel[finalI][finalJ].setMouseTransparent(true);
+            }
+            return finalScore;
         } else {
-            gameManager.setCell(Integer.parseInt(label.getId()), Seed.NOUGHT);
-            label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
-            label.setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
-            labelPlayer2.setStyle("-fx-text-fill:#c22115;");
-            labelPlayer.setStyle("-fx-text-fill:#f0f0f0 ;");
-            seed = Seed.CROSS;
+            int finalScore = 10;
+            int finalI = 0, finalJ = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (borderLabel[i][j].getText() == "") {
+                        borderLabel[i][j].setText("O");
+                        int score = minimax(borderLabel, depth - 1, true, false);
+                        borderLabel[i][j].setText("");
+                        if (score < finalScore) {
+                            finalScore = score;
+                            finalI = i;
+                            finalJ = j;
+                        }
+                        if (firstTime) {
+                            System.out.println("score," + i + "," + j + ": " + score + "\n");
+                        }
+                    }
+                }
+            }
+            if (firstTime) {
+                borderLabel[finalI][finalJ].setText("O");
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                borderLabel[finalI][finalJ].setMouseTransparent(true);
+            }
+            return finalScore;
         }
-
-
-    }
-    public void checkEndGame() {
-        if (gameManager.isPlayerXWon()) {
-            gameManager.saveRecord();
-            Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
-        } else if (gameManager.isPlayerOWon()) {
-            gameManager.saveRecord();
-            Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.NOUGHT.getIcon(), new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
-
-        } else if (gameManager.isDraw()) {
-            gameManager.saveRecord();
-            Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
-
-        }
-
-    }
-
-    protected String getWinnerName(String winnerSymbol) {
-        if (winnerSymbol.equals("X")) {
-            return player1name;
-        }
-        return player2name;
     }
 
-    void newGame() {
-        gameManager.setRecorded(false);
-        toggleButtonRecord.setDisable(false);
-        toggleButtonRecord.setSelected(false);
-        for (int i = 0; i < borderLabel.size(); i++) {
-            borderLabel.get(i).setText(" ");
-            borderLabel.get(i).setMouseTransparent(false);
+    public boolean haveTheSameValueAndNotEmpty(String x, String y, String z) {
+        if ((x.equals(y)) && (x.equals(z)) && (y.equals(z)) && (x != "")) {
+            return true;
         }
-        toggleButtonRecord.setDisable(false);
-        toggleButtonRecord.setSelected(false);
-        gameManager.newGame();
+        return false;
+    }
+
+    public int checkWinner(Label  borderLabel[][]) {
+        for (int i = 0; i < 3; i++) {
+            if (haveTheSameValueAndNotEmpty(borderLabel[i][0].getText(), borderLabel[i][1].getText(), borderLabel[i][2].getText())) {
+                return borderLabel[i][0].getText() == "X" ? 2 : -2;
+            }
+        }
+
+        // For cols
+        for (int i = 0; i < 3; i++) {
+            if (haveTheSameValueAndNotEmpty(borderLabel[0][i].getText(), borderLabel[1][i].getText(), borderLabel[2][i].getText())) {
+                return borderLabel[0][i].getText() == "X" ? 2 : -2;
+            }
+        }
+        // Diameter 1
+
+        if (haveTheSameValueAndNotEmpty(borderLabel[0][0].getText(), borderLabel[1][1].getText(), borderLabel[2][2].getText())) {
+            return borderLabel[0][0].getText() == "X" ? 2 : -2;
+        }
+
+        // Diameter 2
+        if (haveTheSameValueAndNotEmpty(borderLabel[0][2].getText(), borderLabel[1][1].getText(), borderLabel[2][0].getText())) {
+            return borderLabel[0][2].getText() == "X" ? 2 : -2;
+        }
+
+        // For Tie Case
+        boolean tie = true;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (borderLabel[i][j].getText() == "") {
+                    tie = false;
+                }
+            }
+        }
+        if (tie) {
+            return 0;
+        }
+
+        // Else
+        return 1;
     }
 
 }
+
+    
+

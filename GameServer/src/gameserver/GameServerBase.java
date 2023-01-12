@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,30 +49,50 @@ public class GameServerBase extends AnchorPane {
     DataAccessLayer test;
 
     private void loadData() throws SQLException {
-        Label online = new Label();
-        Label offline = new Label();
-        offline.setLayoutX(-120.0);
-        offline.setLayoutY(320.0);
-        offline.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
-        offline.setFont(new Font("Arial Black", 14.0));
-        online.setLayoutX(-120.0);
-        online.setLayoutY(350.0);
-        online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
-        online.setFont(new Font("Arial Black", 14.0));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(30);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Label online = new Label();
+                            Label offline = new Label();
+                            offline.setLayoutX(-120.0);
+                            offline.setLayoutY(320.0);
+                            offline.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+                            offline.setFont(new Font("Arial Black", 14.0));
+                            online.setLayoutX(-120.0);
+                            online.setLayoutY(350.0);
+                            online.setTextFill(javafx.scene.paint.Color.valueOf("#f5f3f3"));
+                            online.setFont(new Font("Arial Black", 14.0));
+                            
+                            test = new DataAccessLayer();
+                            paneview.getChildren().clear();
+                            
+                            ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+                            list.add(new PieChart.Data("Online", test.getOnlineRate()));
+                            list.add(new PieChart.Data("Offline", test.getOfflineRate()));
+                            PieChart piechart = new PieChart(list);
+                            piechart.setTitle("Players Chart");
+                            online.setText("OnLine : " + (int) test.getOnlineRate());
+                            offline.setText("OffLine : " + (int) test.getOfflineRate());
+                            paneview.getChildren().add(piechart);
+                            paneview.getChildren().add(online);
+                            paneview.getChildren().add(offline);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
+        }).start();
 
-        test = new DataAccessLayer();
-        paneview.getChildren().clear();
-        
-        ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
-        list.add(new PieChart.Data("Online", test.getOnlineRate()));
-        list.add(new PieChart.Data("Offline", test.getOfflineRate()));
-        PieChart piechart = new PieChart(list);
-        piechart.setTitle("Players Chart");
-        online.setText("OnLine : " + (int) test.getOnlineRate());
-        offline.setText("OffLine : " + (int) test.getOfflineRate());
-        paneview.getChildren().add(piechart);
-        paneview.getChildren().add(online);
-        paneview.getChildren().add(offline);
 //        new Thread() {
 //            @Override
 //            public void run() {
@@ -97,7 +118,6 @@ public class GameServerBase extends AnchorPane {
 //            }
 //            //  }
 //        }.start();
-
     }
 
     public GameServerBase(Stage stage) throws IOException, SQLException {
@@ -137,17 +157,35 @@ public class GameServerBase extends AnchorPane {
 //                }
 //            }
 //        });
-
- buttonOn.setOnAction(new EventHandler<ActionEvent>() {
+        buttonOn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 server = new Server();
                 buttonOn.setDisable(true);
                 buttonOff.setDisable(false);
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            loadData();  //To change body of generated methods, choose Tools | Templates.
+                        } catch (SQLException ex) {
+                            Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                };
+
+                while (server.isOpened) {
+
+                    if (!t.isAlive()) {
+                        t.start();
+                    }
+
                 }
+               
             }
-        );
-loadData();
+        });
+
         buttonOff.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -161,8 +199,6 @@ loadData();
                 }
             }
         });
-
-        
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);

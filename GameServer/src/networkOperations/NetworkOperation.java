@@ -58,29 +58,28 @@ public class NetworkOperation {
 
     }
 
-    public void requestPlay(String s, String ip) {
+    public void requestPlay(String s, String ip, ClientConnection clientConnection) {
 
         System.out.println(s);
         RequestGameBean requestGameBean = new Gson().fromJson(s, RequestGameBean.class);
         if (requestGameBean.operation.equals("accept")) {
             System.out.println("aaa");
-            dataAccessLayer.makePlayersBusy(requestGameBean.myIp,requestGameBean.otherPlayerIp);
+            dataAccessLayer.makePlayersBusy(requestGameBean.myIp, requestGameBean.otherPlayerIp);
         }
         for (int i = 0; i < Server.clientsVector.size(); i++) {
-            if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp)) {
+            if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp) && Server.clientsVector.get(i) != clientConnection) {
                 Server.clientsVector.get(i).sendMessage(s);
             }
 
         }
     }
-    
-    
-    public void sendGame(String s, String ip) {
+
+    public void sendGame(String s, String ip, ClientConnection clientConnection) {
         System.out.println(s);
         GameBean gameBean = new Gson().fromJson(s, GameBean.class);
-        
+
         for (int i = 0; i < Server.clientsVector.size(); i++) {
-            if (Server.clientsVector.get(i).getIp().equals(gameBean.ip)) {
+            if (Server.clientsVector.get(i).getIp().equals(gameBean.ip) && Server.clientsVector.get(i) != clientConnection) {
                 Server.clientsVector.get(i).sendMessage(s);
             }
 
@@ -94,19 +93,17 @@ public class NetworkOperation {
         String message = new Gson().toJson(userArray);
         return message;
     }
-    
+
     public String retrievePlayerData(LoginResponseBean loginResponseBean) throws SQLException {
         System.out.println("onlinePlayer::::");
         UsersResponseBean userArray = new UsersResponseBean("onlineList", dataAccessLayer.getOnlinePlayers());
-        
+
         loginResponseBean.setScore(dataAccessLayer.getPlayerScore(loginResponseBean.getUserName()));
         loginResponseBean.setUsers(userArray.getUsers());
         loginResponseBean.setMsg("login successfully");
-        
-        
+
         String message = new Gson().toJson(loginResponseBean);
         return message;
     }
-    
 
 }

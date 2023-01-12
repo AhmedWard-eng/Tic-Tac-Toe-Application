@@ -42,7 +42,8 @@ public class Server {
         for (int i = 0; i < clientsVector.size(); i++) {
             Socket socket = clientsVector.get(i).socket;
             socket.close();
-        }         
+        }   
+        clientsVector.clear();
     }
 
     private void acceptNewClient() {

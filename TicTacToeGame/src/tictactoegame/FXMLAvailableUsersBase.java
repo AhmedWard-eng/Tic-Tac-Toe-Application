@@ -45,7 +45,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label0 = new Label();
         label1 = new Label();
         buttonBackHome = new Button();
-        networkConnection = NetworkConnection.getInstance();
+        networkConnection = new NetworkConnection();
         usersList = users;
         setId("AnchorPane");
         setPrefHeight(400.0);

@@ -88,7 +88,7 @@ public class FXMLSignUpBase extends AnchorPane {
                                 TextFieldpassword.getText(),
                                 TextFieldConfirmPassword.getText());
 
-                        network = NetworkConnection.getInstance();
+                        network = new NetworkConnection();
                         network.sendMessage(gson.toJson(person));
 
                         System.out.println("data is sent ");

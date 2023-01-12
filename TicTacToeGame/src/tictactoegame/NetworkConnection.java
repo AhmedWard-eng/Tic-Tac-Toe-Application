@@ -45,43 +45,60 @@ import static tictactoegame.FXMLLoginBase.playerOneName;
  */
 public class NetworkConnection {
 
-    private Socket socket;
-    private BufferedReader bufferedReader;
-    private PrintStream ps;
-    private static NetworkConnection networkConnection;
+    private static Socket socket;
+    private static BufferedReader bufferedReader;
+    private static PrintStream ps;
     private String ip;
 
     RepeatedUserDialog r;
     String message;
-    private static OnlineGameMove ogm;
+    private static OnlineGameMove onlineGameMove;
 
-    public static ArrayList<UserOnline> list;
-
-    public static NetworkConnection getInstance() {
-        if (networkConnection == null) {
-            networkConnection = new NetworkConnection();
-        }
-        return networkConnection;
-    }
-
-    public static NetworkConnection getInstance(OnlineGameMove onlineGameMove) {
-        if (networkConnection == null) {
-            networkConnection = new NetworkConnection();
-        }
-        ogm = onlineGameMove;
-        return networkConnection;
-
-    }
-
-    private NetworkConnection() {
+//    public static NetworkConnection getInstance() {
+//        if (networkConnection == null) {
+//            networkConnection = new NetworkConnection();
+//        }
+//        return networkConnection;
+//    }
+//    public static NetworkConnection getInstance(OnlineGameMove onlineGameMove) {
+//        if (networkConnection == null) {
+//            networkConnection = new NetworkConnection();
+//        }
+//        ogm = onlineGameMove;
+//        return networkConnection;
+//
+//    }
+    public NetworkConnection() {
         try {
             //"10.145.19.104"
+            if (socket == null || !socket.isConnected() || socket.isClosed()) {
+                socket = new Socket("192.168.1.5", 5005);
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                ps = new PrintStream(socket.getOutputStream());
+            }
 
-            socket = new Socket("192.168.43.228", 5005);
-
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            ps = new PrintStream(socket.getOutputStream());
+//            System.out.println(ip);
             ip = socket.getLocalAddress().getHostAddress();
+            r = new RepeatedUserDialog();
+
+            readMessage();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public NetworkConnection(OnlineGameMove onlineGameMove) {
+        try {
+            //"10.145.19.104"
+            if (socket == null || !socket.isConnected() || socket.isClosed()) {
+                socket = new Socket("192.168.1.5", 5005);
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                ps = new PrintStream(socket.getOutputStream());
+            }
+
+            ip = socket.getLocalAddress().getHostAddress();
+            NetworkConnection.onlineGameMove = onlineGameMove;
+//            System.out.println("heeh the onlineGame move is not null" + onlineGameMove);
 //            System.out.println(ip);
             r = new RepeatedUserDialog();
 
@@ -103,10 +120,12 @@ public class NetworkConnection {
                         message = bufferedReader.readLine();
 
                         message = message.replaceAll("\r?\n", "");
+                        System.out.println("message in network connection" + message);
+
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
-                        list = new ArrayList<>();
                         JsonParser jsonParser = new JsonParser();
+                        System.out.println("operationnnnnnnnnnnnnnnnnnnnnnn"+object.getString("operation"));
 //                        JsonArray jsonArray = (JsonArray) jsonParser.parse(message);
 //                        for (int i = 0; i < jsonArray.size(); i++) {
 //                            UserOnline p = new Gson().fromJson(jsonArray.get(i).toString(), UserOnline.class);
@@ -174,7 +193,7 @@ public class NetworkConnection {
                                 public void run() {
                                     Stage stage = TicTacToeGame.getStage();
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
-                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean, stage);
+                                    RepeatedUserDialog.acceptPlaying(NetworkConnection.this, requestGameBean, stage);
                                 }
                             });
                         } else if (object.getString("operation").equals("accept")) {
@@ -196,7 +215,14 @@ public class NetworkConnection {
                             });
                         } else if (object.getString("operation").equals("gameMove")) {
                             GameBean gamebean = new Gson().fromJson(message, GameBean.class);
-                            ogm.getMove(gamebean.cell);
+
+                            System.out.println("cellllllllllllllllllllllllllllll" + gamebean.cell.content.getIcon());
+                            
+                            System.out.println("online game = " + onlineGameMove);
+                            if (onlineGameMove != null) {
+                                System.out.println(gamebean.cell.content.getIcon());
+                                onlineGameMove.getMove(gamebean.cell);
+                            }
 
                         }
 

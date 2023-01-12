@@ -16,7 +16,10 @@ import javafx.scene.control.Alert.AlertType;
 import beans.LogoutBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar;
@@ -42,6 +45,7 @@ public class RepeatedUserDialog {
     protected GridPane gridPane;
     protected Label labelFirstPlayer;
     NetworkConnection networkConnection;
+    Node Button;
 
     public void ExistDialog() {
         dialogPaneName = new DialogPane();
@@ -101,7 +105,7 @@ public class RepeatedUserDialog {
 
     }
 
-    public static void acceptPlaying(NetworkConnection networkConnection, RequestGameBean bean,Stage stage) {
+    public static void acceptPlaying(NetworkConnection networkConnection, RequestGameBean bean, Stage stage) {
         DialogPane dialogPaneName;
         GridPane gridPane;
         Label labelFirstPlayer;
@@ -136,20 +140,19 @@ public class RepeatedUserDialog {
         if (clickedButton.get() == OkButtonType) {
             RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp);
             networkConnection.sendMessage(new Gson().toJson(requestGameBean));
-            Navigation.navigate(stage, new FXMLGameOnlineBase(stage, bean,false));
+            Navigation.navigate(stage, new FXMLGameOnlineBase(stage, bean, false));
         } else if (clickedButton.get() == cancelButtonType) {
 
             RequestGameBean requestGameBean = new RequestGameBean("refuse", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp);
             networkConnection.sendMessage(new Gson().toJson(requestGameBean));
         }
     }
-    
-    
+
     public static void dialogRefuse(RequestGameBean requestGameBean) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("MESSAGE...!");
 //        alert.setHeaderText("Look, an Information Dialog");
-        alert.setContentText(requestGameBean.myUserName+ " can't play now");
+        alert.setContentText(requestGameBean.myUserName + " can't play now");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
                 System.out.println("Pressed OK.");
@@ -183,6 +186,7 @@ public class RepeatedUserDialog {
         });
 
     }
+
 
     public void logoutDialog(String message) {
         dialogPaneName = new DialogPane();
@@ -241,4 +245,48 @@ public class RepeatedUserDialog {
         }
     }
 
+    public static void dialogPatternPassword(String message) {
+        DialogPane dialogPaneName;
+        GridPane gridPane;
+        Label passwordPattern;
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+
+        passwordPattern = new Label(message);
+
+        passwordPattern.setFont(new Font("Comic Sans MS Bold", 15.0));
+        passwordPattern.setTextFill(Color.WHITE);
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
+
+        gridPane.add(passwordPattern, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+            try {
+                Stage stage = TicTacToeGame.getStage();
+                navigationLogic.Navigation.navigate(stage, new FXMLSignUpBase(stage));
+            } catch (IOException ex) {
+                Logger.getLogger(RepeatedUserDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
 }

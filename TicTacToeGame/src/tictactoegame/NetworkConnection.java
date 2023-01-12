@@ -54,20 +54,7 @@ public class NetworkConnection {
     String message;
     private static OnlineGameMove onlineGameMove;
 
-//    public static NetworkConnection getInstance() {
-//        if (networkConnection == null) {
-//            networkConnection = new NetworkConnection();
-//        }
-//        return networkConnection;
-//    }
-//    public static NetworkConnection getInstance(OnlineGameMove onlineGameMove) {
-//        if (networkConnection == null) {
-//            networkConnection = new NetworkConnection();
-//        }
-//        ogm = onlineGameMove;
-//        return networkConnection;
-//
-//    }
+
     public NetworkConnection() {
         try {
             //"10.145.19.104"

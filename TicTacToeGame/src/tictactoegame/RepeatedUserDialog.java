@@ -16,7 +16,10 @@ import javafx.scene.control.Alert.AlertType;
 import beans.LogoutBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar;
@@ -179,6 +182,25 @@ public class RepeatedUserDialog {
                 System.out.println("Pressed OK.");
                 Stage stage = TicTacToeGame.getStage();
                 navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            }
+        });
+
+    }
+    
+    public static void dialogPatternPassword() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("PASSWARD...!");
+       // alert.setHeaderText("");
+        alert.setContentText("Enter password from 5 to 10 contains characters small, capital ,number from 0 to 9 and any symbol(@#$%^&+=) without any space between.");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                try {
+                    System.out.println("PASSWARD.");
+                    Stage stage = TicTacToeGame.getStage();
+                    navigationLogic.Navigation.navigate(stage, new FXMLSignUpBase(stage));
+                } catch (IOException ex) {
+                    Logger.getLogger(RepeatedUserDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 

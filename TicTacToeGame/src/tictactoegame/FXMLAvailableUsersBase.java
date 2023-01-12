@@ -36,6 +36,8 @@ public class FXMLAvailableUsersBase extends AnchorPane {
 //    ArrayList<UserOnline> users;
     public FXMLAvailableUsersBase(Stage stage, ArrayList<UserOnline> users) {
 
+        System.out.println("userssssssssssssssssssssssssssssssss"+users);
+        
         listViewAvailableUsers = new JFXListView();
         rectangle = new Rectangle();
         label = new Label();

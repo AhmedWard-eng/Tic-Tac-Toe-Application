@@ -12,17 +12,26 @@ import java.util.ArrayList;
  * @author user
  */
 public class LoginResponseBean {
-
     private String operation;
     private String userName;
     private String score;
     ArrayList<UserOnline> users;
+    private String msg;
 
-    public LoginResponseBean(String operation, String userName, String score, ArrayList<UserOnline> users) {
+    public LoginResponseBean(String operation, String userName, String score, ArrayList<UserOnline> users, String msg) {
         this.operation = operation;
         this.userName = userName;
         this.score = score;
         this.users = users;
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public ArrayList<UserOnline> getUsers() {
@@ -57,4 +66,5 @@ public class LoginResponseBean {
         this.score = score;
     }
 
+    
 }

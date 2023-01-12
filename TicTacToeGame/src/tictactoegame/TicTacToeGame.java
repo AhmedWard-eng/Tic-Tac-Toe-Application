@@ -33,7 +33,7 @@ public class TicTacToeGame extends Application {
 
         guiStage = stage;
 
-        Parent root = new FXMLGameOnlineBase(stage,new RequestGameBean());
+        Parent root = new FXMLHomeBase(stage);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         File file = new File(getClass().getResource("").toExternalForm());

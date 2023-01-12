@@ -5,6 +5,7 @@
  */
 package tictactoegame;
 
+import beans.LoginResponseBean;
 import beans.RequestGameBean;
 import com.google.gson.Gson;
 import game.Seed;
@@ -67,7 +68,7 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
 
-            socket = new Socket("192.168.1.9", 5005);
+            socket = new Socket(InetAddress.getLocalHost(), 5005);
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
             ip = socket.getInetAddress().getHostAddress();
@@ -102,7 +103,7 @@ public class NetworkConnection {
 //                            System.out.println("done.." + p.getUserName());
 //                            System.out.println("CCCCCCCCLLIInt" + list.toString());
 //                        }
-//                        System.out.println("client recivedddddddddddddddddddddddddddddddd= " + message);
+                        System.out.println("client recivedddddddddddddddddddddddddddddddd========= " + object.getString("msg"));
                         if (object.getString("operation").equals("signup")) {
                             String str = object.getString("message");
                             if (str.equals("notExist")) {
@@ -136,9 +137,10 @@ public class NetworkConnection {
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
+                                        LoginResponseBean loginResponseBean = new Gson().fromJson(message, LoginResponseBean.class);
                                         //FXMLLoginBase.playerOneName = TextFieldUserName.getText();
-//                                        Stage stage = TicTacToeGame.getStage();
-//                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage));
+                                        Stage stage = TicTacToeGame.getStage();
+                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage,loginResponseBean.getUsers()));
                                     }
                                 });
 

@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -33,7 +34,7 @@ public class FXMLLoginBase extends AnchorPane {
     protected final AnchorPane anchorPane;
     protected final Button ButtonLogin;
     protected final TextField TextFieldUserName;
-    protected final TextField TextFieldPassword;
+    protected final PasswordField TextFieldPassword;
     protected final Rectangle rectangle;
     protected final Text text;
     protected final Rectangle rectangle0;
@@ -49,7 +50,7 @@ public class FXMLLoginBase extends AnchorPane {
         anchorPane = new AnchorPane();
         ButtonLogin = new Button();
         TextFieldUserName = new TextField();
-        TextFieldPassword = new TextField();
+        TextFieldPassword = new PasswordField();
         rectangle = new Rectangle();
         text = new Text();
         rectangle0 = new Rectangle();

@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -41,8 +42,8 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final Text text;
     protected final TextField TextFieldMail;
     protected final Button ButtonSignUp;
-    protected final TextField TextFieldpassword;
-    protected final TextField TextFieldConfirmPassword;
+    protected final PasswordField TextFieldpassword;
+    protected final PasswordField TextFieldConfirmPassword;
     protected final Button buttonBackHome;
 
     protected final DialogPane dialogPaneName;
@@ -51,6 +52,8 @@ public class FXMLSignUpBase extends AnchorPane {
     protected final Label labelempty;
 
     NetworkConnection network;
+    boolean checkRegEx;
+    String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{5,10}";
 
     public FXMLSignUpBase(Stage stage) throws UnknownHostException, IOException {
 
@@ -67,8 +70,8 @@ public class FXMLSignUpBase extends AnchorPane {
         text = new Text();
         TextFieldMail = new TextField();
         ButtonSignUp = new Button();
-        TextFieldpassword = new TextField();
-        TextFieldConfirmPassword = new TextField();
+        TextFieldpassword = new PasswordField();
+        TextFieldConfirmPassword = new PasswordField();
         buttonBackHome = new Button();
 
         buttonBackHome.setOnAction((ActionEvent event) -> {
@@ -78,25 +81,44 @@ public class FXMLSignUpBase extends AnchorPane {
         ButtonSignUp.setOnAction((ActionEvent event) -> {
             Gson gson = new GsonBuilder().create();
             boolean check;
-
             if ((!TextFieldMail.getText().equals("")) && (!TextFieldpassword.getText().equals("")) && (!TextFieldConfirmPassword.getText().equals(""))) {
-                if ((TextFieldMail.getText().length() < 90) && (TextFieldpassword.getText().length() < 18) && (TextFieldConfirmPassword.getText().length() < 18)) {
+                if ((TextFieldMail.getText().length() < 90) && (3 < TextFieldMail.getText().length())) {
                     check = checkPassword(TextFieldpassword.getText(),
                             TextFieldConfirmPassword.getText());
-                    if (check) {
-                        SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
-                                TextFieldpassword.getText(),
-                                TextFieldConfirmPassword.getText());
+//<<<<<<< HEAD
+//                    if (check) {
+//                        SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
+//                                TextFieldpassword.getText(),
+//                                TextFieldConfirmPassword.getText());
+//
+//                        network = new NetworkConnection();
+//                        network.sendMessage(gson.toJson(person));
+//
+//                        System.out.println("data is sent ");
+//
+//=======
+                    checkRegEx = checkPatternPassword(TextFieldpassword.getText());
+                    if (checkRegEx) {
+                        if (check) {
+                            SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
+                                    TextFieldpassword.getText(),
+                                    TextFieldConfirmPassword.getText());
 
-                        network = new NetworkConnection();
-                        network.sendMessage(gson.toJson(person));
+                            network = new NetworkConnection();
+                            network.sendMessage(gson.toJson(person));
 
-                        System.out.println("data is sent ");
+                            System.out.println("data is sent ");
 
+                        } else {
+                            System.out.println("not matched paass");
+                            dialogMatchPassword();
+                        }
+//>>>>>>> regexPasswardSinUp
                     } else {
-                        System.out.println("not matched paass");
-                        dialogMatchPassword();
+                        System.out.println("enter world from 5to 10 contain number and small,capital litter,@#$%^&+= and number from 0to 9");
+                       RepeatedUserDialog.dialogPatternPassword("Enter password from 5 to 10 contains characters small, capital ,number from 0 to 9 and any symbol(@#$%^&+=) without any space between.");
                     }
+
                 } else {
                     System.out.println("invalid length");
                     dialogLength();
@@ -244,8 +266,16 @@ public class FXMLSignUpBase extends AnchorPane {
 
     }
 
+    public boolean checkPatternPassword(String password) {
+        if (password.matches(pattern)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean checkPassword(String password, String confirmpassword) {
-        if (password.equals(confirmpassword)) {
+        if (password.equals(confirmpassword) && password.matches(pattern)) {
             return true;
         } else {
             return false;

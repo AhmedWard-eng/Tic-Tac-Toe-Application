@@ -1,5 +1,7 @@
 package tictactoegame;
 
+import beans.RequestGameBean;
+import com.google.gson.Gson;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -64,6 +66,7 @@ public class FXMLHomeBase extends AnchorPane {
     protected ButtonType OkButtonType;
     protected ButtonType cancelButtonType;
     protected Dialog<ButtonType> dialog;
+    protected NetworkConnection networkConnection;
 
     public FXMLHomeBase(Stage stage) {
 
@@ -80,6 +83,7 @@ public class FXMLHomeBase extends AnchorPane {
         glow1 = new Glow();
         rectangle0 = new Rectangle();
         buttonRecord = new Button();
+//        RepeatedUserDialog.acceptPlaying(networkConnection,new RequestGameBean("", "ward", "ali", "jj"));
 
         label0 = new Label();
         glow2 = new Glow();
@@ -185,7 +189,7 @@ public class FXMLHomeBase extends AnchorPane {
         buttonOnline.setPrefHeight(45.0);
         buttonOnline.setPrefWidth(147.0);
         buttonOnline.setStyle("-fx-background-color: #cc0000; -fx-background-radius: 10;");
-        buttonOnline.setText("Onlline ");
+        buttonOnline.setText("Online ");
         buttonOnline.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         buttonOnline.setTextFill(javafx.scene.paint.Color.valueOf("#fcf6f6"));
         buttonOnline.setFont(new Font("Arial Black", 18.0));
@@ -211,14 +215,13 @@ public class FXMLHomeBase extends AnchorPane {
         buttonRecord.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Navigation.navigate(stage, new FXMLGameOnlineBase(stage));
+                Navigation.navigate(stage, new FXMLGameHistoryBase(stage));
             }
         });
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-
-          //  NetworkConnection network = new NetworkConnection();
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {

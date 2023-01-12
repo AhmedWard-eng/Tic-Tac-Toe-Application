@@ -1,6 +1,11 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXListView;
+import game.GameInfo;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -11,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import navigationLogic.Navigation;
 
 public class FXMLGameHistoryBase extends AnchorPane {
 
@@ -20,6 +26,7 @@ public class FXMLGameHistoryBase extends AnchorPane {
     protected final Label label0;
     protected final Label label1;
     protected final Button buttonBackHome;
+    ArrayList<GameInfo> gameInfoList;
 
     public FXMLGameHistoryBase(Stage stage) {
 
@@ -86,26 +93,57 @@ public class FXMLGameHistoryBase extends AnchorPane {
         getChildren().add(label0);
         getChildren().add(label1);
         getChildren().add(buttonBackHome);
-        
+
+        if (getListOfFiles() != null) {
+            gameInfoList = getlistOfGameInfo(getListOfFiles());
+            listViewGameHistory.getItems().addAll(Adapter.getitems(gameInfoList));
+        }
+
         listViewGameHistory.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
-            
-            System.out.println("clicked on " + listViewGameHistory.getSelectionModel().getSelectedIndices());
+
+//            System.out.println("clicked on " + String.valueOf(listViewGameHistory.getSelectionModel().getSelectedIndices().get(0)));
+            if (gameInfoList != null) {
+                int index = Integer.parseInt(String.valueOf(listViewGameHistory.getSelectionModel().getSelectedIndices().get(0)));
+
+                int size = getListOfFiles().size();
+                if (index >= 0) {
+                    Navigation.navigate(stage, new FXMLRecordShowBase(stage, getListOfFiles().get(size - index - 1)));
+                }
+            }
         });
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });
-        
-        listViewGameHistory.getItems().add(new FXMLGameHistoryItemBase());
-        listViewGameHistory.getItems().add(new FXMLGameHistoryItemBase());
-        listViewGameHistory.getItems().add(new FXMLGameHistoryItemBase());
-        listViewGameHistory.getItems().add(new FXMLGameHistoryItemBase());
-        listViewGameHistory.getItems().add(new FXMLGameHistoryItemBase());
-        listViewGameHistory.getItems().add(new FXMLGameHistoryItemBase());
-        
-        
+    }
 
+    List<String> getListOfFiles() {
+        File dir = new File("recordedGames");
+        if (dir.exists()) {
+            return Arrays.asList(dir.list());
+        }
+        return null;
+    }
+
+    ArrayList<GameInfo> getlistOfGameInfo(List<String> files) {
+        ArrayList<GameInfo> gameInfos = new ArrayList<>();
+        for (int i = 0; i < files.size(); i++) {
+            gameInfos.add(new GameInfo(files.get(files.size() - 1 - i)));
+        }
+        return gameInfos;
+    }
+
+}
+
+class Adapter {
+
+    public static ArrayList<FXMLGameHistoryItemBase> getitems(ArrayList<GameInfo> gamesInfo) {
+        ArrayList<FXMLGameHistoryItemBase> historyItems = new ArrayList<>();
+        for (int i = 0; i < gamesInfo.size(); i++) {
+            historyItems.add(new FXMLGameHistoryItemBase(gamesInfo.get(i)));
+        }
+        return historyItems;
     }
 }

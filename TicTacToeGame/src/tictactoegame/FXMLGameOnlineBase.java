@@ -1,11 +1,32 @@
 package tictactoegame;
 
+import beans.GameBean;
+import beans.RequestGameBean;
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXToggleButton;
+import game.Cell;
+import game.ComputerPlayer;
+import game.GameManager;
+import game.Seed;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -13,8 +34,26 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import navigationLogic.Navigation;
 
-public class FXMLGameOnlineBase extends AnchorPane {
+public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
+
+    ServerSocket serverSocket;
+    Socket socket;
+    DataInputStream dis;
+    public PrintStream ps;
+    String msg;
+    Thread thread;
+    private GameManager gameManager;
+
+    int playerTurn = 0;
+
+    String winnerSymbol;
+
+    String player1name, player2name;
+    Stage stage;
+    int playerXCount = 0;
+    int playerOCount = 0;
 
     protected final Rectangle rectangleBordGameOnePlayer;
     protected final Pane pane;
@@ -41,9 +80,19 @@ public class FXMLGameOnlineBase extends AnchorPane {
     protected final Button buttonRestart;
     protected final Label labelPlayer1Score;
     protected final Label labelPlayer2Score;
+    private ArrayList<Label> labelsBoard;
+    Seed yourSymbol;
+    private RequestGameBean requestGameBean;
 
-    public FXMLGameOnlineBase(Stage stage) {
+    public FXMLGameOnlineBase(Stage stage, RequestGameBean requestGameBean, boolean start) {
 
+        this.stage = stage;
+        this.requestGameBean = requestGameBean;
+        if (start) {
+            yourSymbol = Seed.CROSS;
+        } else {
+            yourSymbol = Seed.NOUGHT;
+        }
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
         line = new Line();
@@ -71,6 +120,8 @@ public class FXMLGameOnlineBase extends AnchorPane {
         labelPlayer2Score = new Label();
 
         this.getStyleClass().add("Pane");
+        init();
+        labelsBoard = new ArrayList<>(Arrays.asList(label0, label1, label2, label3, label4, label5, label6, label7, label8));
 
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -138,15 +189,18 @@ public class FXMLGameOnlineBase extends AnchorPane {
         pane0.setPrefHeight(300.0);
         pane0.setPrefWidth(300.0);
 
+        labelsBoard.forEach((label) -> {
+            setLabelsMouseListener(label);
+        });
+
         label2.setAlignment(javafx.geometry.Pos.CENTER);
         label2.setGraphicTextGap(0.0);
         label2.setLayoutX(215.0);
         label2.setLayoutY(7.0);
         label2.setPrefHeight(82.0);
         label2.setPrefWidth(76.0);
-        label2.setText("x");
+        label2.setId("2");
         label2.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label2.setTextFill(javafx.scene.paint.Color.valueOf("#ff9900"));
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
 
@@ -156,22 +210,20 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label1.setLayoutY(7.0);
         label1.setPrefHeight(72.0);
         label1.setPrefWidth(83.0);
-        label1.setText("o");
+        label1.setId("1");
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label1.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label1.setFont(new Font("System Bold", 55.0));
+        label1.setFont(new Font("Arial Black", 55.0));
         label1.setCursor(Cursor.HAND);
 
         label0.setAlignment(javafx.geometry.Pos.CENTER);
         label0.setGraphicTextGap(0.0);
-        label0.setLayoutX(6.0);
-        label0.setLayoutY(4.0);
+        label0.setLayoutX(5.0);
+        label0.setLayoutY(5.0);
         label0.setPrefHeight(62.0);
         label0.setPrefWidth(83.0);
-        label0.setText("o");
         label0.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label0.setTextFill(javafx.scene.paint.Color.valueOf("#eeece8"));
-        label0.setFont(new Font("Arial Black", 56.0));
+        label0.setId("0");
+        label0.setFont(new Font("Arial Black", 55.0));
         label0.setCursor(Cursor.HAND);
 
         label3.setAlignment(javafx.geometry.Pos.CENTER);
@@ -180,9 +232,9 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label3.setLayoutY(109.0);
         label3.setPrefHeight(82.0);
         label3.setPrefWidth(76.0);
-        label3.setText("x");
+        label3.setId("3");
+        //label3.setText("x");
         label3.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label3.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
 
@@ -192,9 +244,9 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label4.setLayoutY(109.0);
         label4.setPrefHeight(82.0);
         label4.setPrefWidth(76.0);
-        label4.setText("x");
+        //label4.setText("x");
+        label4.setId("4");
         label4.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label4.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
 
@@ -204,9 +256,9 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label5.setLayoutY(108.0);
         label5.setPrefHeight(82.0);
         label5.setPrefWidth(76.0);
-        label5.setText("x");
+        //label5.setText("x");
+        label5.setId("5");
         label5.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label5.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
 
@@ -216,10 +268,10 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label6.setLayoutY(207.0);
         label6.setPrefHeight(72.0);
         label6.setPrefWidth(83.0);
-        label6.setText("o");
+        //label6.setText("o");
+        label6.setId("6");
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label6.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label6.setFont(new Font("System Bold", 55.0));
+        label6.setFont(new Font("Arial Black", 55.0));
         label6.setCursor(Cursor.HAND);
 
         label7.setAlignment(javafx.geometry.Pos.CENTER);
@@ -228,10 +280,10 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label7.setLayoutY(206.0);
         label7.setPrefHeight(72.0);
         label7.setPrefWidth(83.0);
-        label7.setText("o");
+        //label7.setText("o");
+        label7.setId("7");
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label7.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label7.setFont(new Font("System Bold", 55.0));
+        label7.setFont(new Font("Arial Black", 55.0));
         label7.setCursor(Cursor.HAND);
 
         label8.setAlignment(javafx.geometry.Pos.CENTER);
@@ -240,10 +292,10 @@ public class FXMLGameOnlineBase extends AnchorPane {
         label8.setLayoutY(206.0);
         label8.setPrefHeight(72.0);
         label8.setPrefWidth(83.0);
-        label8.setText("o");
+        label8.setId("8");
+        //label8.setText("o");
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label8.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
-        label8.setFont(new Font("System Bold", 55.0));
+        label8.setFont(new Font("Arial Black", 55.0));
         label8.setCursor(Cursor.HAND);
 
         pane1.setId("pane 1");
@@ -264,7 +316,7 @@ public class FXMLGameOnlineBase extends AnchorPane {
         labelPlayer1.setId("labelPlayer");
         labelPlayer1.setLayoutX(68.0);
         labelPlayer1.setLayoutY(97.0);
-        labelPlayer1.setText("Player 1 ");
+        labelPlayer1.setText(requestGameBean.otherPlayerUN);
         labelPlayer1.setTextFill(javafx.scene.paint.Color.valueOf("#ededed"));
         labelPlayer1.setFont(new Font("Arial Black", 22.0));
 
@@ -278,7 +330,7 @@ public class FXMLGameOnlineBase extends AnchorPane {
         labelPlayer2.setId("labelCumputer");
         labelPlayer2.setLayoutX(67.0);
         labelPlayer2.setLayoutY(233.0);
-        labelPlayer2.setText("Player 2");
+        labelPlayer2.setText(requestGameBean.myUserName);
         labelPlayer2.setTextFill(javafx.scene.paint.Color.valueOf("#eeeeee"));
         labelPlayer2.setFont(new Font("Arial Black", 22.0));
 
@@ -346,6 +398,108 @@ public class FXMLGameOnlineBase extends AnchorPane {
         pane1.getChildren().add(labelPlayer1Score);
         pane1.getChildren().add(labelPlayer2Score);
         getChildren().add(pane1);
+        newGame();
 
     }
+
+    void init() {
+        gameManager = new GameManager();
+    }
+
+    void newGame() {
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            labelsBoard.get(i).setText(" ");
+            setTextEnabled();
+            labelsBoard.get(i).setMouseTransparent(false);
+        }
+        toggleButtonRecord.setDisable(false);
+        toggleButtonRecord.setSelected(false);
+        gameManager.newGame();
+    }
+
+    int compstep;
+
+//    private void computerTurn() {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                compstep = computerPlayer.getComputerChoice();
+//                gameManager.setCell(compstep, Seed.NOUGHT);
+//
+//                try {
+//                    Thread.sleep(300);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(FXMLGameOnePlayerEasyBase.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//
+//                Platform.runLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        labelsBoard.get(compstep).setText(gameManager.getCell(compstep).content.getIcon());
+//                        labelsBoard.get(compstep).setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+//                        labelsBoard.get(compstep).setMouseTransparent(true);
+//                        setTextEnabled();
+//                        if (gameManager.isPlayerOWon()) {
+//                            gameManager.saveRecord();
+//                            Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLGameOnePlayerEasyBase(stage)));
+//                            setTextDisabled();
+//                        }
+//
+//                    }
+//                });
+//            }
+//        }.start();
+//    }
+    private void setTextEnabled() {
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            labelsBoard.get(i).setDisable(false);
+        }
+    }
+
+    private void setTextDisabled() {
+        for (int i = 0; i < labelsBoard.size(); i++) {
+            labelsBoard.get(i).setDisable(true);
+        }
+    }
+
+    public void setLabelsMouseListener(Label label) {
+
+        label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                toggleButtonRecord.setDisable(true);
+                int index = Integer.parseInt(label.getId());
+                gameManager.setCell(index, yourSymbol);
+                label.setText(gameManager.getCell(index).content.getIcon());
+                label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                label.setMouseTransparent(true);
+                GameBean gameBean = new GameBean("gameMove", requestGameBean.myIp, new Cell(yourSymbol, index));
+                String message = new Gson().toJson(gameBean);
+                NetworkConnection.getInstance().sendMessage(message);
+                if ((gameManager.isPlayerXWon() && yourSymbol == Seed.CROSS) || (gameManager.isPlayerOWon() && yourSymbol == Seed.NOUGHT)) {
+                    gameManager.saveRecord();
+                    Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
+                } else if (gameManager.isDraw()) {
+                    gameManager.saveRecord();
+                    Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
+                }
+                setTextDisabled();
+            }
+
+        });
+    }
+
+    @Override
+    public void getMove(Cell cell) {
+        labelsBoard.get(cell.index).setText(cell.content.getIcon());
+        labelsBoard.get(cell.index).setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+        labelsBoard.get(cell.index).setMouseTransparent(true);
+        setTextEnabled();
+        if ((gameManager.isPlayerOWon() && yourSymbol == Seed.CROSS) || (gameManager.isPlayerXWon() && yourSymbol == Seed.NOUGHT)) {
+            gameManager.saveRecord();
+            Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
+            setTextDisabled();
+        }
+    }
+
 }

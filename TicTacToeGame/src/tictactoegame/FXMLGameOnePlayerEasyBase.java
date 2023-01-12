@@ -359,7 +359,7 @@ public class FXMLGameOnePlayerEasyBase extends AnchorPane {
         getChildren().add(pane1);
 
         buttonBackHome.setOnAction((ActionEvent event) -> {
-            Scene scene = new Scene(new FXMLHomeBase(stage));
+            Scene scene = new Scene(new FXMLChooseGameLevelBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
         });

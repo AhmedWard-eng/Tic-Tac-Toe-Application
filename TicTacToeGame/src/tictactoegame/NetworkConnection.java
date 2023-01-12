@@ -5,16 +5,39 @@
  */
 package tictactoegame;
 
+import beans.GameBean;
+import beans.LoginResponseBean;
+import beans.RequestGameBean;
+import com.google.gson.Gson;
+import game.Seed;
+import beans.UserOnline;
+import beans.UsersResponseBean;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
+import javafx.stage.Stage;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import navigationLogic.Navigation;
+import static tictactoegame.FXMLLoginBase.playerOneName;
 
 /**
  *
@@ -22,15 +45,47 @@ import javafx.scene.control.TextArea;
  */
 public class NetworkConnection {
 
-    Socket socket;
-    BufferedReader bufferedReader;
-    PrintStream ps;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private PrintStream ps;
+    private static NetworkConnection networkConnection;
+    private String ip;
 
-    public NetworkConnection() {
+    RepeatedUserDialog r;
+    String message;
+    private static OnlineGameMove ogm;
+
+    public static ArrayList<UserOnline> list;
+
+    public static NetworkConnection getInstance() {
+        if (networkConnection == null) {
+            networkConnection = new NetworkConnection();
+        }
+        return networkConnection;
+    }
+
+    public static NetworkConnection getInstance(OnlineGameMove onlineGameMove) {
+        if (networkConnection == null) {
+            networkConnection = new NetworkConnection();
+        }
+        ogm = onlineGameMove;
+        return networkConnection;
+
+    }
+
+    private NetworkConnection() {
         try {
-            socket = new Socket(InetAddress.getLocalHost(), 5005);
+            //"10.145.19.104"
+
+            socket = new Socket("192.168.43.228", 5005);
+
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
+            ip = socket.getLocalAddress().getHostAddress();
+//            System.out.println(ip);
+            r = new RepeatedUserDialog();
+
+            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -41,16 +96,119 @@ public class NetworkConnection {
         new Thread() {
             @Override
             public void run() {
+
                 try {
-                    while (socket.isClosed()) {
-                        System.out.print(bufferedReader.readLine());
+                    while (socket.isConnected()) {
+
+                        message = bufferedReader.readLine();
+
+                        message = message.replaceAll("\r?\n", "");
+                        JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
+                        JsonObject object = jsonReader.readObject();
+                        list = new ArrayList<>();
+                        JsonParser jsonParser = new JsonParser();
+//                        JsonArray jsonArray = (JsonArray) jsonParser.parse(message);
+//                        for (int i = 0; i < jsonArray.size(); i++) {
+//                            UserOnline p = new Gson().fromJson(jsonArray.get(i).toString(), UserOnline.class);
+//                            list.add(p);
+//                            System.out.println("done.." + p.getUserName());
+//                            System.out.println("CCCCCCCCLLIInt" + list.toString());
+//                        }
+                        if (object.getString("operation").equals("signup")) {
+                            String str = object.getString("message");
+                            if (str.equals("notExist")) {
+                                System.out.println("Sign Up succeded");
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        r.dialogSignUp();
+                                    }
+                                });
+                            } else {
+                                System.out.println("Sign Up Failed repeated");
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        r.dialogRepeated();
+                                    }
+                                });
+                            }
+                        } else if (object.getString("operation").equals("loginResponse")) {
+                            if (object.getString("msg").equals("Invalid data! please try to login again..") || object.getString("msg").equals("This username is not reistered")) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        FXMLLoginBase.playerOneName = null;
+                                        r.loginUnsuccessDialog(object.getString("msg"));
+                                    }
+                                });
+
+                            } else if (object.getString("msg").equals("login successfully")) {
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LoginResponseBean loginResponseBean = new Gson().fromJson(message, LoginResponseBean.class);
+                                        //FXMLLoginBase.playerOneName = TextFieldUserName.getText();
+                                        Stage stage = TicTacToeGame.getStage();
+                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, loginResponseBean.getUsers()));
+                                    }
+                                });
+
+                            }
+                        } else if (object.getString("operation").equals("onlineList")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+//                                    System.out.println("mmmmmmmmmmmmmesssssaggggeeee"+message);
+                                    UsersResponseBean usersResponseBean = new Gson().fromJson(message, UsersResponseBean.class);
+
+//                                    System.out.println("users" + usersResponseBean.getUsers().size());
+                                    Stage stage = TicTacToeGame.getStage();
+                                    //TODO
+                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers()));
+                                }
+                            });
+                        } else if (object.getString("operation").equals("requestPlaying")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Stage stage = TicTacToeGame.getStage();
+                                    RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
+                                    RepeatedUserDialog.acceptPlaying(networkConnection, requestGameBean, stage);
+                                }
+                            });
+                        } else if (object.getString("operation").equals("accept")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
+                                    Stage stage = TicTacToeGame.getStage();
+                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true));
+                                }
+                            });
+                        } else if (object.getString("operation").equals("refuse")) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
+                                    RepeatedUserDialog.dialogRefuse(requestGameBean);
+                                }
+                            });
+                        } else if (object.getString("operation").equals("gameMove")) {
+                            GameBean gamebean = new Gson().fromJson(message, GameBean.class);
+                            ogm.getMove(gamebean.cell);
+
+                        }
+
+//////
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
-                    
+
                 }
             }
-        }.start();
+        }
+                .start();
     }
 
     public void sendMessage(String message) {
@@ -60,5 +218,9 @@ public class NetworkConnection {
                 ps.println(message);
             }
         }.start();
+    }
+
+    public String getIp() {
+        return ip;
     }
 }

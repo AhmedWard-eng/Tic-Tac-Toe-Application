@@ -5,6 +5,8 @@
  */
 package gameserver;
 
+import DataBaseLayer.DataAccessLayer;
+import beans.LoginBean;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +28,7 @@ public class GameServer extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+        
     }
 
     /**

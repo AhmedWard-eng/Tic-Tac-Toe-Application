@@ -20,8 +20,9 @@ public class GameManager {
     public static final int TOTAL_NUM_CELLS = 9;
     private String playerOne;
     private String playerTwo;
-    private Record record;
     private ArrayList<Cell> board;
+    
+    private ArrayList<Cell> recordedBoard;
     boolean isRecorded;
     int counterGames;
     FileOperation fileOperation;
@@ -39,7 +40,7 @@ public class GameManager {
     }
 
     private void init() {
-        record = new Record(playerOne, playerTwo);
+        recordedBoard = new ArrayList<>();
         board = new ArrayList<>();
 
         fileOperation = new FileOperation();
@@ -59,7 +60,7 @@ public class GameManager {
 
     public void setCell(int index, Seed seed) {
         if (isRecorded) {
-            record.board.add(new Cell(seed, index));
+            recordedBoard.add(new Cell(seed, index));
         }
         board.get(index).content = seed;
         counterGames++;
@@ -122,12 +123,13 @@ public class GameManager {
 
     public void saveRecord() {
         if (isRecorded) {
-            String recordString = new Gson().toJson(record);
+            String recordString = new Gson().toJson(new Record(recordedBoard, playerOne, playerTwo));
+            System.out.println(recordString);
             File dir = new File("recordedGames");
             if (!dir.exists()) {
                 dir.mkdir();
             }
-            File file = new File("recordedGames\\" + playerOne + "##" + String.valueOf(new Date()).replace(":", "--") + "##" + playerTwo + ".json");
+            File file = new File("recordedGames\\"  + String.valueOf(new Date()).replace(":", "--") + "##" + playerOne + "##"+ playerTwo + ".json");
 
             fileOperation.saveFile(recordString.getBytes(), file);
 

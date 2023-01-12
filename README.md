@@ -13,11 +13,13 @@ first we have to run the GameServer application if you want to play online game.
 it will display start , stop buttons to open the server or close it.
 then you create account to sign up and log in game.
 
-<img scr="https://user-images.githubusercontent.com/83098969/211934436-edab859e-dba5-4dca-9cd0-605eaa1d52fc.png" width="300" height="150">
+
+![server](https://user-images.githubusercontent.com/83098969/211941760-430dd934-3f33-4987-936f-4dabcadfa631.png)
 
  you can choose one player to play aganist computer with (easy,meduim,hard) , two player mode, online and you can record game in home page.
  
- <img scr="https://user-images.githubusercontent.com/83098969/211935266-2df0f7fb-c72a-4d8e-9625-b31de43b1da9.png" width="300" height="150">
+![home](https://user-images.githubusercontent.com/83098969/211944179-e5831dd2-01a3-47f3-b2a9-50a663233805.png)
+
  
  in online mode after log in ,show list online player you can send invitation to player to play game with him if player accept request or refuse.
  if player accept you can start game but if player refuse you can choose anther player to play .
@@ -30,5 +32,3 @@ then you create account to sign up and log in game.
 + Hossam Ahmed Fadaly 
 + Marina abdelmalak beshara saad 
 + Nada Alsayed hamed 
-
- 

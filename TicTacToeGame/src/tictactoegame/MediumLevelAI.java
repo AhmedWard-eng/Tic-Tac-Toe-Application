@@ -62,6 +62,7 @@ public class MediumLevelAI extends AnchorPane {
     private GameManager gameManager;
 
     public MediumLevelAI(Stage stage) {
+          gameManager=new GameManager();
 
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();

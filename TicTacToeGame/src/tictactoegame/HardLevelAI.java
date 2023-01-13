@@ -448,7 +448,8 @@ public class HardLevelAI extends AnchorPane {
             }
             if (firstTime) {
 
-                borderLabel[finalI][finalJ].setText("O");
+              
+               // borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
                 // borderLabel[finalI][finalJ].setMouseTransparent(true);
 
@@ -481,11 +482,11 @@ public class HardLevelAI extends AnchorPane {
                 }
             }
             if (firstTime) {
-                 borderLabel[finalI][finalJ].setText("O");
+              //   borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
                 //  borderLabel[finalI][finalJ].setMouseTransparent(true);
                 //record.board.add(new Cell(Seed.NOUGHT,getIndex(finalI,finalJ))); 
-                gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
+               gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
                 borderLabel[finalI][finalJ].setText(gameManager.getCell(getIndex(finalI, finalJ)).content.getIcon());
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
             }

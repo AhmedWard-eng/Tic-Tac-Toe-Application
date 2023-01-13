@@ -88,9 +88,7 @@ public class ClientConnection {
                         JsonObject object = jsonReader.readObject();
 
                         //System.out.println(object.getString("operation"));
-
                         //System.out.println("operationnnnnnnn" + object.getString("operation"));
-
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
                             System.out.println("clint exist= " + exist);
@@ -119,12 +117,12 @@ public class ClientConnection {
                             map.put("msg", loginResponse);
                             message = new GsonBuilder().create().toJson(map);
                             if (loginResponse.equals("login successfully")) {
-                               
+
                                 LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), null, null, null);
                                 String resMessage = networkOperation.retrievePlayerData(loginResponseBean);
 
                                 sendMessage(resMessage);
-                               
+
                             } else {
                                 sendMessage(message);
                             }
@@ -148,12 +146,11 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("gameMove")) {
                             System.out.println(message);
                             networkOperation.sendGame(message, ip, ClientConnection.this);
-                        }else if(object.getString("operation").equals("reloadUsersList")){
-                            String players= networkOperation.onlinePlayer();
+                        } else if (object.getString("operation").equals("reloadUsersList")) {
+                            String players = networkOperation.onlinePlayer();
                             //message = new Gson().toJson(players);
                             sendMessage(players);
                         }
-
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (SQLException ex) {

@@ -160,6 +160,7 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("reloadUsersList")) {
                             String players = networkOperation.onlinePlayer();
                             //message = new Gson().toJson(players);
+                            System.out.println("a7a");
                             sendMessage(players);
                         }
 

@@ -72,8 +72,8 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
-
-            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", users.get(index).getUserName(), networkConnection.getIp(), users.get(index).getIp()));
+            System.out.println("usersList size = "+usersList.size()+"===========");
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", "Ward", usersList.get(index).getUserName(), networkConnection.getIp(), usersList.get(index).getIp()));
 
             networkConnection.sendMessage(s);
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
@@ -159,12 +159,14 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
 
     @Override
     public void getUsers(ArrayList<UserOnline> users) {
+        usersList = users;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 listViewAvailableUsers.getItems().clear();
                 for (int i = 0; i < users.size(); i++) {
                     listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+                    System.out.println("users count = "+usersList.size());
                 }
             }
         });

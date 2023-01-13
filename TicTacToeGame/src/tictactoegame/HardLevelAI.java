@@ -60,10 +60,16 @@ public class HardLevelAI extends AnchorPane {
     protected final Button buttonRestart;
     int x, y;
     boolean has_winner;
-//    private GameManager gameManager;
+    private GameManager gameManager;
+    //Record record;
+    private Seed seed;
+    
 
     HardLevelAI(Stage stage) {
+        
+        gameManager = new GameManager();
         rectangleBordGameOnePlayer = new Rectangle();
+        // record=new Record(board, player1, player2);
         pane = new Pane();
         line = new Line();
         line0 = new Line();
@@ -102,9 +108,10 @@ public class HardLevelAI extends AnchorPane {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (toggleButtonRecord.isSelected()) {
-//                    gameManager.setRecorded(true);
+                    
+                    gameManager.setRecorded(true);
                 } else {
-//                    gameManager.setRecorded(false);
+                    gameManager.setRecorded(false);
                 }
             }
         });
@@ -181,6 +188,8 @@ public class HardLevelAI extends AnchorPane {
         label2.setLayoutY(7.0);
         label2.setPrefHeight(82.0);
         label2.setPrefWidth(76.0);
+        label2.setId("2");
+
         label2.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
@@ -194,6 +203,7 @@ public class HardLevelAI extends AnchorPane {
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label1.setFont(new Font("Arial Black", 55.0));
         label1.setCursor(Cursor.HAND);
+        label1.setId("1");
 
         label0.setAlignment(javafx.geometry.Pos.CENTER);
         label0.setGraphicTextGap(0.0);
@@ -204,6 +214,7 @@ public class HardLevelAI extends AnchorPane {
         label0.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label0.setFont(new Font("Arial Black", 55.0));
         label0.setCursor(Cursor.HAND);
+        label0.setId("0");
 
         label3.setAlignment(javafx.geometry.Pos.CENTER);
         label3.setGraphicTextGap(0.0);
@@ -214,6 +225,7 @@ public class HardLevelAI extends AnchorPane {
         label3.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
+        label3.setId("3");
 
         label4.setAlignment(javafx.geometry.Pos.CENTER);
         label4.setGraphicTextGap(0.0);
@@ -224,6 +236,7 @@ public class HardLevelAI extends AnchorPane {
         label4.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
+        label4.setId("4");
 
         label5.setAlignment(javafx.geometry.Pos.CENTER);
         label5.setGraphicTextGap(0.0);
@@ -234,6 +247,7 @@ public class HardLevelAI extends AnchorPane {
         label5.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
+        label5.setId("5");
 
         label6.setAlignment(javafx.geometry.Pos.CENTER);
         label6.setGraphicTextGap(0.0);
@@ -244,6 +258,7 @@ public class HardLevelAI extends AnchorPane {
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label6.setFont(new Font("Arial Black", 55.0));
         label6.setCursor(Cursor.HAND);
+        label6.setId("6");
 
         label7.setAlignment(javafx.geometry.Pos.CENTER);
         label7.setGraphicTextGap(0.0);
@@ -254,6 +269,7 @@ public class HardLevelAI extends AnchorPane {
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label7.setFont(new Font("Arial Black", 55.0));
         label7.setCursor(Cursor.HAND);
+        label7.setId("7");
 
         label8.setAlignment(javafx.geometry.Pos.CENTER);
         label8.setGraphicTextGap(0.0);
@@ -264,6 +280,7 @@ public class HardLevelAI extends AnchorPane {
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label8.setFont(new Font("Arial Black", 55.0));
         label8.setCursor(Cursor.HAND);
+        label8.setId("8");
 
         pane1.setLayoutX(-12.0);
         pane1.setLayoutY(-8.0);
@@ -329,14 +346,14 @@ public class HardLevelAI extends AnchorPane {
         pane.getChildren().add(pane0);
         getChildren().add(pane);
         pane1.getChildren().add(toggleButtonRecord);
-        // pane1.getChildren().add(toggleButtonRecord);
+
         pane1.getChildren().add(labelPlayer);
         pane1.getChildren().add(labelVS);
         pane1.getChildren().add(labelCumputer);
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
-        //  toggleButtonRecord.setDisable(false);
+        toggleButtonRecord.setDisable(false);
         buttonBackHome.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLChooseGameLevelBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
@@ -361,14 +378,25 @@ public class HardLevelAI extends AnchorPane {
 
     public void action(Stage stage, Label label, Label borderLabel[][]) {
         label.setOnMouseClicked(mouseEvent -> {
+            
             toggleButtonRecord.setDisable(true);
-
+            
+            seed = Seed.CROSS;
+            //record=new Record(board, player1, player2);
             if (!has_winner) {
-                if (label.getText().equals("")) {
-                    label.setText("X");
-//                    new Record().board.add(new Cell(Seed.CROSS, Integer.parseInt(label.getId())));
-                    label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                if (seed == Seed.CROSS) {
+                   gameManager.setCell(Integer.parseInt(label.getId()), Seed.CROSS);
+            label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
+            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label.setText("X");
+//                    int index = Integer.parseInt(label.getId());
+//                    gameManager.setCell(index, Seed.CROSS);
+//                    label.setText(gameManager.getCell(index).content.getIcon());
+//                    label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label.setMouseTransparent(true);
+                    // record.board.add(new Cell(Seed.CROSS, Integer.parseInt(label.getId())));
+                    // label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    //label.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
                     has_winner = checkWinner(borderLabel) != 1;
@@ -424,10 +452,17 @@ public class HardLevelAI extends AnchorPane {
                 }
             }
             if (firstTime) {
+
                 borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                // borderLabel[finalI][finalJ].setMouseTransparent(true);
+
+                gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
+                borderLabel[finalI][finalJ].setText(gameManager.getCell(getIndex(finalI, finalJ)).content.getIcon());
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
-//                new Record().board.add(new Cell(getMove(finalI, finalJ), Seed.CROSS));
+                //label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+
+                //  record.board.add(new Cell(Seed.NOUGHT,getIndex(finalI,finalJ)));
             }
             return finalScore;
         } else {
@@ -451,10 +486,13 @@ public class HardLevelAI extends AnchorPane {
                 }
             }
             if (firstTime) {
-                borderLabel[finalI][finalJ].setText("O");
+                 borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                //  borderLabel[finalI][finalJ].setMouseTransparent(true);
+                //record.board.add(new Cell(Seed.NOUGHT,getIndex(finalI,finalJ))); 
+                gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
+                borderLabel[finalI][finalJ].setText(gameManager.getCell(getIndex(finalI, finalJ)).content.getIcon());
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
-//                new Record().board.add(new Cell(getMove(finalI, finalJ), Seed.CROSS));
             }
             return finalScore;
         }
@@ -470,25 +508,58 @@ public class HardLevelAI extends AnchorPane {
     public int checkWinner(Label borderLabel[][]) {
         for (int i = 0; i < 3; i++) {
             if (haveTheSameValueAndNotEmpty(borderLabel[i][0].getText(), borderLabel[i][1].getText(), borderLabel[i][2].getText())) {
-                return borderLabel[i][0].getText() == "X" ? 2 : -2;
+                // return borderLabel[i][0].getText() == "X" ? 2 : -2;
+                if (borderLabel[i][0].getText().equals("X")) {
+                    gameManager.saveRecord();
+                    return 2;
+
+                } else {
+                    gameManager.saveRecord();
+                    return -2;
+                }
+
             }
         }
 
         // For cols
         for (int i = 0; i < 3; i++) {
             if (haveTheSameValueAndNotEmpty(borderLabel[0][i].getText(), borderLabel[1][i].getText(), borderLabel[2][i].getText())) {
-                return borderLabel[0][i].getText() == "X" ? 2 : -2;
+                // return borderLabel[0][i].getText() == "X" ? 2 : -2;
+                if (borderLabel[0][i].getText() == "X") {
+                    gameManager.saveRecord();
+                    return 2;
+
+                } else {
+                    gameManager.saveRecord();
+                    return -2;
+                }
             }
         }
         // Diameter 1
 
         if (haveTheSameValueAndNotEmpty(borderLabel[0][0].getText(), borderLabel[1][1].getText(), borderLabel[2][2].getText())) {
-            return borderLabel[0][0].getText() == "X" ? 2 : -2;
+            // return borderLabel[0][0].getText() == "X" ? 2 : -2;
+            if (borderLabel[0][0].getText() == "X") {
+                gameManager.saveRecord();
+                return 2;
+
+            } else {
+                gameManager.saveRecord();
+                return -2;
+            }
         }
 
         // Diameter 2
         if (haveTheSameValueAndNotEmpty(borderLabel[0][2].getText(), borderLabel[1][1].getText(), borderLabel[2][0].getText())) {
-            return borderLabel[0][2].getText() == "X" ? 2 : -2;
+            // return borderLabel[0][2].getText() == "X" ? 2 : -2;
+            if (borderLabel[0][2].getText() == "X") {
+                gameManager.saveRecord();
+                return 2;
+
+            } else {
+                gameManager.saveRecord();
+                return -2;
+            }
         }
 
         // For Tie Case
@@ -496,16 +567,41 @@ public class HardLevelAI extends AnchorPane {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (borderLabel[i][j].getText() == "") {
+
                     tie = false;
                 }
             }
         }
         if (tie) {
+            gameManager.saveRecord();
             return 0;
         }
 
         // Else
         return 1;
+    }
+
+    public int getIndex(int i, int j) {
+        if ((i == 0) && (j == 0)) {
+            return 0;
+        } else if ((i == 0) && (j == 1)) {
+            return 1;
+        } else if ((i == 0) && (j == 2)) {
+            return 2;
+        } else if ((i == 1) && (j == 0)) {
+            return 3;
+        } else if ((i == 1) && (j == 1)) {
+            return 4;
+        } else if ((i == 1) && (j == 2)) {
+            return 5;
+        } else if ((i == 2) && (j == 0)) {
+            return 6;
+        } else if ((i == 2) && (j == 1)) {
+            return 7;
+        } else {
+            return 8;
+        }
+
     }
 
 }

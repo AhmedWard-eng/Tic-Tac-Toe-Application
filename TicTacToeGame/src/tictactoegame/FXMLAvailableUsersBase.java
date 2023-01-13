@@ -8,7 +8,6 @@ import beans.RequestGameBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jfoenix.controls.JFXListView;
-import com.sun.jndi.dns.DnsContextFactory;
 import interfaces.OnlineUsersList;
 import java.util.ArrayList;
 import java.util.HashMap;

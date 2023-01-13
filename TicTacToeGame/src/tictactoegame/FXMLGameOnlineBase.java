@@ -2,6 +2,8 @@ package tictactoegame;
 
 import beans.GameBean;
 import beans.RequestGameBean;
+import beans.GameFinishBean;
+import beans.GameStatus;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXToggleButton;
 import game.Cell;
@@ -47,6 +49,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     String msg;
     Thread thread;
     private GameManager gameManager;
+    private Gson gson;
 
     int playerTurn = 0;
 
@@ -86,6 +89,8 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     Seed yourSymbol;
     private RequestGameBean requestGameBean;
     NetworkConnection networkConnection;
+    String userName;
+    int userScore;
 
     public FXMLGameOnlineBase(Stage stage, RequestGameBean requestGameBean, boolean start) {
 
@@ -118,6 +123,8 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         buttonRestart = new Button();
         labelPlayer1Score = new Label();
         labelPlayer2Score = new Label();
+        userName = NetworkConnection.userOnline != null ? NetworkConnection.userOnline.getUserName() : "";
+        userScore = NetworkConnection.userOnline != null ? NetworkConnection.userOnline.getScore() : 0;
 
         this.getStyleClass().add("Pane");
         init();
@@ -146,6 +153,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         rectangleBordGameOnePlayer.setStroke(javafx.scene.paint.Color.valueOf("#12947f"));
         rectangleBordGameOnePlayer.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
         rectangleBordGameOnePlayer.setWidth(300.0);
+        gson = new Gson();
 
         pane.setLayoutX(262.0);
         pane.setLayoutY(52.0);
@@ -321,7 +329,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         labelPlayer1.setId("labelPlayer");
         labelPlayer1.setLayoutX(68.0);
         labelPlayer1.setLayoutY(97.0);
-        labelPlayer1.setText(requestGameBean.otherPlayerUN);
+        labelPlayer1.setText(userName);
         labelPlayer1.setTextFill(javafx.scene.paint.Color.valueOf("#ededed"));
         labelPlayer1.setFont(new Font("Arial Black", 22.0));
 
@@ -372,7 +380,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         labelPlayer1Score.setId("labelPlayer");
         labelPlayer1Score.setLayoutX(85.0);
         labelPlayer1Score.setLayoutY(129.0);
-        labelPlayer1Score.setText("7000");
+        labelPlayer1Score.setText(String.valueOf(userScore));
         labelPlayer1Score.setTextFill(javafx.scene.paint.Color.valueOf("#ff9900"));
         labelPlayer1Score.setFont(new Font("Arial Black", 22.0));
 
@@ -460,10 +468,13 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
                 String message = new Gson().toJson(gameBean);
                 networkConnection.sendMessage(message);
                 if ((gameManager.isPlayerXWon() && yourSymbol == Seed.CROSS) || (gameManager.isPlayerOWon() && yourSymbol == Seed.NOUGHT)) {
-                    networkConnection.sendMessage(message);
+                    String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.WIN, userName));
+                    networkConnection.sendMessage(gameFinishMessage);
                     gameManager.saveRecord();
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, yourSymbol.getIcon(), new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                 } else if (gameManager.isDraw()) {
+                    String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.DRAW, userName));
+                    networkConnection.sendMessage(gameFinishMessage);
                     gameManager.saveRecord();
                     Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                 }
@@ -485,10 +496,13 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
                 labelsBoard.get(cell.index).setMouseTransparent(true);
                 setTextEnabled();
                 if ((gameManager.isPlayerOWon() && yourSymbol == Seed.CROSS) || (gameManager.isPlayerXWon() && yourSymbol == Seed.NOUGHT)) {
+                    String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.LOSE, userName));
+                    networkConnection.sendMessage(gameFinishMessage);
                     gameManager.saveRecord();
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                     setTextDisabled();
                 } else if (gameManager.isDraw()) {
+                    String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.DRAW, userName));
                     gameManager.saveRecord();
                     Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                 }

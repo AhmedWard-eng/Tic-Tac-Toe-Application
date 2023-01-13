@@ -7,6 +7,8 @@ package networkOperations;
 
 import DataBaseLayer.DataAccessLayer;
 import beans.GameBean;
+import beans.GameFinishBean;
+import beans.GameStatus;
 import beans.LoginBean;
 import beans.LoginResponseBean;
 import beans.LogoutBean;
@@ -104,6 +106,18 @@ public class NetworkOperation {
 
         String message = new Gson().toJson(loginResponseBean);
         return message;
+    }
+
+    public void gameFinish(String message, String ip) {
+        GameFinishBean gameFinishBean = new Gson().fromJson(message, GameFinishBean.class);
+
+        dataAccessLayer.makeuserOnline(ip);
+        if (gameFinishBean.gameStatus.equals(GameStatus.WIN)) {
+            dataAccessLayer.updateScore(gameFinishBean.userName,5);
+        }else if(gameFinishBean.gameStatus.equals(GameStatus.LOSE)){
+            dataAccessLayer.updateScore(gameFinishBean.userName, -5);
+        }
+
     }
 
 }

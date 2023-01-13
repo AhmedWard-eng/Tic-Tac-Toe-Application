@@ -14,11 +14,11 @@ import java.util.ArrayList;
 public class LoginResponseBean {
     private String operation;
     private String userName;
-    private String score;
+    private int score;
     ArrayList<UserOnline> users;
     private String msg;
 
-    public LoginResponseBean(String operation, String userName, String score, ArrayList<UserOnline> users, String msg) {
+    public LoginResponseBean(String operation, String userName, int score, ArrayList<UserOnline> users, String msg) {
         this.operation = operation;
         this.userName = userName;
         this.score = score;
@@ -58,11 +58,11 @@ public class LoginResponseBean {
         this.userName = userName;
     }
 
-    public String getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(int score) {
         this.score = score;
     }
 

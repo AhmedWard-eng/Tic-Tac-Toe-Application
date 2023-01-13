@@ -49,11 +49,11 @@ public class NetworkConnection {
     private static BufferedReader bufferedReader;
     private static PrintStream ps;
     private String ip;
+    public static UserOnline userOnline;
 
     RepeatedUserDialog r;
     String message;
     private static OnlineGameMove onlineGameMove;
-
 
     public NetworkConnection() {
         try {
@@ -106,13 +106,13 @@ public class NetworkConnection {
 
                         message = bufferedReader.readLine();
 
-                        message = message.replaceAll("\r?\n", "");
+                        message = message != null ? message.replaceAll("\r?\n", "") : "";
                         System.out.println("message in network connection" + message);
 
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
                         JsonParser jsonParser = new JsonParser();
-                        System.out.println("operationnnnnnnnnnnnnnnnnnnnnnn"+object.getString("operation"));
+                        System.out.println("operationnnnnnnnnnnnnnnnnnnnnnn" + object.getString("operation"));
 //                        JsonArray jsonArray = (JsonArray) jsonParser.parse(message);
 //                        for (int i = 0; i < jsonArray.size(); i++) {
 //                            UserOnline p = new Gson().fromJson(jsonArray.get(i).toString(), UserOnline.class);
@@ -156,6 +156,7 @@ public class NetworkConnection {
                                         LoginResponseBean loginResponseBean = new Gson().fromJson(message, LoginResponseBean.class);
                                         //FXMLLoginBase.playerOneName = TextFieldUserName.getText();
                                         Stage stage = TicTacToeGame.getStage();
+                                        userOnline = new UserOnline(ip, loginResponseBean.getUserName(), "", "", loginResponseBean.getScore());
                                         Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, loginResponseBean.getUsers()));
                                     }
                                 });
@@ -204,7 +205,7 @@ public class NetworkConnection {
                             GameBean gamebean = new Gson().fromJson(message, GameBean.class);
 
                             System.out.println("cellllllllllllllllllllllllllllll" + gamebean.cell.content.getIcon());
-                            
+
                             System.out.println("online game = " + onlineGameMove);
                             if (onlineGameMove != null) {
                                 System.out.println(gamebean.cell.content.getIcon());

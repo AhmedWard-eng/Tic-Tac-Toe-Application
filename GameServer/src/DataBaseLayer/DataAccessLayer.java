@@ -127,10 +127,8 @@ public class DataAccessLayer {
                     resultSet.getString("username"),
                     resultSet.getString("password"),
                     resultSet.getString("status"),
-
                     resultSet.getInt("score")
             ));
-
 
         }
 
@@ -138,7 +136,6 @@ public class DataAccessLayer {
 
     }
 
-    
     public double getOnlineRate() throws SQLException {
 
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
@@ -151,7 +148,7 @@ public class DataAccessLayer {
         }
         return count;
     }
-    
+
     public double getbusyeRate() throws SQLException {
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -164,7 +161,6 @@ public class DataAccessLayer {
         return count;
     }
 
-    
     public double getOfflineRate() throws SQLException {
 
         String sql = "select count( ROOT.\"game\".\"id\") AS total FROM  ROOT.\"game\" Where ROOT.\"game\".\"status\"=? ";
@@ -222,7 +218,7 @@ public class DataAccessLayer {
         int rs = pst.executeUpdate();
     }
 
-    public String getPlayerScore(String userName) throws SQLException {
+    public int getPlayerScore(String userName) throws SQLException {
 
         String sql = " SELECT * FROM  ROOT.\"game\" Where ROOT.\"game\".\"username\"=? ";
         PreparedStatement pst = connection.prepareStatement(sql);
@@ -230,9 +226,43 @@ public class DataAccessLayer {
         ResultSet resultSet = pst.executeQuery();
         Gson gson = new GsonBuilder().create();
         if (resultSet.next()) {
-            return resultSet.getInt("score")+"";
-        }else
-            return "";        
+            return resultSet.getInt("score");
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean updateScore(String userName,int score) {
+        try {
+            String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"score\" = ? where ROOT.\"game\".\"userName\" = ?";
+            PreparedStatement pst = connection.prepareStatement(sqlUpdate);
+            pst.setInt(1, score);
+            pst.setString(2, userName);
+            int rs = pst.executeUpdate();
+            System.out.println("rs = " + rs);
+            return rs != 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return false;
+        }
+    }
+
+    public boolean makeuserOnline(String ip) {
+        try {
+            String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"status\" = ? where ROOT.\"game\".\"ip\" = ?";
+            PreparedStatement pst = connection.prepareStatement(sqlUpdate);
+            pst.setString(1, "online");
+            pst.setString(2, ip);
+            int rs = pst.executeUpdate();
+            System.out.println("rs = " + rs);
+            return rs != 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return false;
+        }
+
     }
 
 }

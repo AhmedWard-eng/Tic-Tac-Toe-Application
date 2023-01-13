@@ -122,7 +122,7 @@ public class ClientConnection {
                                 //TODO
                                 //LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", "ward", "55",);
 
-                                LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), null, null, null);
+                                LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), 0, null, null);
                                 String resMessage = networkOperation.retrievePlayerData(loginResponseBean);
 //                                System.out.println(".run())()()()()()()()" + loginResponseBean.getOperation());
 //                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUserName());
@@ -158,6 +158,9 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("gameMove")) {
                             System.out.println(message);
                             networkOperation.sendGame(message, ip, ClientConnection.this);
+                        } else if (object.getString("operation").equals("gameFinish")) {
+                            System.out.println(message);
+                            networkOperation.gameFinish(message, ip);
                         }
 
                     } catch (IOException ex) {

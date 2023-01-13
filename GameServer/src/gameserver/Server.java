@@ -5,10 +5,13 @@
  */
 package gameserver;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +27,7 @@ public class Server {
     boolean isOpened;
 
     public static Vector<ClientConnection> clientsVector = new Vector<ClientConnection>();
+
     public Server() {
 
         try {
@@ -36,13 +40,27 @@ public class Server {
     }
 
     public void closeConnection() throws IOException {
-        serverSocket.close();
         isOpened = false;
 //        if (clientConnection != null) {
         for (int i = 0; i < clientsVector.size(); i++) {
+
             Socket socket = clientsVector.get(i).socket;
+
+            Map<String, String> map = new HashMap<>();
+            map.put("operation", "serverStatus");
+            map.put("message", "close");
+
+            String message = new Gson().toJson(map);
+
+            clientsVector.get(i).sendMessage(message);
+          
             socket.close();
-        }   
+
+            System.err.println(" socket isclosed " + socket.isClosed());
+            System.err.println(" socket isConnected " + socket.isConnected());
+        }
+
+        serverSocket.close();
         clientsVector.clear();
     }
 
@@ -53,10 +71,10 @@ public class Server {
 
                 while (!serverSocket.isClosed()) {
                     try {
-                            Socket socket = serverSocket.accept();
-                            clientsVector.add(new ClientConnection(socket));
-                            System.out.println("server number of clients"+clientsVector.size());
-                            
+                        Socket socket = serverSocket.accept();
+                        clientsVector.add(new ClientConnection(socket));
+                        System.out.println("server number of clients" + clientsVector.size());
+
                         System.out.println("Accept new Client is running.......");
                     } catch (SocketException ex) {
                         System.out.println("socket is closed");

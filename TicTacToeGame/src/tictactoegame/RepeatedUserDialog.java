@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar;
@@ -187,7 +188,6 @@ public class RepeatedUserDialog {
 
     }
 
-
     public void logoutDialog(String message) {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
@@ -288,5 +288,26 @@ public class RepeatedUserDialog {
             }
 
         }
+    }
+
+    public void dialogOutOfConnection() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("MESSAGE...!");
+                alert.setHeaderText("OK, an Information Dialog");
+                alert.setContentText("OUT OF CONNECTION");
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK) {
+                        System.out.println("Pressed OK.");
+                        Stage stage = TicTacToeGame.getStage();
+                        navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
+                    }
+                });
+            }
+        });
+
     }
 }

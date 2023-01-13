@@ -2,7 +2,12 @@ package tictactoegame;
 
 import beans.RequestGameBean;
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -220,7 +225,20 @@ public class FXMLHomeBase extends AnchorPane {
         });
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-            navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            try {
+                NetworkConnection networkConnection = new NetworkConnection("testing server");
+                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+                System.out.println("hhh");
+            } catch (ConnectException ex) {
+
+                System.out.println("dialoooooooooooooogggggggggggggggggggggg");
+            } catch (SocketException ex) {
+//                System.out.println("naviiiiiigateeeeeeeeeeeeeeeeee");
+//                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.out.println("tictactoegame.FXMLHomeBase.<init>() catchhhhhchchchch");
+            }
 
         });
 

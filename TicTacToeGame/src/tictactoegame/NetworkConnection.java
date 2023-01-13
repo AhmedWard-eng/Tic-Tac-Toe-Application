@@ -22,7 +22,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.StringReader;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Platform;
@@ -59,16 +61,18 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
+
                 socket = new Socket("192.168.1.8", 5005);
+
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
+
+                readMessage();
             }
 
 //            System.out.println(ip);
             ip = socket.getLocalAddress().getHostAddress();
             r = new RepeatedUserDialog();
-
-            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -78,9 +82,12 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
+
                 socket = new Socket("192.168.1.8", 5005);
+
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
+                readMessage();
             }
 
             ip = socket.getLocalAddress().getHostAddress();
@@ -89,10 +96,29 @@ public class NetworkConnection {
 //            System.out.println(ip);
             r = new RepeatedUserDialog();
 
-            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public NetworkConnection(String testMsg) throws IOException {
+        //"10.145.19.104"
+        if (socket != null) {
+            socket.close();
+        }
+        socket = null;
+        if (socket == null || socket.isClosed()) {
+            socket = new Socket("192.168.1.2", 5005);
+            System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg");
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            ps = new PrintStream(socket.getOutputStream());
+        }
+        readMessage();
+        System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg" + socket.isConnected());
+//            System.out.println(ip);
+        ip = socket.getLocalAddress().getHostAddress();
+        r = new RepeatedUserDialog();
+
     }
 
     public void readMessage() {
@@ -106,7 +132,14 @@ public class NetworkConnection {
 
                         message = bufferedReader.readLine();
 
-                        message = message != null ? message.replaceAll("\r?\n", "") : "";
+                        if (message == null) {
+                            System.out.println(".runnnnnnnnnnn()");
+                            r.dialogOutOfConnection();
+                            break;
+                        }
+
+                        message = message.replaceAll("\r?\n", "");
+
                         System.out.println("message in network connection" + message);
 
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
@@ -213,12 +246,18 @@ public class NetworkConnection {
                             }
 
                         }
+                        if (object.getString("operation").equals("serverStatus")) {
+
+                            System.out.println("operation from server= " + object.getString("close"));
+
+                        }
 
 //////
                     }
+                } catch (SocketException ex) {
+
                 } catch (IOException ex) {
                     ex.printStackTrace();
-
                 }
             }
         }

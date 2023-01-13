@@ -108,16 +108,29 @@ public class NetworkOperation {
         return message;
     }
 
-    public void gameFinish(String message, String ip) {
+    public void gameFinish(String message, String ip) throws SQLException {
         GameFinishBean gameFinishBean = new Gson().fromJson(message, GameFinishBean.class);
-
+        int score = dataAccessLayer.getPlayerScore(gameFinishBean.userName);
+        System.out.println("networkOperations.NetworkOperation.gameFinish()" + " score = " + score);
         dataAccessLayer.makeuserOnline(ip);
         if (gameFinishBean.gameStatus.equals(GameStatus.WIN)) {
-            dataAccessLayer.updateScore(gameFinishBean.userName,5);
-        }else if(gameFinishBean.gameStatus.equals(GameStatus.LOSE)){
-            dataAccessLayer.updateScore(gameFinishBean.userName, -5);
+            boolean isUpdated = dataAccessLayer.updateScore(gameFinishBean.userName, (score + 5));
+            System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update = " + isUpdated);
+
+        } else if (gameFinishBean.gameStatus.equals(GameStatus.LOSE)) {
+            boolean isUpdated = dataAccessLayer.updateScore(gameFinishBean.userName, (score - 5));
+            System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update = " + isUpdated);
         }
 
+    }
+
+    public void withdrawing(String message, String ip,ClientConnection clientConnection) {
+        for (int i = 0; i < Server.clientsVector.size(); i++) {
+            if (Server.clientsVector.get(i).getIp().equals(ip) && Server.clientsVector.get(i) != clientConnection) {
+                Server.clientsVector.get(i).sendMessage(message);
+            }
+
+        }
     }
 
 }

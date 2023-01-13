@@ -160,8 +160,9 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("reloadUsersList")) {
                             String players = networkOperation.onlinePlayer();
                             //message = new Gson().toJson(players);
-                            System.out.println("a7a");
                             sendMessage(players);
+                        } else if (object.getString("operation").equals("withdraw")) {
+                            networkOperation.withdrawing(message, object.getString("ip"), ClientConnection.this);
                         }
 
                     } catch (SocketException ex) {

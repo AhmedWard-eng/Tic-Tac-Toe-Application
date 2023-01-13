@@ -16,13 +16,15 @@ public class RequestGameBean {
     public String otherPlayerUN;
     public String myIp;
     public String otherPlayerIp;
+    public int score;
 
-    public RequestGameBean(String operation, String myUserName, String otherPlayerUN, String myIp, String otherPlayerIp) {
+    public RequestGameBean(String operation, String myUserName, String otherPlayerUN, String myIp, String otherPlayerIp,int score) {
         this.otherPlayerIp = otherPlayerIp;
         this.myIp = myIp;
         this.operation = operation;
         this.myUserName = myUserName;
         this.otherPlayerUN = otherPlayerUN;
+        this.score = score;
     }
 
     public RequestGameBean() {

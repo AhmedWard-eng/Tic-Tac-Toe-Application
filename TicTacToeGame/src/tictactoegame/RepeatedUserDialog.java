@@ -139,12 +139,11 @@ public class RepeatedUserDialog {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
-            RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp);
+            RequestGameBean requestGameBean = new RequestGameBean("accept", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp, NetworkConnection.userOnline.getScore());
             networkConnection.sendMessage(new Gson().toJson(requestGameBean));
-            Navigation.navigate(stage, new FXMLGameOnlineBase(stage, bean, false));
+            Navigation.navigate(stage, new FXMLGameOnlineBase(stage, bean, false, bean.score));
         } else if (clickedButton.get() == cancelButtonType) {
-
-            RequestGameBean requestGameBean = new RequestGameBean("refuse", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp);
+            RequestGameBean requestGameBean = new RequestGameBean("refuse", bean.otherPlayerUN, bean.myUserName, bean.otherPlayerIp, bean.myIp, NetworkConnection.userOnline.getScore());
             networkConnection.sendMessage(new Gson().toJson(requestGameBean));
         }
     }
@@ -309,5 +308,45 @@ public class RepeatedUserDialog {
             }
         });
 
+    }
+
+    public static void assureWithdrawing(NetworkConnection networkConnection,String message, Stage stage) {
+        DialogPane dialogPaneName;
+        GridPane gridPane;
+        Label labelFirstPlayer;
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label("are you sure you want to withdraw?\n you will lose 5 points from your score");
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setHeaderText("withdrawing");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        //dialog.setTitle(message);
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+        ButtonType cancelButtonType = new ButtonType("cancel");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+
+        Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+        cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+            networkConnection.sendMessage(message);
+            Navigation.navigate(stage, new FXMLAvailableUsersBase(stage,NetworkConnection.users));
+        } else if (clickedButton.get() == cancelButtonType) {
+            
+        }
     }
 }

@@ -231,7 +231,7 @@ public class DataAccessLayer {
 
     public boolean updateScore(String userName,int score) {
         try {
-            String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"score\" = ? where ROOT.\"game\".\"userName\" = ?";
+            String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"SCORE\" = ? where ROOT.\"game\".\"username\" = ?";
             PreparedStatement pst = connection.prepareStatement(sqlUpdate);
             pst.setInt(1, score);
             pst.setString(2, userName);

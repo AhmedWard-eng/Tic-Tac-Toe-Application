@@ -51,6 +51,7 @@ public class NetworkConnection {
     private static Socket socket;
     private static BufferedReader bufferedReader;
     private static PrintStream ps;
+    public static ArrayList<UserOnline> users;
     private String ip;
     public static UserOnline userOnline;
 
@@ -68,9 +69,7 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-
-                socket = new Socket("192.168.1.2", 5005);
-
+                socket = new Socket("192.168.1.8", 5005);
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -90,7 +89,7 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.2", 5005);
+                socket = new Socket("192.168.1.8", 5005);
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -113,8 +112,7 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-
-                socket = new Socket("192.168.1.2", 5005);
+                socket = new Socket("192.168.1.8", 5005);
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -139,7 +137,7 @@ public class NetworkConnection {
         }
         socket = null;
         if (socket == null || socket.isClosed()) {
-            socket = new Socket("192.168.1.2", 5005);
+            socket = new Socket("192.168.1.8", 5005);
             System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
@@ -236,6 +234,7 @@ public class NetworkConnection {
                             System.out.println("first Users");
                             if (onlineUsersList != null) {
                                 onlineUsersList.getUsers(usersResponseBean.getUsers());
+                                NetworkConnection.users = usersResponseBean.getUsers();
                             }
 //                                    Stage stage = TicTacToeGame.getStage();
 
@@ -257,7 +256,7 @@ public class NetworkConnection {
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
                                     Stage stage = TicTacToeGame.getStage();
-                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true));
+                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true,requestGameBean.score));
                                 }
                             });
                         } else if (object.getString("operation").equals("refuse")) {
@@ -279,28 +278,17 @@ public class NetworkConnection {
                                 onlineGameMove.getMove(gamebean.cell);
                             }
 
+                        }else if(object.getString("operation").equals("withdraw")){
+                            Stage stage = TicTacToeGame.getStage();
+                            Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, users));
+                            //dialogue to show him that the other player withdraw and navigate to online availbe users
                         }
-//<<<<<<< HEAD
-                        if (object.getString("operation").equals("serverStatus")) {
 
-                            System.out.println("operation from server= " + object.getString("close"));
-
-                        }
-//=======
-//                        else if (object.getString("operation").equals("onlineplayers")) {
+//                        if (object.getString("operation").equals("serverStatus")) {
 //
-//                            Platform.runLater(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    UsersResponseBean usersResponseBean = new Gson().fromJson(message, UsersResponseBean.class);
-//                                    System.out.println("usersrefresh" + usersResponseBean.getUsers().size());
-//                                    Stage stage = TicTacToeGame.getStage();
-//                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers()));
-//                                }
-//                            });
+//                            System.out.println("operation from server= " + object.getString("close"));
+//
 //                        }
-//>>>>>>> UIEdits
-
                     }
                 } catch (SocketException ex) {
 
@@ -308,8 +296,7 @@ public class NetworkConnection {
                     ex.printStackTrace();
                 }
             }
-        }
-                .start();
+        }.start();
     }
 
     public void sendMessage(String message) {

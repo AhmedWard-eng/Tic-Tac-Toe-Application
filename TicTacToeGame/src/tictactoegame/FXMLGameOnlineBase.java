@@ -19,6 +19,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -82,7 +84,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     protected final Label labelVS;
     protected final Label labelPlayer2;
     protected final Button buttonBackHome;
-    protected final Button buttonRestart;
+//    protected final Button buttonRestart;
     protected final Label labelPlayer1Score;
     protected final Label labelPlayer2Score;
     private ArrayList<Label> labelsBoard;
@@ -92,7 +94,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     String userName;
     int userScore;
 
-    public FXMLGameOnlineBase(Stage stage, RequestGameBean requestGameBean, boolean start) {
+    public FXMLGameOnlineBase(Stage stage, RequestGameBean requestGameBean, boolean start, int otherPlayerScore) {
 
         this.stage = stage;
         this.requestGameBean = requestGameBean;
@@ -120,7 +122,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         labelVS = new Label();
         labelPlayer2 = new Label();
         buttonBackHome = new Button();
-        buttonRestart = new Button();
+//        buttonRestart = new Button();
         labelPlayer1Score = new Label();
         labelPlayer2Score = new Label();
         userName = NetworkConnection.userOnline != null ? NetworkConnection.userOnline.getUserName() : "";
@@ -367,16 +369,15 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
             }
         });
 
-        buttonRestart.setLayoutX(131.0);
-        buttonRestart.setLayoutY(342.0);
-        buttonRestart.setMnemonicParsing(false);
-        buttonRestart.setPrefHeight(42.0);
-        buttonRestart.setPrefWidth(83.0);
-        buttonRestart.setStyle("-fx-background-radius: 50; -fx-background-color: #ff9900; -fx-border-radius: 50;");
-        buttonRestart.setText("Restart");
-        buttonRestart.setFont(new Font("Arial Bold", 15.0));
-        buttonRestart.setCursor(Cursor.CLOSED_HAND);
-
+//        buttonRestart.setLayoutX(131.0);
+//        buttonRestart.setLayoutY(342.0);
+//        buttonRestart.setMnemonicParsing(false);
+//        buttonRestart.setPrefHeight(42.0);
+//        buttonRestart.setPrefWidth(83.0);
+//        buttonRestart.setStyle("-fx-background-radius: 50; -fx-background-color: #ff9900; -fx-border-radius: 50;");
+//        buttonRestart.setText("Restart");
+//        buttonRestart.setFont(new Font("Arial Bold", 15.0));
+//        buttonRestart.setCursor(Cursor.CLOSED_HAND);
         labelPlayer1Score.setId("labelPlayer");
         labelPlayer1Score.setLayoutX(85.0);
         labelPlayer1Score.setLayoutY(129.0);
@@ -387,11 +388,15 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         labelPlayer2Score.setId("labelPlayer");
         labelPlayer2Score.setLayoutX(88.0);
         labelPlayer2Score.setLayoutY(264.0);
-        labelPlayer2Score.setText("5555");
+        labelPlayer2Score.setText(otherPlayerScore + "");
         labelPlayer2Score.setTextFill(javafx.scene.paint.Color.valueOf("#ff9900"));
         labelPlayer2Score.setFont(new Font("Arial Black", 22.0));
 
         buttonBackHome.setOnAction((ActionEvent event) -> {
+            Map map = new HashMap();
+            map.put("operation", "withdraw");
+            map.put("ip", requestGameBean.myIp);
+            networkConnection.sendMessage(new Gson().toJson(map));
             Scene scene = new Scene(new FXMLHomeBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
             stage.setScene(scene);
@@ -418,7 +423,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         pane1.getChildren().add(labelVS);
         pane1.getChildren().add(labelPlayer2);
         pane1.getChildren().add(buttonBackHome);
-        pane1.getChildren().add(buttonRestart);
+//        pane1.getChildren().add(buttonRestart);
         pane1.getChildren().add(labelPlayer1Score);
         pane1.getChildren().add(labelPlayer2Score);
         getChildren().add(pane1);

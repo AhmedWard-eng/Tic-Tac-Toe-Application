@@ -69,6 +69,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
 
         //System.out.println("Size: " + users.size());
         reload(users);
+        
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
 
@@ -105,8 +106,10 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         label1.setText("Status");
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#fffafa"));
         label1.setFont(new Font("Arial Black", 20.0));
+        
         buttonBackHome.setOnAction((ActionEvent event) -> {
-
+            RepeatedUserDialog r = new RepeatedUserDialog();
+            r.logoutDialog("Do you want to logout?");
         });
 
         buttonBackHome.setLayoutX(18.0);
@@ -133,17 +136,8 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
             @Override
             public void run() {
                 while (networkConnection.getSocket().isConnected() && !networkConnection.getSocket().isClosed()) {
-//                    Platform.runLater(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            for (int i = 0; i < users.size(); i++) {
-//                                System.out.println("name" + users.get(i).getUserName());
-//                                listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
-//                            }
-//                        }
-//                    });
                     try {
-                        if (networkConnection.getSocket().isConnected()) {
+                        if (networkConnection.getSocket().isConnected() && !networkConnection.getSocket().isClosed()) {
                             System.out.println("kll");
                             Map<String, String> map = new HashMap<>();
                             map.put("operation", "reloadUsersList");

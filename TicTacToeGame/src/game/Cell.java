@@ -6,6 +6,8 @@
 package game;
 
 import java.util.ArrayList;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -22,7 +24,7 @@ public class Cell {
 
     public Cell(Seed seed, int index) {
         this.content = seed;
-        this.index = index;
+        this.index = index;   
     }
 
 }

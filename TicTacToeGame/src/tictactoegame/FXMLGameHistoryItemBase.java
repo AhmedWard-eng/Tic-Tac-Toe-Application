@@ -52,13 +52,6 @@ public class FXMLGameHistoryItemBase extends AnchorPane {
         playerTwoNameLabel.setWrapText(true);
         playerTwoNameLabel.setFont(new Font("Arial Black", 18.0));
         
-//        playerTwoNameLabel.setFitHeight(104.0);
-//        playerTwoNameLabel.setFitWidth(80.0);
-//        playerTwoNameLabel.setLayoutX(506.0);
-//        playerTwoNameLabel.setPickOnBounds(true);
-//        playerTwoNameLabel.setPreserveRatio(true);
-//        playerTwoNameLabel.setImage(new Image(getClass().getResource("Resources/startArrow.png").toExternalForm()));
-
         getChildren().add(gameNameLabel);
         getChildren().add(playerNameLabel);
         getChildren().add(playerTwoNameLabel);

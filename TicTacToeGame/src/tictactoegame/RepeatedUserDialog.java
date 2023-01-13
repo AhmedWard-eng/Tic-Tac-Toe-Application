@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import static tictactoegame.NetworkConnection.users;
 
 /**
  *
@@ -347,6 +348,44 @@ public class RepeatedUserDialog {
             Navigation.navigate(stage, new FXMLAvailableUsersBase(stage,NetworkConnection.users));
         } else if (clickedButton.get() == cancelButtonType) {
             
+        }
+    }
+    
+    public void oppistePlayerWithDrawDialog(String message) {
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label(message);
+
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        //dialogPaneName.setHeaderText(" ERROR ! ");
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+
+        ButtonType OkButtonType = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+            
+            Stage stage = TicTacToeGame.getStage();
+            navigationLogic.Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, users));
+
         }
     }
 }

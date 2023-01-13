@@ -20,10 +20,13 @@ public class test {
     public static void main(String[] args) {
         try {
             DataAccessLayer test = new DataAccessLayer();
-            double x = test.getOnlineRate();
-            double y = test.getOfflineRate();
-            System.out.println("online players num= "+ x);
-            System.out.println("offline players num= "+ y);
+//            double x = test.getOnlineRate();
+//            double y = test.getOfflineRate();
+//            System.out.println("online players num= "+ x);
+//            System.out.println("offline players num= "+ y);
+            int score = test.getPlayerScore("ward");
+            System.out.println(score);
+            test.updateScore("ward",score+5);
         } catch (SQLException ex) {
             Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
         }

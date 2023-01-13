@@ -162,6 +162,7 @@ public class ClientConnection {
                             //message = new Gson().toJson(players);
                             sendMessage(players);
                         } else if (object.getString("operation").equals("withdraw")) {
+                            System.out.println(message);
                             networkOperation.withdrawing(message, ip, object.getString("ip"), object.getString("userName"), object.getString("otherPlayeruserName"), ClientConnection.this);
                         }
 

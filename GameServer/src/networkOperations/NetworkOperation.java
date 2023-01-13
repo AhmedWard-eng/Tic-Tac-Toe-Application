@@ -136,7 +136,9 @@ public class NetworkOperation {
 
         int score1 = dataAccessLayer.getPlayerScore(userName);
 
+        System.out.println("networkOperations.NetworkOperation.gameFinish()" + " score = " + score1);
         int score2 = dataAccessLayer.getPlayerScore(otherPlayerUserName);
+        System.out.println("networkOperations.NetworkOperation.gameFinish()" + " score = " + score2);
         boolean isUpdated1 = dataAccessLayer.updateScore(userName, (score1 - 5));
         boolean isUpdated2 = dataAccessLayer.updateScore(otherPlayerUserName, (score2 + 5));
         System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update1 = " + isUpdated1);

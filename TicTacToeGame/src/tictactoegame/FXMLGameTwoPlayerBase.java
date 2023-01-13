@@ -74,6 +74,7 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
 
     Stage stage;
     String player1name, player2name;
+    int scoreX=0,scoreO=0;
 
     public FXMLGameTwoPlayerBase(Stage stage, String playerOneName, String playerTwoName) {
 
@@ -453,9 +454,11 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
     }
     public void checkEndGame() {
         if (gameManager.isPlayerXWon()) {
+          
             gameManager.saveRecord();
             Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
         } else if (gameManager.isPlayerOWon()) {
+            
             gameManager.saveRecord();
             Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.NOUGHT.getIcon(), new FXMLGameTwoPlayerBase(stage, player1name, player2name)));
 

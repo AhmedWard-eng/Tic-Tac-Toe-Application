@@ -66,6 +66,7 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
                 socket = new Socket("192.168.1.3", 5005);
+
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
             }

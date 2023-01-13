@@ -89,7 +89,7 @@ public class NetworkOperation {
     }
 
     public String onlinePlayer() throws SQLException {
-        System.out.println("onlinePlayer::::");
+        System.out.println("players reload");
         UsersResponseBean userArray = new UsersResponseBean("onlineList", dataAccessLayer.getOnlinePlayers());
 
         String message = new Gson().toJson(userArray);

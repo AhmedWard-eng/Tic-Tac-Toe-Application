@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import fileOperation.FileOperation;
 import game.Cell;
 import game.Record;
+import game.Seed;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,7 +157,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label2.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
-        label2.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
+     //   label2.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
 
         label1.setAlignment(javafx.geometry.Pos.CENTER);
         label1.setGraphicTextGap(0.0);
@@ -165,7 +166,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label1.setPrefHeight(72.0);
         label1.setPrefWidth(83.0);
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label1.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
+        //label1.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label1.setFont(new Font("Arial Black", 55.0));
         label1.setCursor(Cursor.HAND);
 
@@ -178,7 +179,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label0.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label0.setFont(new Font("Arial Black", 55.0));
         label0.setCursor(Cursor.HAND);
-        label0.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
+       // label0.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
 
         label3.setAlignment(javafx.geometry.Pos.CENTER);
         label3.setGraphicTextGap(0.0);
@@ -187,7 +188,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label3.setPrefHeight(82.0);
         label3.setPrefWidth(76.0);
         label3.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label3.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
+      //  label3.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
 
@@ -198,7 +199,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label4.setPrefHeight(82.0);
         label4.setPrefWidth(76.0);
         label4.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label4.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
+       // label4.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
 
@@ -209,7 +210,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label5.setPrefHeight(82.0);
         label5.setPrefWidth(76.0);
         label5.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-        label5.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
+      //  label5.setTextFill(javafx.scene.paint.Color.valueOf("#f2f2f2"));
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
 
@@ -220,7 +221,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label6.setPrefHeight(72.0);
         label6.setPrefWidth(83.0);
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label6.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
+      //  label6.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label6.setFont(new Font("Arial Black", 55.0));
         label6.setCursor(Cursor.HAND);
 
@@ -231,7 +232,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label7.setPrefHeight(72.0);
         label7.setPrefWidth(83.0);
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label7.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
+       // label7.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label7.setFont(new Font("Arial Black", 55.0));
         label7.setCursor(Cursor.HAND);
 
@@ -242,7 +243,7 @@ public class FXMLRecordShowBase extends AnchorPane {
         label8.setPrefHeight(72.0);
         label8.setPrefWidth(83.0);
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
-        label8.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
+       // label8.setTextFill(javafx.scene.paint.Color.valueOf("#f0f0f0"));
         label8.setFont(new Font("Arial Black", 55.0));
         label8.setCursor(Cursor.HAND);
 
@@ -375,7 +376,14 @@ public class FXMLRecordShowBase extends AnchorPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                borderLabel.get(board.get(i).index).setText(board.get(i).content.getIcon());
+                
+                if(board.get(i).content == Seed.CROSS) {
+                     borderLabel.get(board.get(i).index).setText(board.get(i).content.getIcon());               
+                     borderLabel.get(board.get(i).index).setStyle("-fx-text-fill: linear-gradient(to top,#ff9900,#ff9900);");
+                }else{
+                    borderLabel.get(board.get(i).index).setText(board.get(i).content.getIcon());
+                    borderLabel.get(board.get(i).index).setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                }
             }
         });
     }

@@ -48,8 +48,10 @@ public class GameServerBase extends AnchorPane {
     DataInputStream dis;
     PrintStream ps;
     Server server;
+
     DataAccessLayer test;
     Thread t;
+    //Thread thread;
 
     private void draw(Pane paneview) {
         online = new Label();
@@ -85,7 +87,7 @@ public class GameServerBase extends AnchorPane {
     }
 
     private void loadData(Pane paneview) {
-         t= new Thread(new Runnable() {
+        t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (server.isOpened) {
@@ -98,33 +100,33 @@ public class GameServerBase extends AnchorPane {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            if(server.isOpened){
-                            try {
+                            if (server.isOpened) {
+                                try {
 //                                System.out.println("server on");
-                                paneview.getChildren().clear();
-                                ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
-                                list.add(new PieChart.Data("Offline", test.getOfflineRate()));
-                                list.add(new PieChart.Data("busy", test.getbusyeRate()));
-                                list.add(new PieChart.Data("Online", test.getOnlineRate()));
-                                PieChart piechart = new PieChart(list);
-                                piechart.setTitle("Players Chart");
-                                online.setText("OnLine : " + (int) test.getOnlineRate());
-                                offline.setText("OffLine : " + (int) test.getOfflineRate());
-                                busy.setText("busy : " + (int) test.getbusyeRate());
-                                 paneview.getChildren().add(piechart);
-                                 paneview.getChildren().add(online);
-                                 paneview.getChildren().add(offline);
-                                 paneview.getChildren().add(busy);
-                            } catch (SQLException ex) {
+                                    paneview.getChildren().clear();
+                                    ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
+                                    list.add(new PieChart.Data("Offline", test.getOfflineRate()));
+                                    list.add(new PieChart.Data("busy", test.getbusyeRate()));
+                                    list.add(new PieChart.Data("Online", test.getOnlineRate()));
+                                    PieChart piechart = new PieChart(list);
+                                    piechart.setTitle("Players Chart");
+                                    online.setText("OnLine : " + (int) test.getOnlineRate());
+                                    offline.setText("OffLine : " + (int) test.getOfflineRate());
+                                    busy.setText("busy : " + (int) test.getbusyeRate());
+                                    paneview.getChildren().add(piechart);
+                                    paneview.getChildren().add(online);
+                                    paneview.getChildren().add(offline);
+                                    paneview.getChildren().add(busy);
+                                } catch (SQLException ex) {
 //                                System.out.println("server off");
-                                Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
-                        }
-                            
+
                         }
                     });
                 }
-                
+
             }
         });
         t.start();
@@ -143,7 +145,7 @@ public class GameServerBase extends AnchorPane {
         glow0 = new Glow();
         label = new Label();
         paneview = new Pane();
-        
+
         test = new DataAccessLayer();
         draw(paneview);
         buttonOff.setDisable(true);
@@ -161,12 +163,14 @@ public class GameServerBase extends AnchorPane {
         buttonOff.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 try {
                     server.closeConnection();
                     buttonOn.setDisable(false);
                     buttonOff.setDisable(true);
                     //t.stop();
                     draw(paneview);
+
                 } catch (IOException ex) {
                     Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -288,5 +292,21 @@ public class GameServerBase extends AnchorPane {
         pane.getChildren().add(buttonOn);
         pane.getChildren().add(buttonOff);
 
+        stage.setOnCloseRequest((event) -> {
+            System.out.println("Closing Stage");
+            if ((server!=null)&&(server.isOpened)) {
+                try {
+                    System.out.println("server on is close");
+                    server.closeConnection();
+                } catch (IOException ex) {
+                    Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+            }
+          
+
+        });
+
     }
+
 }

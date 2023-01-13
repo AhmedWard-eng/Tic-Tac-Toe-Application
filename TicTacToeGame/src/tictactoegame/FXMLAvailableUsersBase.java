@@ -8,7 +8,14 @@ import beans.RequestGameBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jfoenix.controls.JFXListView;
+import com.sun.jndi.dns.DnsContextFactory;
+import interfaces.OnlineUsersList;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -22,7 +29,7 @@ import javafx.stage.Stage;
 import tictactoegame.FXMLHomeBase;
 import tictactoegame.FXMLUserItemBase;
 
-public class FXMLAvailableUsersBase extends AnchorPane {
+public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersList {
 
     protected final JFXListView listViewAvailableUsers;
     protected final Rectangle rectangle;
@@ -31,21 +38,22 @@ public class FXMLAvailableUsersBase extends AnchorPane {
     protected final Label label1;
     protected final Button buttonBackHome;
     NetworkConnection networkConnection;
+    Thread t;
 
     //  Gson g = new Gson();
     public static ArrayList<UserOnline> usersList;
 
     public FXMLAvailableUsersBase(Stage stage, ArrayList<UserOnline> users) {
 
-        System.out.println("userssssssssssssssssssssssssssssssss" + users);
-
+        //System.out.println("userssssssssssssssssssssssssssssssss" + users);
         listViewAvailableUsers = new JFXListView();
         rectangle = new Rectangle();
         label = new Label();
         label0 = new Label();
         label1 = new Label();
         buttonBackHome = new Button();
-        networkConnection = new NetworkConnection();
+        networkConnection = new NetworkConnection(this);
+        //t=new Thread();
         usersList = users;
         setId("AnchorPane");
         setPrefHeight(400.0);
@@ -59,12 +67,9 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         //listViewAvailableUsers.setOpaqueInsets(new Insets(0.0));
         listViewAvailableUsers.setPrefSize(585, 290);
 
-        System.out.println("Size: " + users.size());
-        for (int i = 0; i < users.size(); i++) {
-            System.out.println("drcftgvh" + users.get(i).getUserName());
-            listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
-
-        }
+        //System.out.println("Size: " + users.size());
+        reload(users);
+        
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
 
@@ -101,53 +106,10 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label1.setText("Status");
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#fffafa"));
         label1.setFont(new Font("Arial Black", 20.0));
+        
         buttonBackHome.setOnAction((ActionEvent event) -> {
-
-//            Gson gson = new GsonBuilder().create();
-//            LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
-//            String h = gson.toJson(logoutBean);
-//            System.out.println(h);
-//            networkConnection.sendMessage(h);
-//            System.out.println("data is sent ");
-//            //dialog
-//            Scene scene = new Scene(new FXMLHomeBase(stage));
-//            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-//            stage.setScene(scene);
             RepeatedUserDialog r = new RepeatedUserDialog();
             r.logoutDialog("Do you want to logout?");
-
-            //   userOnline.getUserName();
-            //  networkConnection=new NetworkConnection();
-            //  NetworkConnection.listPlayer.toArray();
-            //   System.out.println("NetworkConnection.list.get(0).getUserName();.."+NetworkConnection.listPlayer.get(1).toString());
-//        String str = NetworkConnection.listPlayer.get(0).toString();
-//        UserOnline p = g.fromJson(str, UserOnline.class);
-//        for (int i = 0; i < networkConnection.listPlayer.size(); i++) {
-//                System.out.println((networkConnection.listPlayer.get(i)).toString());
-//            }
-//            online = new OnlineBean();
-//            online.getScore();
-//            online.getStatus();
-//            online.getUserName();
-//            System.out.println("avaliable user online: " + online.getStatus() + online.getUserName());
-//
-//            network.list.get(0);
-//             OnlineBean onlineBean = new OnlineBean();
-//              onlineBean.getUserName();
-//            for (int i = 0; i < network.listPlayer.size(); i++) {
-//                System.out.println((network.listPlayer.get(i)).toString());
-//            }
-//             System.out.println("NETWORK...Array.." + network.list.get(0) + "onlineBean.getUserName();" + onlineBean.getUserName());
-//
-//            NetworkConnection.listPlayer.get(0);
-//             NetworkConnection.list.get(0);
-//            System.out.println(" network.listPlayer.get(0);.."+ NetworkConnection.listPlayer.get(0));
-//            for(int i=0;i<NetworkConnection.listPlayer.size();i++){
-//                System.out.println("list player online...\n"+NetworkConnection.listPlayer.get(i));
-//            }
-//         
-//            UserOnline p = g.fromJson(networkConnection.listPlayer.get(0), UserOnline.class);
-            // System.out.println("OnlineBean...avaliable user.." + p.getUserName());
         });
 
         buttonBackHome.setLayoutX(18.0);
@@ -166,6 +128,46 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         getChildren().add(label0);
         getChildren().add(label1);
         getChildren().add(buttonBackHome);
+
+    }
+
+    private void reload(ArrayList<UserOnline> users) {
+        t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (networkConnection.getSocket().isConnected() && !networkConnection.getSocket().isClosed()) {
+                    try {
+                        if (networkConnection.getSocket().isConnected() && !networkConnection.getSocket().isClosed()) {
+                            System.out.println("kll");
+                            Map<String, String> map = new HashMap<>();
+                            map.put("operation", "reloadUsersList");
+                            String message = new Gson().toJson(map);
+                            networkConnection.sendMessage(message);
+
+                        }
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+            }
+
+        });
+        t.start();
+    }
+
+    @Override
+    public void getUsers(ArrayList<UserOnline> users) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listViewAvailableUsers.getItems().clear();
+                for (int i = 0; i < users.size(); i++) {
+                    listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+                }
+            }
+        });
 
     }
 }

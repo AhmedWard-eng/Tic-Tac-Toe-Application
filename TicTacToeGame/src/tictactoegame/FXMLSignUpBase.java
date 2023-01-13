@@ -85,19 +85,7 @@ public class FXMLSignUpBase extends AnchorPane {
                 if ((TextFieldMail.getText().length() < 90) && (3 < TextFieldMail.getText().length())) {
                     check = checkPassword(TextFieldpassword.getText(),
                             TextFieldConfirmPassword.getText());
-//<<<<<<< HEAD
-//                    if (check) {
-//                        SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
-//                                TextFieldpassword.getText(),
-//                                TextFieldConfirmPassword.getText());
-//
-//                        network = new NetworkConnection();
-//                        network.sendMessage(gson.toJson(person));
-//
-//                        System.out.println("data is sent ");
-//
-//=======
-                    checkRegEx = checkPatternPassword(TextFieldpassword.getText());
+                         checkRegEx = checkPatternPassword(TextFieldpassword.getText());
                     if (checkRegEx) {
                         if (check) {
                             SignUpBean person = new SignUpBean("signup", TextFieldMail.getText(),
@@ -114,7 +102,7 @@ public class FXMLSignUpBase extends AnchorPane {
                             System.out.println("not matched paass");
                             dialogMatchPassword();
                         }
-//>>>>>>> regexPasswardSinUp
+
                     } else {
                         System.out.println("enter world from 5to 10 contain number and small,capital litter,@#$%^&+= and number from 0to 9");
                        RepeatedUserDialog.dialogPatternPassword("Enter password from 5 to 10 contains characters small, capital ,number from 0 to 9 and any symbol(@#$%^&+=) without any space between.");
@@ -210,7 +198,9 @@ public class FXMLSignUpBase extends AnchorPane {
         TextFieldMail.setLayoutY(134.0);
         TextFieldMail.setPrefHeight(41.0);
         TextFieldMail.setPrefWidth(237.0);
-        TextFieldMail.setPromptText("UserName");
+
+        TextFieldMail.setPromptText("User Name");
+
         TextFieldMail.setStyle("-fx-background-color: #12947F; -fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: white;");
         TextFieldMail.setFont(new Font(16.0));
 

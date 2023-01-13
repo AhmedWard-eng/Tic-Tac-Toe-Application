@@ -129,11 +129,8 @@ public class DataAccessLayer {
                     resultSet.getString("status"),
                     resultSet.getInt("score")
             ));
-
         }
-
         return onlinePlayers;
-
     }
 
     public double getOnlineRate() throws SQLException {

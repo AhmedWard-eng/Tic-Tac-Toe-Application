@@ -53,7 +53,7 @@ public class Server {
             String message = new Gson().toJson(map);
 
             clientsVector.get(i).sendMessage(message);
-          
+
             socket.close();
 
             System.err.println(" socket isclosed " + socket.isClosed());
@@ -61,6 +61,7 @@ public class Server {
         }
 
         serverSocket.close();
+
         clientsVector.clear();
     }
 
@@ -78,6 +79,7 @@ public class Server {
                         System.out.println("Accept new Client is running.......");
                     } catch (SocketException ex) {
                         System.out.println("socket is closed");
+
                     } catch (IOException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }

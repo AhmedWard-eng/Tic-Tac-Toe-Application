@@ -22,7 +22,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.StringReader;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Platform;
@@ -54,21 +56,20 @@ public class NetworkConnection {
     String message;
     private static OnlineGameMove onlineGameMove;
 
-
     public NetworkConnection() {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
-                socket = new Socket("192.168.1.5", 5005);
+                socket = new Socket(InetAddress.getLocalHost(), 5005);
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
+
+                readMessage();
             }
 
 //            System.out.println(ip);
             ip = socket.getLocalAddress().getHostAddress();
             r = new RepeatedUserDialog();
-
-            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -78,9 +79,10 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
-                socket = new Socket("192.168.1.5", 5005);
+                socket = new Socket(InetAddress.getLocalHost(), 5005);
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
+                readMessage();
             }
 
             ip = socket.getLocalAddress().getHostAddress();
@@ -89,10 +91,29 @@ public class NetworkConnection {
 //            System.out.println(ip);
             r = new RepeatedUserDialog();
 
-            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public NetworkConnection(String testMsg) throws IOException {
+        //"10.145.19.104"
+        if (socket != null) {
+            socket.close();
+        }
+        socket = null;
+        if (socket == null || socket.isClosed()) {
+            socket = new Socket("192.168.1.2", 5005);
+            System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg");
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            ps = new PrintStream(socket.getOutputStream());
+        }
+        readMessage();
+        System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg" + socket.isConnected());
+//            System.out.println(ip);
+        ip = socket.getLocalAddress().getHostAddress();
+        r = new RepeatedUserDialog();
+
     }
 
     public void readMessage() {
@@ -106,13 +127,20 @@ public class NetworkConnection {
 
                         message = bufferedReader.readLine();
 
+                        if (message == null) {
+                            System.out.println(".runnnnnnnnnnn()");
+                            r.dialogOutOfConnection();
+                            break;
+                        }
+
                         message = message.replaceAll("\r?\n", "");
+
                         System.out.println("message in network connection" + message);
 
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
                         JsonParser jsonParser = new JsonParser();
-                        System.out.println("operationnnnnnnnnnnnnnnnnnnnnnn"+object.getString("operation"));
+                        System.out.println("operationnnnnnnnnnnnnnnnnnnnnnn" + object.getString("operation"));
 //                        JsonArray jsonArray = (JsonArray) jsonParser.parse(message);
 //                        for (int i = 0; i < jsonArray.size(); i++) {
 //                            UserOnline p = new Gson().fromJson(jsonArray.get(i).toString(), UserOnline.class);
@@ -204,7 +232,7 @@ public class NetworkConnection {
                             GameBean gamebean = new Gson().fromJson(message, GameBean.class);
 
                             System.out.println("cellllllllllllllllllllllllllllll" + gamebean.cell.content.getIcon());
-                            
+
                             System.out.println("online game = " + onlineGameMove);
                             if (onlineGameMove != null) {
                                 System.out.println(gamebean.cell.content.getIcon());
@@ -212,12 +240,18 @@ public class NetworkConnection {
                             }
 
                         }
+                        if (object.getString("operation").equals("serverStatus")) {
+
+                            System.out.println("operation from server= " + object.getString("close"));
+
+                        }
 
 //////
                     }
+                } catch (SocketException ex) {
+
                 } catch (IOException ex) {
                     ex.printStackTrace();
-
                 }
             }
         }

@@ -26,6 +26,8 @@ import java.io.StringReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
+import java.rmi.ServerException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +85,11 @@ public class ClientConnection {
 
                         String message = bufferReader.readLine();
 //                        System.out.println(message);
+                        if (message == null) {
+
+                            Server.clientsVector.remove(ClientConnection.this);
+                            continue;
+                        }
                         message = message.replaceAll("\r?\n", "");
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
@@ -160,8 +167,11 @@ public class ClientConnection {
                             networkOperation.sendGame(message, ip, ClientConnection.this);
                         }
 
+                    } catch (SocketException ex) {
+                        Server.clientsVector.remove(ClientConnection.this);
                     } catch (IOException ex) {
                         ex.printStackTrace();
+
                     } catch (SQLException ex) {
                         Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
                     }

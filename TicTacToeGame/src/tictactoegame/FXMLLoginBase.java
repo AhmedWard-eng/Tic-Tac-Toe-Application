@@ -55,7 +55,7 @@ public class FXMLLoginBase extends AnchorPane {
         text = new Text();
         rectangle0 = new Rectangle();
         rectangle1 = new Rectangle();
-        networkConnection = NetworkConnection.getInstance();
+        networkConnection = new NetworkConnection();
         
         
 
@@ -178,9 +178,9 @@ public class FXMLLoginBase extends AnchorPane {
             LoginBean loginBean = new LoginBean("login", TextFieldUserName.getText(), TextFieldPassword.getText());
             playerOneName = TextFieldUserName.getText();
             String h = gson.toJson(loginBean);
-            System.out.println(h);
+//            System.out.println(h);
             networkConnection.sendMessage(h);
-            System.out.println("data is sent ");
+//            System.out.println("data is sent ");
             //navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
         });
 

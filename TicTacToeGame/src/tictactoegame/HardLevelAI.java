@@ -58,7 +58,7 @@ public class HardLevelAI extends AnchorPane {
     protected final Button buttonRestart;
     int x, y;
     boolean has_winner;
-    private GameManager gameManager;
+//    private GameManager gameManager;
     
     HardLevelAI(Stage stage) {
         rectangleBordGameOnePlayer = new Rectangle();
@@ -100,9 +100,9 @@ public class HardLevelAI extends AnchorPane {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (toggleButtonRecord.isSelected()) {
-                    gameManager.setRecorded(true);
+//                    gameManager.setRecorded(true);
                 } else {
-                    gameManager.setRecorded(false);
+//                    gameManager.setRecorded(false);
                 }
             }
         });

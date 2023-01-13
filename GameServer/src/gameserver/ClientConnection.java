@@ -122,22 +122,22 @@ public class ClientConnection {
                                 //TODO
                                 //LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", "ward", "55",);
 
-                                LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), null, null,null);
+                                LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), null, null, null);
                                 String resMessage = networkOperation.retrievePlayerData(loginResponseBean);
 //                                System.out.println(".run())()()()()()()()" + loginResponseBean.getOperation());
 //                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUserName());
 //                                System.out.println(".run())()()()()()()()" + loginResponseBean.getScore());
 //                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUsers());
-                                
-                                
+
 //                                Map<String, String> map2 = new HashMap<>();
 //                                map2.put("operation", "loginResponse");
 //                                map2.put("msg", loginResponseBean);
 //                                message = new GsonBuilder().create().toJson(map2);
-
                                 sendMessage(resMessage);
                                 //sendMessage(networkOperation.onlinePlayer());
-                            }else      sendMessage(message);
+                            } else {
+                                sendMessage(message);
+                            }
 
                             System.out.println("ipppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp" + ip);
 
@@ -148,19 +148,17 @@ public class ClientConnection {
 
                         } else if (object.getString("operation").equals("requestPlaying")) {
                             System.out.println(message);
-                            networkOperation.requestPlay(message, ip);
+                            networkOperation.requestPlay(message, ip, ClientConnection.this);
                         } else if (object.getString("operation").equals("accept")) {
                             System.out.println(message);
-                            networkOperation.requestPlay(message, ip);
+                            networkOperation.requestPlay(message, ip, ClientConnection.this);
                         } else if (object.getString("operation").equals("refuse")) {
                             System.out.println(message);
-                            networkOperation.requestPlay(message, ip);
-                        }
-                        else if (object.getString("operation").equals("gameMove")) {
+                            networkOperation.requestPlay(message, ip, ClientConnection.this);
+                        } else if (object.getString("operation").equals("gameMove")) {
                             System.out.println(message);
-                            networkOperation.requestPlay(message, ip);
+                            networkOperation.sendGame(message, ip, ClientConnection.this);
                         }
-             
 
                     } catch (IOException ex) {
                         ex.printStackTrace();

@@ -42,7 +42,9 @@ public class Server {
         for (int i = 0; i < clientsVector.size(); i++) {
             Socket socket = clientsVector.get(i).socket;
             socket.close();
-        }         
+            
+        }   
+        clientsVector.clear();
     }
 
     private void acceptNewClient() {
@@ -59,6 +61,7 @@ public class Server {
                         System.out.println("Accept new Client is running.......");
                     } catch (SocketException ex) {
                         System.out.println("socket is closed");
+                        
                     } catch (IOException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }

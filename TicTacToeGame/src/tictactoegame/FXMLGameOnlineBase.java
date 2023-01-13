@@ -396,10 +396,12 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
             Map map = new HashMap();
             map.put("operation", "withdraw");
             map.put("ip", requestGameBean.myIp);
-            networkConnection.sendMessage(new Gson().toJson(map));
-            Scene scene = new Scene(new FXMLHomeBase(stage));
-            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
-            stage.setScene(scene);
+            
+            String msg = new Gson().toJson(map);
+            RepeatedUserDialog.assureWithdrawing(networkConnection, msg, stage);
+//            Scene scene = new Scene(new FXMLHomeBase(stage));
+//            scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
+//            stage.setScene(scene);
 
         });
         getChildren().add(rectangleBordGameOnePlayer);

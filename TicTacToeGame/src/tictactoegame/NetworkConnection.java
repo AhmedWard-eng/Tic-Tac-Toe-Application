@@ -280,8 +280,16 @@ public class NetworkConnection {
 
                         }else if(object.getString("operation").equals("withdraw")){
                             Stage stage = TicTacToeGame.getStage();
-                            Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, users));
+                            
                             //dialogue to show him that the other player withdraw and navigate to online availbe users
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //show dialog
+//                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, users));
+                                    r.oppistePlayerWithDrawDialog("You are the winner! your friend withdraw");
+                                }
+                            });
                         }
 
 //                        if (object.getString("operation").equals("serverStatus")) {

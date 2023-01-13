@@ -15,6 +15,7 @@ import beans.UsersResponseBean;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import interfaces.OnlineUsersList;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class NetworkConnection {
     private static PrintStream ps;
     private String ip;
 
-    public  Socket getSocket() {
+    public Socket getSocket() {
         return socket;
     }
 
@@ -58,17 +59,38 @@ public class NetworkConnection {
     String message;
     private static OnlineGameMove onlineGameMove;
 
+    private static OnlineUsersList onlineUsersList;
+
     public NetworkConnection() {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
-                socket = new Socket("192.168.1.3", 5005);
+                socket = new Socket("192.168.1.5", 5005);
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
             }
 
             ip = socket.getLocalAddress().getHostAddress();
             r = new RepeatedUserDialog();
+
+            readMessage();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public NetworkConnection(OnlineUsersList onlineUsersList) {
+        try {
+            //"10.145.19.104"
+            if (socket == null || !socket.isConnected() || socket.isClosed()) {
+                socket = new Socket("192.168.1.5", 5005);
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                ps = new PrintStream(socket.getOutputStream());
+            }
+
+            ip = socket.getLocalAddress().getHostAddress();
+            r = new RepeatedUserDialog();
+            NetworkConnection.onlineUsersList = onlineUsersList;
 
             readMessage();
         } catch (IOException ex) {
@@ -104,7 +126,7 @@ public class NetworkConnection {
             public void run() {
 
                 try {
-                    while (socket.isConnected()) {
+                    while (socket.isConnected() && !socket.isClosed()) {
 
                         message = bufferedReader.readLine();
 
@@ -164,18 +186,21 @@ public class NetworkConnection {
 
                             }
                         } else if (object.getString("operation").equals("onlineList")) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.out.println("message"+message);
+//                            Platform.runLater(new Runnable() {
+//                                @Override
+//                                public void run() {
+                                    System.out.println("message" + message);
                                     UsersResponseBean usersResponseBean = new Gson().fromJson(message, UsersResponseBean.class);
 
                                     System.out.println("first Users");
-                                    Stage stage = TicTacToeGame.getStage();
-     
-                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers()));
-                                }
-                            });
+                                    if (onlineUsersList != null) {
+                                        onlineUsersList.getUsers(usersResponseBean.getUsers());
+                                    }
+//                                    Stage stage = TicTacToeGame.getStage();
+
+//                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, usersResponseBean.getUsers()));
+//                                }
+//                            });
                         } else if (object.getString("operation").equals("requestPlaying")) {
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -213,7 +238,7 @@ public class NetworkConnection {
                                 onlineGameMove.getMove(gamebean.cell);
                             }
 
-                        } 
+                        }
 //                        else if (object.getString("operation").equals("onlineplayers")) {
 //
 //                            Platform.runLater(new Runnable() {

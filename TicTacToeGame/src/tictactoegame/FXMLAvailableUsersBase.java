@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jfoenix.controls.JFXListView;
 import com.sun.jndi.dns.DnsContextFactory;
+import interfaces.OnlineUsersList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ import javafx.stage.Stage;
 import tictactoegame.FXMLHomeBase;
 import tictactoegame.FXMLUserItemBase;
 
-public class FXMLAvailableUsersBase extends AnchorPane {
+public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersList {
 
     protected final JFXListView listViewAvailableUsers;
     protected final Rectangle rectangle;
@@ -51,7 +52,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         label0 = new Label();
         label1 = new Label();
         buttonBackHome = new Button();
-        networkConnection = new NetworkConnection();
+        networkConnection = new NetworkConnection(this);
         //t=new Thread();
         usersList = users;
         setId("AnchorPane");
@@ -131,18 +132,17 @@ public class FXMLAvailableUsersBase extends AnchorPane {
         t = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (networkConnection.getSocket().isConnected()) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < users.size(); i++) {
-                                System.out.println("name" + users.get(i).getUserName());
-                                listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
-                            }
-                        }
-                    });
+                while (networkConnection.getSocket().isConnected() && !networkConnection.getSocket().isClosed()) {
+//                    Platform.runLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            for (int i = 0; i < users.size(); i++) {
+//                                System.out.println("name" + users.get(i).getUserName());
+//                                listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+//                            }
+//                        }
+//                    });
                     try {
-                        Thread.sleep(10000);
                         if (networkConnection.getSocket().isConnected()) {
                             System.out.println("kll");
                             Map<String, String> map = new HashMap<>();
@@ -151,6 +151,7 @@ public class FXMLAvailableUsersBase extends AnchorPane {
                             networkConnection.sendMessage(message);
 
                         }
+                        Thread.sleep(10000);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
@@ -160,5 +161,19 @@ public class FXMLAvailableUsersBase extends AnchorPane {
 
         });
         t.start();
+    }
+
+    @Override
+    public void getUsers(ArrayList<UserOnline> users) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listViewAvailableUsers.getItems().clear();
+                for (int i = 0; i < users.size(); i++) {
+                    listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+                }
+            }
+        });
+
     }
 }

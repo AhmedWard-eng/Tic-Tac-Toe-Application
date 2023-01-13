@@ -59,7 +59,7 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
-                socket = new Socket("192.168.1.5", 5005);
+                socket = new Socket("192.168.1.8", 5005);
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
             }
@@ -78,7 +78,7 @@ public class NetworkConnection {
         try {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
-                socket = new Socket("192.168.1.5", 5005);
+                socket = new Socket("192.168.1.8", 5005);
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
             }

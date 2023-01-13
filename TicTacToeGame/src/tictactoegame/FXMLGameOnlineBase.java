@@ -482,6 +482,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
                     String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.WIN, userName));
                     networkConnection.sendMessage(gameFinishMessage);
                     gameManager.saveRecord();
+                    NetworkConnection.userOnline.setScore(NetworkConnection.userOnline.getScore() + 5);
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, yourSymbol.getIcon(), new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                 } else if (gameManager.isDraw()) {
                     String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.DRAW, userName));
@@ -512,6 +513,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
                     gameManager.saveRecord();
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                     setTextDisabled();
+                    NetworkConnection.userOnline.setScore(NetworkConnection.userOnline.getScore() - 5);
                 } else if (gameManager.isDraw()) {
                     String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.DRAW, userName));
                     gameManager.saveRecord();

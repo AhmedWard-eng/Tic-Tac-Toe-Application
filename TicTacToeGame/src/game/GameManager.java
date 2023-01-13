@@ -135,7 +135,8 @@ public class GameManager {
 
         }
     }
-
+    
+     
     public void print() {
         for (int i = 0; i < board.size(); i++) {
             System.out.println(board.get(i).content.getIcon());

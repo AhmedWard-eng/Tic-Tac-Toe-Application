@@ -6,6 +6,7 @@
 package game;
 
 import java.util.ArrayList;
+import javafx.scene.control.Label;
 
 /**
  *
@@ -16,6 +17,13 @@ public class Record {
     public String player1;
     public String player2;
     public ArrayList<Cell> board;
+    public Cell borderLabel[][];
+
+    public Record(Label[][] borderLabel, String you, String computer) {
+        this.board = board;
+        this.player1 = player1;
+        this.player2 = player2;
+    }
 
     public String getPlayer1() {
         return player1;
@@ -34,11 +42,7 @@ public class Record {
         this.player1 = player1;
         this.player2 = player2;
     }
-<<<<<<< HEAD
 
     public Record() {
     }
-=======
->>>>>>> UIEdits
-    
 }

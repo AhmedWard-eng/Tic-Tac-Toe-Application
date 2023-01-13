@@ -87,9 +87,9 @@ public class ClientConnection {
                         JsonReader jsonReader = (JsonReader) Json.createReader(new StringReader(message));
                         JsonObject object = jsonReader.readObject();
 
-                        System.out.println(object.getString("operation"));
+                        //System.out.println(object.getString("operation"));
 
-                        System.out.println("operationnnnnnnn" + object.getString("operation"));
+                        //System.out.println("operationnnnnnnn" + object.getString("operation"));
 
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
@@ -119,22 +119,12 @@ public class ClientConnection {
                             map.put("msg", loginResponse);
                             message = new GsonBuilder().create().toJson(map);
                             if (loginResponse.equals("login successfully")) {
-                                //TODO
-                                //LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", "ward", "55",);
-
+                               
                                 LoginResponseBean loginResponseBean = new LoginResponseBean("loginResponse", object.getString("username"), null, null, null);
                                 String resMessage = networkOperation.retrievePlayerData(loginResponseBean);
-//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getOperation());
-//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUserName());
-//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getScore());
-//                                System.out.println(".run())()()()()()()()" + loginResponseBean.getUsers());
 
-//                                Map<String, String> map2 = new HashMap<>();
-//                                map2.put("operation", "loginResponse");
-//                                map2.put("msg", loginResponseBean);
-//                                message = new GsonBuilder().create().toJson(map2);
                                 sendMessage(resMessage);
-                                //sendMessage(networkOperation.onlinePlayer());
+                               
                             } else {
                                 sendMessage(message);
                             }
@@ -158,6 +148,10 @@ public class ClientConnection {
                         } else if (object.getString("operation").equals("gameMove")) {
                             System.out.println(message);
                             networkOperation.sendGame(message, ip, ClientConnection.this);
+                        }else if(object.getString("operation").equals("reloadUsersList")){
+                            String players= networkOperation.onlinePlayer();
+                            //message = new Gson().toJson(players);
+                            sendMessage(players);
                         }
 
                     } catch (IOException ex) {

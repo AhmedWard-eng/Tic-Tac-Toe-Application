@@ -36,6 +36,7 @@ public class FXMLUserItemBase extends AnchorPane {
         labelScore.setAlignment(javafx.geometry.Pos.CENTER);
         labelScore.setLayoutX(23.0);
         labelScore.setLayoutY(12.0);
+        
         labelScore.setText(String.valueOf(score));//String.valueOf(p.getScore())
         labelScore.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         labelScore.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
@@ -48,6 +49,7 @@ public class FXMLUserItemBase extends AnchorPane {
 
         labelName.setLayoutX(160.0);
         labelName.setLayoutY(10.0);
+        
         labelName.setText("         "+userName);
         labelName.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         labelName.setWrapText(true);
@@ -56,6 +58,7 @@ public class FXMLUserItemBase extends AnchorPane {
         labelStatus.setAlignment(javafx.geometry.Pos.CENTER);
         labelStatus.setLayoutX(455.0);
         labelStatus.setLayoutY(8.0);
+        
         labelStatus.setText(status);
         labelStatus.setTextFill(javafx.scene.paint.Color.valueOf("#f8f8f8"));
         labelStatus.setWrapText(true);

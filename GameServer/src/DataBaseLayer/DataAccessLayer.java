@@ -127,15 +127,10 @@ public class DataAccessLayer {
                     resultSet.getString("username"),
                     resultSet.getString("password"),
                     resultSet.getString("status"),
-
                     resultSet.getInt("score")
             ));
-
-
         }
-
         return onlinePlayers;
-
     }
 
     

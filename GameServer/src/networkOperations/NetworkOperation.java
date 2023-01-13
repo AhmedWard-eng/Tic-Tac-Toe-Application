@@ -124,13 +124,24 @@ public class NetworkOperation {
 
     }
 
-    public void withdrawing(String message, String ip,ClientConnection clientConnection) {
+    public void withdrawing(String message, String ip, String userName, String otherPlayerIp, String otherPlayerUserName, ClientConnection clientConnection) throws SQLException {
         for (int i = 0; i < Server.clientsVector.size(); i++) {
-            if (Server.clientsVector.get(i).getIp().equals(ip) && Server.clientsVector.get(i) != clientConnection) {
+            if (Server.clientsVector.get(i).getIp().equals(otherPlayerIp) && Server.clientsVector.get(i) != clientConnection) {
                 Server.clientsVector.get(i).sendMessage(message);
             }
 
         }
+        dataAccessLayer.makeuserOnline(ip);
+        dataAccessLayer.makeuserOnline(otherPlayerIp);
+
+        int score1 = dataAccessLayer.getPlayerScore(userName);
+
+        int score2 = dataAccessLayer.getPlayerScore(otherPlayerUserName);
+        boolean isUpdated1 = dataAccessLayer.updateScore(userName, (score1 - 5));
+        boolean isUpdated2 = dataAccessLayer.updateScore(otherPlayerUserName, (score2 + 5));
+        System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update1 = " + isUpdated1);
+
+        System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update2 = " + isUpdated2);
     }
 
 }

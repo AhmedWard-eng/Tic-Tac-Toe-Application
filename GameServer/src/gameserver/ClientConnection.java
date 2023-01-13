@@ -162,7 +162,7 @@ public class ClientConnection {
                             //message = new Gson().toJson(players);
                             sendMessage(players);
                         } else if (object.getString("operation").equals("withdraw")) {
-                            networkOperation.withdrawing(message, object.getString("ip"), ClientConnection.this);
+                            networkOperation.withdrawing(message, ip, object.getString("ip"), object.getString("userName"), object.getString("otherPlayeruserName"), ClientConnection.this);
                         }
 
                     } catch (SocketException ex) {

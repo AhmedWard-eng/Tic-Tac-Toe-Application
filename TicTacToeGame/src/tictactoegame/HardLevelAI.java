@@ -6,7 +6,9 @@
 package tictactoegame;
 
 import com.jfoenix.controls.JFXToggleButton;
+import game.Cell;
 import game.GameManager;
+import game.Record;
 import game.Seed;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -59,7 +61,7 @@ public class HardLevelAI extends AnchorPane {
     int x, y;
     boolean has_winner;
 //    private GameManager gameManager;
-    
+
     HardLevelAI(Stage stage) {
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
@@ -86,7 +88,7 @@ public class HardLevelAI extends AnchorPane {
         buttonRestart = new Button();
         has_winner = false;
 
-        Label borderLabel [][]={ {label0 , label1 , label2} , { label3,label4,label5 } , {label6,label7,label8} };
+        Label borderLabel[][] = {{label0, label1, label2}, {label3, label4, label5}, {label6, label7, label8}};
 
         toggleButtonRecord.setId("Record");
         toggleButtonRecord.setText("Record");
@@ -334,7 +336,7 @@ public class HardLevelAI extends AnchorPane {
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
-      //  toggleButtonRecord.setDisable(false);
+        //  toggleButtonRecord.setDisable(false);
         buttonBackHome.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLChooseGameLevelBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
@@ -344,30 +346,31 @@ public class HardLevelAI extends AnchorPane {
         buttonRestart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Navigation.navigate(stage,new HardLevelAI(stage));
+                Navigation.navigate(stage, new HardLevelAI(stage));
                 toggleButtonRecord.setDisable(false);
                 toggleButtonRecord.setSelected(false);
             }
         });
 
-        
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                action(stage,borderLabel[i][j], borderLabel);
+                action(stage, borderLabel[i][j], borderLabel);
             }
         }
-}
-    public void action(Stage stage ,Label label,Label borderLabel [][]){
+    }
+
+    public void action(Stage stage, Label label, Label borderLabel[][]) {
         label.setOnMouseClicked(mouseEvent -> {
             toggleButtonRecord.setDisable(true);
-           
+
             if (!has_winner) {
                 if (label.getText().equals("")) {
                     label.setText("X");
+//                    new Record().board.add(new Cell(Seed.CROSS, Integer.parseInt(label.getId())));
                     label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
-                    System.out.println("result="+result);
+                    System.out.println("result=" + result);
                     has_winner = checkWinner(borderLabel) != 1;
                 } else {
                     System.out.println("The field is not empty \n");
@@ -389,9 +392,10 @@ public class HardLevelAI extends AnchorPane {
                 }
             }
 
-        });        
-        
+        });
+
     }
+
     public int minimax(Label[][] borderLabel, int depth, boolean isMaximizing, boolean firstTime) {
         int result = checkWinner(borderLabel);
 
@@ -423,6 +427,7 @@ public class HardLevelAI extends AnchorPane {
                 borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
+//                new Record().board.add(new Cell(getMove(finalI, finalJ), Seed.CROSS));
             }
             return finalScore;
         } else {
@@ -449,6 +454,7 @@ public class HardLevelAI extends AnchorPane {
                 borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
+//                new Record().board.add(new Cell(getMove(finalI, finalJ), Seed.CROSS));
             }
             return finalScore;
         }
@@ -461,7 +467,7 @@ public class HardLevelAI extends AnchorPane {
         return false;
     }
 
-    public int checkWinner(Label  borderLabel[][]) {
+    public int checkWinner(Label borderLabel[][]) {
         for (int i = 0; i < 3; i++) {
             if (haveTheSameValueAndNotEmpty(borderLabel[i][0].getText(), borderLabel[i][1].getText(), borderLabel[i][2].getText())) {
                 return borderLabel[i][0].getText() == "X" ? 2 : -2;
@@ -503,6 +509,3 @@ public class HardLevelAI extends AnchorPane {
     }
 
 }
-
-    
-

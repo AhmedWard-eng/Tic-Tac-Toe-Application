@@ -128,6 +128,7 @@ public class NetworkOperation {
         for (int i = 0; i < Server.clientsVector.size(); i++) {
             if (Server.clientsVector.get(i).getIp().equals(otherPlayerIp) && Server.clientsVector.get(i) != clientConnection) {
                 Server.clientsVector.get(i).sendMessage(message);
+                System.out.println(otherPlayerIp);
             }
 
         }

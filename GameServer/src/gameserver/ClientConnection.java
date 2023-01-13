@@ -163,7 +163,7 @@ public class ClientConnection {
                             sendMessage(players);
                         } else if (object.getString("operation").equals("withdraw")) {
                             System.out.println(message);
-                            networkOperation.withdrawing(message, ip, object.getString("ip"), object.getString("userName"), object.getString("otherPlayeruserName"), ClientConnection.this);
+                            networkOperation.withdrawing(message, ip,object.getString("userName"), object.getString("ip"),  object.getString("otherPlayeruserName"), ClientConnection.this);
                         }
 
                     } catch (SocketException ex) {

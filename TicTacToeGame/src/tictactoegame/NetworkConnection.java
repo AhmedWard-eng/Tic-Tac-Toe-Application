@@ -55,7 +55,8 @@ public class NetworkConnection {
     private String ip;
     public static UserOnline userOnline;
 
-    public Socket getSocket() {
+    
+    public Socket getSocket(){
         return socket;
     }
 
@@ -256,7 +257,7 @@ public class NetworkConnection {
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
                                     Stage stage = TicTacToeGame.getStage();
-                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true,requestGameBean.score));
+                                    Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true, requestGameBean.score));
                                 }
                             });
                         } else if (object.getString("operation").equals("refuse")) {
@@ -278,9 +279,9 @@ public class NetworkConnection {
                                 onlineGameMove.getMove(gamebean.cell);
                             }
 
-                        }else if(object.getString("operation").equals("withdraw")){
+                        } else if (object.getString("operation").equals("withdraw")) {
                             Stage stage = TicTacToeGame.getStage();
-                            
+
                             //dialogue to show him that the other player withdraw and navigate to online availbe users
                             Platform.runLater(new Runnable() {
                                 @Override

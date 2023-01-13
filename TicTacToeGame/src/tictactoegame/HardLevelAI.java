@@ -63,10 +63,8 @@ public class HardLevelAI extends AnchorPane {
     private GameManager gameManager;
     //Record record;
     private Seed seed;
-    
 
     HardLevelAI(Stage stage) {
-        
         gameManager = new GameManager();
         rectangleBordGameOnePlayer = new Rectangle();
         // record=new Record(board, player1, player2);
@@ -108,7 +106,6 @@ public class HardLevelAI extends AnchorPane {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (toggleButtonRecord.isSelected()) {
-                    
                     gameManager.setRecorded(true);
                 } else {
                     gameManager.setRecorded(false);
@@ -381,18 +378,16 @@ public class HardLevelAI extends AnchorPane {
             
             toggleButtonRecord.setDisable(true);
             
-            seed = Seed.CROSS;
+         //   seed = Seed.CROSS;
             //record=new Record(board, player1, player2);
             if (!has_winner) {
-                if (seed == Seed.CROSS) {
-                   gameManager.setCell(Integer.parseInt(label.getId()), Seed.CROSS);
-            label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
-            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
-//                    label.setText("X");
-//                    int index = Integer.parseInt(label.getId());
-//                    gameManager.setCell(index, Seed.CROSS);
-//                    label.setText(gameManager.getCell(index).content.getIcon());
-//                    label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                if (label.getText().equals("")) {
+                
+                   // label.setText("X");
+                    int index = Integer.parseInt(label.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label.setText(gameManager.getCell(index).content.getIcon());
+                    label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label.setMouseTransparent(true);
                     // record.board.add(new Cell(Seed.CROSS, Integer.parseInt(label.getId())));
                     // label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
@@ -446,7 +441,7 @@ public class HardLevelAI extends AnchorPane {
                             finalJ = j;
                         }
                         if (firstTime) {
-                            System.out.println("score," + i + "," + j + ": " + score + "\n");
+                         //   System.out.println("score," + i + "," + j + ": " + score + "\n");
                         }
                     }
                 }

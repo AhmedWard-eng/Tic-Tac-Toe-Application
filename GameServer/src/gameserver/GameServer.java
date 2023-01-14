@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -27,6 +28,10 @@ public class GameServer extends Application {
         stage.setTitle("Tic-Tac-Toe Game Server");
         stage.setResizable(false);
         stage.setScene(scene);
+        Image image = new Image(getClass().getResource("serverIcon.png").toExternalForm());
+        System.out.println("aaaaaaaaa");
+        stage.getIcons().add(image);
+        
         stage.show();
         
     }

@@ -39,10 +39,9 @@ public class TicTacToeGame extends Application {
         File file = new File(getClass().getResource("").toExternalForm());
         System.out.println(file.getParentFile().getAbsolutePath());
         stage.setTitle("Tic-Tac-Toe Game");
-
+        
         stage.setScene(scene);
         stage.setResizable(false);
-//        stage.
         stage.getIcons().add(new Image(tictactoegame.TicTacToeGame.class.getResource("Resources/Capture.PNG").toExternalForm()));
         stage.show();
     }

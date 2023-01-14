@@ -28,6 +28,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Shadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import navigationLogic.Navigation;
@@ -35,6 +40,7 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import static tictactoegame.NetworkConnection.users;
 
 /**
@@ -48,6 +54,7 @@ public class RepeatedUserDialog {
     protected Label labelFirstPlayer;
     NetworkConnection networkConnection;
     Node Button;
+    Dialog<ButtonType> dialog;
 
     public void ExistDialog() {
         dialogPaneName = new DialogPane();
@@ -388,4 +395,76 @@ public class RepeatedUserDialog {
 
         }
     }
+    
+    public void helpDialog() {
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        String message;
+        //Want to add your ideas?
+        message = "Copyright 2023 JETS LLC. All rights reserved. \n\nNeed more help? \n\nContact us in Linkedin:\n\n";
+        message += "Ahmed gamal Ward\n";
+        message += "Hossam Ahmed Fadaly\n";
+        message += "Marina abdelmalak beshara\n";
+        message += "Nada Alsayed hamed";
+        labelFirstPlayer = new Label(message);
+
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("About TicTacToe");
+        
+        ButtonType OkButtonType = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+    }
+    
+    public void loadingDialog() {
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        String message = "loading";
+
+        ProgressIndicator pi = new ProgressIndicator();        
+        pi.setStyle("-fx-accent: #ffffff;");
+        
+        labelFirstPlayer = new Label(message);
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+        
+        dialogPaneName.setPadding(new Insets(10, 20, 0, 20));
+        dialogPaneName.setStyle("-fx-background-color: #12947F; -fx-border-style: solid inside; -fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: white;");
+
+        gridPane.setVgap(15);
+        gridPane.add(pi, 0, 1);
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        dialog = new Dialog<>();
+        
+        dialog.setDialogPane(dialogPaneName);
+        dialog.initStyle(StageStyle.TRANSPARENT);
+                
+        dialog.show();
+    }
+    
+    public void closeLoadingDialog(){
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
+        dialog.close();
+    }
+    
+    
 }

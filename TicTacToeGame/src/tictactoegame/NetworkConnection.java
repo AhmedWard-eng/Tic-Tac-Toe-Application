@@ -165,6 +165,7 @@ public class NetworkConnection {
                         if (message == null) {
                             System.out.println(".runnnnnnnnnnn()");
                             r.dialogOutOfConnection();
+                            socket.close();
                             break;
                         }
 

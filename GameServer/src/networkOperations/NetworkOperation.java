@@ -113,6 +113,7 @@ public class NetworkOperation {
         int score = dataAccessLayer.getPlayerScore(gameFinishBean.userName);
         System.out.println("networkOperations.NetworkOperation.gameFinish()" + " score = " + score);
         dataAccessLayer.makeuserOnline(ip);
+        System.out.println("networkOperations.NetworkOperation.gameFinish()"+message);
         if (gameFinishBean.gameStatus.equals(GameStatus.WIN)) {
             boolean isUpdated = dataAccessLayer.updateScore(gameFinishBean.userName, (score + 5));
             System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update = " + isUpdated);

@@ -311,7 +311,7 @@ public class RepeatedUserDialog {
 
     }
 
-    public static void assureWithdrawing(NetworkConnection networkConnection,String message, Stage stage) {
+    public static void assureWithdrawing(NetworkConnection networkConnection, String message, Stage stage) {
         DialogPane dialogPaneName;
         GridPane gridPane;
         Label labelFirstPlayer;
@@ -344,13 +344,14 @@ public class RepeatedUserDialog {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
+            NetworkConnection.userOnline.setScore(NetworkConnection.userOnline.getScore() - 5);
             networkConnection.sendMessage(message);
-            Navigation.navigate(stage, new FXMLAvailableUsersBase(stage,NetworkConnection.users));
+            Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, NetworkConnection.users));
         } else if (clickedButton.get() == cancelButtonType) {
-            
+
         }
     }
-    
+
     public void oppistePlayerWithDrawDialog(String message) {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
@@ -382,7 +383,8 @@ public class RepeatedUserDialog {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
-            
+
+            NetworkConnection.userOnline.setScore(NetworkConnection.userOnline.getScore() + 5);
             Stage stage = TicTacToeGame.getStage();
             navigationLogic.Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, users));
 

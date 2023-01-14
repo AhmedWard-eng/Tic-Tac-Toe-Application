@@ -131,12 +131,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         this.getStyleClass().add("Pane");
         init();
         labelsBoard = new ArrayList<>(Arrays.asList(label0, label1, label2, label3, label4, label5, label6, label7, label8));
-        if (start) {
-            yourSymbol = Seed.CROSS;
-        } else {
-            yourSymbol = Seed.NOUGHT;
-            setTextDisabled();
-        }
+
         setMaxHeight(USE_PREF_SIZE);
         setMaxWidth(USE_PREF_SIZE);
         setMinHeight(USE_PREF_SIZE);
@@ -434,6 +429,12 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         pane1.getChildren().add(labelPlayer2Score);
         getChildren().add(pane1);
         newGame();
+        if (start) {
+            yourSymbol = Seed.CROSS;
+        } else {
+            yourSymbol = Seed.NOUGHT;
+            setTextDisabled();
+        }
 
     }
 
@@ -444,11 +445,12 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     void newGame() {
         for (int i = 0; i < labelsBoard.size(); i++) {
             labelsBoard.get(i).setText(" ");
-            setTextEnabled();
             labelsBoard.get(i).setMouseTransparent(false);
         }
         toggleButtonRecord.setDisable(false);
         toggleButtonRecord.setSelected(false);
+
+        setTextEnabled();
         gameManager.newGame();
     }
 

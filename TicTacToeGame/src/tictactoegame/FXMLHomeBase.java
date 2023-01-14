@@ -226,7 +226,7 @@ public class FXMLHomeBase extends AnchorPane {
 
         buttonOnline.setOnAction((ActionEvent event) -> {
             try {
-                NetworkConnection networkConnection = new NetworkConnection("testing server");
+                networkConnection = new NetworkConnection("testing server");
                 navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
                 System.out.println("hhh");
             } catch (ConnectException ex) {
@@ -240,6 +240,16 @@ public class FXMLHomeBase extends AnchorPane {
                 System.out.println("tictactoegame.FXMLHomeBase.<init>() catchhhhhchchchch");
             }
 
+        });
+
+        stage.setOnCloseRequest((event) -> {
+            if (networkConnection != null) {
+                try {
+                    networkConnection.getSocket().close();
+                } catch (IOException ex) {
+                    Logger.getLogger(FXMLHomeBase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
 
         buttonOnePlayer.setOnAction((ActionEvent event) -> {

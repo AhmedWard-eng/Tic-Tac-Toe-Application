@@ -401,13 +401,16 @@ public class HardLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new HardLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new HardLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new HardLevelAI(stage)));
                 } else {
@@ -506,11 +509,11 @@ public class HardLevelAI extends AnchorPane {
             if (haveTheSameValueAndNotEmpty(borderLabel[i][0].getText(), borderLabel[i][1].getText(), borderLabel[i][2].getText())) {
                 // return borderLabel[i][0].getText() == "X" ? 2 : -2;
                 if (borderLabel[i][0].getText().equals("X")) {
-                    gameManager.saveRecord();
+                   // gameManager.saveRecord();
                     return 2;
 
                 } else {
-                    gameManager.saveRecord();
+                  //  gameManager.saveRecord();
                     return -2;
                 }
 
@@ -522,11 +525,11 @@ public class HardLevelAI extends AnchorPane {
             if (haveTheSameValueAndNotEmpty(borderLabel[0][i].getText(), borderLabel[1][i].getText(), borderLabel[2][i].getText())) {
                 // return borderLabel[0][i].getText() == "X" ? 2 : -2;
                 if (borderLabel[0][i].getText() == "X") {
-                    gameManager.saveRecord();
+                   // gameManager.saveRecord();
                     return 2;
 
                 } else {
-                    gameManager.saveRecord();
+                  //  gameManager.saveRecord();
                     return -2;
                 }
             }
@@ -536,11 +539,11 @@ public class HardLevelAI extends AnchorPane {
         if (haveTheSameValueAndNotEmpty(borderLabel[0][0].getText(), borderLabel[1][1].getText(), borderLabel[2][2].getText())) {
             // return borderLabel[0][0].getText() == "X" ? 2 : -2;
             if (borderLabel[0][0].getText() == "X") {
-                gameManager.saveRecord();
+               // gameManager.saveRecord();
                 return 2;
 
             } else {
-                gameManager.saveRecord();
+               // gameManager.saveRecord();
                 return -2;
             }
         }
@@ -549,11 +552,11 @@ public class HardLevelAI extends AnchorPane {
         if (haveTheSameValueAndNotEmpty(borderLabel[0][2].getText(), borderLabel[1][1].getText(), borderLabel[2][0].getText())) {
             // return borderLabel[0][2].getText() == "X" ? 2 : -2;
             if (borderLabel[0][2].getText() == "X") {
-                gameManager.saveRecord();
+              //  gameManager.saveRecord();
                 return 2;
 
             } else {
-                gameManager.saveRecord();
+              //  gameManager.saveRecord();
                 return -2;
             }
         }
@@ -569,7 +572,7 @@ public class HardLevelAI extends AnchorPane {
             }
         }
         if (tie) {
-            gameManager.saveRecord();
+          //  gameManager.saveRecord();
             return 0;
         }
 

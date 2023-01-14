@@ -179,7 +179,7 @@ public class FXMLResultWinBase extends AnchorPane {
 
         //video
         if (winnerSymbol.equals("X")) {
-            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo .mp4").toExternalForm());
+            media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/WinVideo  .mp4").toExternalForm());
         } else if (winnerSymbol.equals("O")) {
             media = new Media(tictactoegame.TicTacToeGame.class.getResource("Resources/Owinner.mp4").toExternalForm());
         }

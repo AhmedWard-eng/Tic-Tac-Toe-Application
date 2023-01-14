@@ -62,7 +62,7 @@ public class MediumLevelAI extends AnchorPane {
     private GameManager gameManager;
 
     public MediumLevelAI(Stage stage) {
-          gameManager=new GameManager();
+        gameManager = new GameManager();
 
         rectangleBordGameOnePlayer = new Rectangle();
         pane = new Pane();
@@ -185,6 +185,7 @@ public class MediumLevelAI extends AnchorPane {
         label2.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label2.setFont(new Font("Arial Black", 55.0));
         label2.setCursor(Cursor.HAND);
+        label2.setId("2");
 
         label1.setAlignment(javafx.geometry.Pos.CENTER);
         label1.setGraphicTextGap(0.0);
@@ -195,6 +196,7 @@ public class MediumLevelAI extends AnchorPane {
         label1.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label1.setFont(new Font("Arial Black", 55.0));
         label1.setCursor(Cursor.HAND);
+        label1.setId("1");
 
         label0.setAlignment(javafx.geometry.Pos.CENTER);
         label0.setGraphicTextGap(0.0);
@@ -205,6 +207,7 @@ public class MediumLevelAI extends AnchorPane {
         label0.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label0.setFont(new Font("Arial Black", 55.0));
         label0.setCursor(Cursor.HAND);
+        label0.setId("0");
 
         label3.setAlignment(javafx.geometry.Pos.CENTER);
         label3.setGraphicTextGap(0.0);
@@ -215,6 +218,7 @@ public class MediumLevelAI extends AnchorPane {
         label3.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label3.setFont(new Font("Arial Black", 55.0));
         label3.setCursor(Cursor.HAND);
+        label3.setId("3");
 
         label4.setAlignment(javafx.geometry.Pos.CENTER);
         label4.setGraphicTextGap(0.0);
@@ -225,6 +229,7 @@ public class MediumLevelAI extends AnchorPane {
         label4.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label4.setFont(new Font("Arial Black", 55.0));
         label4.setCursor(Cursor.HAND);
+        label4.setId("4");
 
         label5.setAlignment(javafx.geometry.Pos.CENTER);
         label5.setGraphicTextGap(0.0);
@@ -235,6 +240,7 @@ public class MediumLevelAI extends AnchorPane {
         label5.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label5.setFont(new Font("Arial Black", 55.0));
         label5.setCursor(Cursor.HAND);
+        label5.setId("5");
 
         label6.setAlignment(javafx.geometry.Pos.CENTER);
         label6.setGraphicTextGap(0.0);
@@ -245,6 +251,7 @@ public class MediumLevelAI extends AnchorPane {
         label6.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label6.setFont(new Font("Arial Black", 55.0));
         label6.setCursor(Cursor.HAND);
+        label6.setId("6");
 
         label7.setAlignment(javafx.geometry.Pos.CENTER);
         label7.setGraphicTextGap(0.0);
@@ -255,7 +262,8 @@ public class MediumLevelAI extends AnchorPane {
         label7.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label7.setFont(new Font("Arial Black", 55.0));
         label7.setCursor(Cursor.HAND);
-        
+        label7.setId("7");
+
         label8.setAlignment(javafx.geometry.Pos.CENTER);
         label8.setGraphicTextGap(0.0);
         label8.setLayoutX(210.0);
@@ -265,6 +273,7 @@ public class MediumLevelAI extends AnchorPane {
         label8.setTextAlignment(javafx.scene.text.TextAlignment.RIGHT);
         label8.setFont(new Font("Arial Black", 55.0));
         label8.setCursor(Cursor.HAND);
+        label8.setId("8");
 
         pane1.setLayoutX(-12.0);
         pane1.setLayoutY(-8.0);
@@ -337,7 +346,7 @@ public class MediumLevelAI extends AnchorPane {
         pane1.getChildren().add(buttonBackHome);
         pane1.getChildren().add(buttonRestart);
         getChildren().add(pane1);
-      //  toggleButtonRecord.setDisable(false);
+        //  toggleButtonRecord.setDisable(false);
         buttonBackHome.setOnAction((ActionEvent event) -> {
             Scene scene = new Scene(new FXMLChooseGameLevelBase(stage));
             scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
@@ -347,7 +356,7 @@ public class MediumLevelAI extends AnchorPane {
         buttonRestart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Navigation.navigate(stage,new MediumLevelAI(stage));
+                Navigation.navigate(stage, new MediumLevelAI(stage));
                 toggleButtonRecord.setDisable(false);
                 toggleButtonRecord.setSelected(false);
             }
@@ -357,7 +366,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label0.getText().equals("")) {
-                    label0.setText("X");
+//                    label0.setText("X");
+//                    label0.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label0.setMouseTransparent(true);
+                    int index = Integer.parseInt(label0.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label0.setText(gameManager.getCell(index).content.getIcon());
                     label0.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label0.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
@@ -369,13 +383,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -388,7 +405,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label1.getText().equals("")) {
-                    label1.setText("X");
+//                    label1.setText("X");
+//                    label1.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label1.setMouseTransparent(true);
+                    int index = Integer.parseInt(label1.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label1.setText(gameManager.getCell(index).content.getIcon());
                     label1.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label1.setMouseTransparent(true);
                     getComputerChoice(borderLabel);
@@ -399,13 +421,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -418,7 +443,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label2.getText().equals("")) {
-                    label2.setText("X");
+//                    label2.setText("X");
+//                    label2.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label2.setMouseTransparent(true);
+                    int index = Integer.parseInt(label2.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label2.setText(gameManager.getCell(index).content.getIcon());
                     label2.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label2.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
@@ -430,13 +460,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -449,7 +482,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label3.getText().equals("")) {
-                    label3.setText("X");
+//                    label3.setText("X");
+//                    label3.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label3.setMouseTransparent(true);
+                    int index = Integer.parseInt(label3.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label3.setText(gameManager.getCell(index).content.getIcon());
                     label3.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label3.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
@@ -461,13 +499,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -480,7 +521,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label4.getText().equals("")) {
-                    label4.setText("X");
+//                    label4.setText("X");
+//                    label4.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label4.setMouseTransparent(true);
+                    int index = Integer.parseInt(label4.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label4.setText(gameManager.getCell(index).content.getIcon());
                     label4.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label4.setMouseTransparent(true);
                     getComputerChoice(borderLabel);
@@ -491,13 +537,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -510,7 +559,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label5.getText().equals("")) {
-                    label5.setText("X");
+//                    label5.setText("X");
+//                    label5.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label5.setMouseTransparent(true);
+                    int index = Integer.parseInt(label5.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label5.setText(gameManager.getCell(index).content.getIcon());
                     label5.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label5.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
@@ -522,13 +576,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -541,7 +598,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label6.getText().equals("")) {
-                    label6.setText("X");
+//                    label6.setText("X");
+//                    label6.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label6.setMouseTransparent(true);
+                    int index = Integer.parseInt(label6.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label6.setText(gameManager.getCell(index).content.getIcon());
                     label6.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label6.setMouseTransparent(true);
                     getComputerChoice(borderLabel);
@@ -552,13 +614,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -571,7 +636,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label7.getText().equals("")) {
-                    label7.setText("X");
+//                    label7.setText("X");
+//                    label7.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label7.setMouseTransparent(true);
+                    int index = Integer.parseInt(label7.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label7.setText(gameManager.getCell(index).content.getIcon());
                     label7.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label7.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
@@ -583,13 +653,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
                     Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -602,7 +675,12 @@ public class MediumLevelAI extends AnchorPane {
             toggleButtonRecord.setDisable(true);
             if (!has_winner) {
                 if (label8.getText().equals("")) {
-                    label8.setText("X");
+//                    label8.setText("X");
+//                    label8.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+//                    label8.setMouseTransparent(true);
+                    int index = Integer.parseInt(label8.getId());
+                    gameManager.setCell(index, Seed.CROSS);
+                    label8.setText(gameManager.getCell(index).content.getIcon());
                     label8.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
                     label8.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
@@ -614,13 +692,16 @@ public class MediumLevelAI extends AnchorPane {
             }
             int result = checkWinner(borderLabel);
             if (result == 0) {
+                gameManager.saveRecord();
                 System.out.println("Tie \n");
                 Navigation.navigate(stage, new FXMLResultDrawBase(stage, new MediumLevelAI(stage)));
             } else {
                 if (result == 2) {
+                    gameManager.saveRecord();
                     System.out.println("X is winner");
-                    Navigation.navigate(stage, new FXMLResultWinBase(stage,Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
+                    Navigation.navigate(stage, new FXMLResultWinBase(stage, Seed.CROSS.getIcon(), new MediumLevelAI(stage)));
                 } else if (result == -2) {
+                    gameManager.saveRecord();
                     System.out.println("O is winner");
                     Navigation.navigate(stage, new FXMLResultLoseBase(stage, new MediumLevelAI(stage)));
                 } else {
@@ -653,8 +734,11 @@ public class MediumLevelAI extends AnchorPane {
             while (x) {
 
                 if (borderLabel[compi][compj].getText().equals("")) {
-                    borderLabel[compi][compj].setText("O");
+//                    borderLabel[compi][compj].setText("O");
                     borderLabel[compi][compj].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+//                    borderLabel[compi][compj].setMouseTransparent(true);
+                    gameManager.setCell(getIndex(compi, compj), Seed.NOUGHT);
+                    borderLabel[compi][compj].setText(gameManager.getCell(getIndex(compi, compj)).content.getIcon());
                     borderLabel[compi][compj].setMouseTransparent(true);
                     x = false;
                 } else {
@@ -693,8 +777,11 @@ public class MediumLevelAI extends AnchorPane {
                 }
             }
             if (firstTime) {
-                borderLabel[finalI][finalJ].setText("O");
+                // borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                // borderLabel[finalI][finalJ].setMouseTransparent(true);
+                gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
+                borderLabel[finalI][finalJ].setText(gameManager.getCell(getIndex(finalI, finalJ)).content.getIcon());
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
             }
             return finalScore;
@@ -719,9 +806,14 @@ public class MediumLevelAI extends AnchorPane {
                 }
             }
             if (firstTime) {
-                borderLabel[finalI][finalJ].setText("O");
+//                borderLabel[finalI][finalJ].setText("O");
+
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+//                borderLabel[finalI][finalJ].setMouseTransparent(true);
+                gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
+                borderLabel[finalI][finalJ].setText(gameManager.getCell(getIndex(finalI, finalJ)).content.getIcon());
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
+
             }
             return finalScore;
         }
@@ -773,6 +865,29 @@ public class MediumLevelAI extends AnchorPane {
 
         // Else
         return 1;
+    }
+
+    public int getIndex(int i, int j) {
+        if ((i == 0) && (j == 0)) {
+            return 0;
+        } else if ((i == 0) && (j == 1)) {
+            return 1;
+        } else if ((i == 0) && (j == 2)) {
+            return 2;
+        } else if ((i == 1) && (j == 0)) {
+            return 3;
+        } else if ((i == 1) && (j == 1)) {
+            return 4;
+        } else if ((i == 1) && (j == 2)) {
+            return 5;
+        } else if ((i == 2) && (j == 0)) {
+            return 6;
+        } else if ((i == 2) && (j == 1)) {
+            return 7;
+        } else {
+            return 8;
+        }
+
     }
 
 }

@@ -124,7 +124,7 @@ public class GameManager {
     public void saveRecord() {
         if (isRecorded) {
             String recordString = new Gson().toJson(new Record(recordedBoard, playerOne, playerTwo));
-            System.out.println(recordString);
+      //      System.out.println(recordString);
             File dir = new File("recordedGames");
             if (!dir.exists()) {
                 dir.mkdir();

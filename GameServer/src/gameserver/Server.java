@@ -5,6 +5,7 @@
  */
 package gameserver;
 
+import DataBaseLayer.DataAccessLayer;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -41,7 +42,10 @@ public class Server {
 
     public void closeConnection() throws IOException {
         isOpened = false;
+        DataAccessLayer dao = DataAccessLayer.getInstance();
 //        if (clientConnection != null) {
+
+//        System.out.println("Close Connection is Called ");
         for (int i = 0; i < clientsVector.size(); i++) {
 
             Socket socket = clientsVector.get(i).socket;
@@ -53,7 +57,8 @@ public class Server {
             String message = new Gson().toJson(map);
 
             clientsVector.get(i).sendMessage(message);
-
+//            System.out.println();
+            dao.makeuserOffline(clientsVector.get(i).getIp());
             socket.close();
 
             System.err.println(" socket isclosed " + socket.isClosed());

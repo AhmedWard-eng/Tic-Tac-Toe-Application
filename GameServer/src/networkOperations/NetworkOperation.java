@@ -32,7 +32,7 @@ public class NetworkOperation {
     ClientConnection clientconnection;
 
     public NetworkOperation() {
-        dataAccessLayer = new DataAccessLayer();
+        dataAccessLayer = DataAccessLayer.getInstance();
     }
 
     public boolean signUp(String message, String ip) throws SQLException {

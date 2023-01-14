@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import com.google.gson.GsonBuilder;
+import static gameserver.Server.clientsVector;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.BufferedReader;
@@ -86,7 +87,7 @@ public class ClientConnection {
                         String message = bufferReader.readLine();
 //                        System.out.println(message);
                         if (message == null) {
-
+//                            DataAccessLayer.getInstance().makeuserOffline(ip);
                             Server.clientsVector.remove(ClientConnection.this);
                             continue;
                         }
@@ -98,7 +99,7 @@ public class ClientConnection {
                         //System.out.println("operationnnnnnnn" + object.getString("operation"));
                         if (object.getString("operation").equals("signup")) {
                             boolean exist = networkOperation.signUp(message, ip);
-                            System.out.println("clint exist= " + exist);
+                            System.out.println("client exist= " + exist);
                             String found;
                             if (!exist) {
                                 found = "notExist";
@@ -163,7 +164,7 @@ public class ClientConnection {
                             sendMessage(players);
                         } else if (object.getString("operation").equals("withdraw")) {
                             System.out.println(message);
-                            networkOperation.withdrawing(message, ip,object.getString("userName"), object.getString("ip"),  object.getString("otherPlayeruserName"), ClientConnection.this);
+                            networkOperation.withdrawing(message, ip, object.getString("userName"), object.getString("ip"), object.getString("otherPlayeruserName"), ClientConnection.this);
                         }
 
                     } catch (SocketException ex) {

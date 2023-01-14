@@ -55,8 +55,7 @@ public class NetworkConnection {
     private String ip;
     public static UserOnline userOnline;
 
-    
-    public Socket getSocket(){
+    public Socket getSocket() {
         return socket;
     }
 
@@ -70,16 +69,16 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.8", 5005);
+                socket = new Socket("192.168.1.3", 5005);
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
+                readMessage();
             }
 
             ip = socket.getLocalAddress().getHostAddress();
             r = new RepeatedUserDialog();
 
-            readMessage();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -90,7 +89,7 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.8", 5005);
+                socket = new Socket("192.168.1.3", 5005);
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -113,7 +112,7 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.8", 5005);
+                socket = new Socket("192.168.1.3", 5005);
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -138,12 +137,12 @@ public class NetworkConnection {
         }
         socket = null;
         if (socket == null || socket.isClosed()) {
-            socket = new Socket("192.168.1.8", 5005);
+            socket = new Socket("192.168.1.3", 5005);
             System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             ps = new PrintStream(socket.getOutputStream());
+            readMessage();
         }
-        readMessage();
         System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg" + socket.isConnected());
 //            System.out.println(ip);
         ip = socket.getLocalAddress().getHostAddress();

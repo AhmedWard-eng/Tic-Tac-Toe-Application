@@ -29,8 +29,17 @@ public class DataAccessLayer {
 
     private Connection connection;
     PreparedStatement pst;
+    private static DataAccessLayer dao;
 
-    public DataAccessLayer() {
+    public static DataAccessLayer getInstance() {
+        if (dao == null) {
+
+            dao = new DataAccessLayer();
+        }
+        return dao;
+    }
+
+    private DataAccessLayer() {
         try {
             DriverManager.registerDriver(new ClientDriver());
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/game", "root", "root");
@@ -229,7 +238,7 @@ public class DataAccessLayer {
         }
     }
 
-    public boolean updateScore(String userName,int score) {
+    public boolean updateScore(String userName, int score) {
         try {
             String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"SCORE\" = ? where ROOT.\"game\".\"username\" = ?";
             PreparedStatement pst = connection.prepareStatement(sqlUpdate);
@@ -250,6 +259,23 @@ public class DataAccessLayer {
             String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"status\" = ? where ROOT.\"game\".\"ip\" = ?";
             PreparedStatement pst = connection.prepareStatement(sqlUpdate);
             pst.setString(1, "online");
+            pst.setString(2, ip);
+            int rs = pst.executeUpdate();
+            System.out.println("rs = " + rs);
+            return rs != 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return false;
+        }
+
+    }
+
+    public boolean makeuserOffline(String ip) {
+        try {
+            String sqlUpdate = "Update ROOT.\"game\" set ROOT.\"game\".\"status\" = ? where ROOT.\"game\".\"ip\" = ?";
+            PreparedStatement pst = connection.prepareStatement(sqlUpdate);
+            pst.setString(1, "offline");
             pst.setString(2, ip);
             int rs = pst.executeUpdate();
             System.out.println("rs = " + rs);

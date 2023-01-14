@@ -10,7 +10,6 @@ package beans;
  * @author AhmedWard
  */
 public class GameFinishBean {
-
     public String operation;
     public GameStatus gameStatus;
     public String userName;
@@ -21,4 +20,6 @@ public class GameFinishBean {
         this.userName = userName;
     }
 
+    
+    
 }

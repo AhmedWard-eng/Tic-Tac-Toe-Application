@@ -146,7 +146,7 @@ public class GameServerBase extends AnchorPane {
         label = new Label();
         paneview = new Pane();
 
-        test = new DataAccessLayer();
+        test = DataAccessLayer.getInstance();
         draw(paneview);
         buttonOff.setDisable(true);
 

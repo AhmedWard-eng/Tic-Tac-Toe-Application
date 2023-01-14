@@ -6,30 +6,30 @@
 package DataBaseLayer;
 
 //import java.sql.SQLException;
-
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /**
  *
  * @author Nada Hamed
  */
 public class test {
+
     public static void main(String[] args) {
-        try {
-            DataAccessLayer test = new DataAccessLayer();
+        DataAccessLayer test = DataAccessLayer.getInstance();
 //            double x = test.getOnlineRate();
 //            double y = test.getOfflineRate();
 //            System.out.println("online players num= "+ x);
 //            System.out.println("offline players num= "+ y);
-            int score = test.getPlayerScore("ward");
-            System.out.println(score);
-            test.updateScore("ward",score+5);
-        } catch (SQLException ex) {
-            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//            int score = test.getPlayerScore("ward");
+//            System.out.println(score);
+//            test.updateScore("ward",score+5);
+
+//        test.makeuserOnline("192.168.1.2");
+//            Thread.sleep(1000);
+        test.makeuserOffline("192.168.1.2");
+
     }
-    
+
 }

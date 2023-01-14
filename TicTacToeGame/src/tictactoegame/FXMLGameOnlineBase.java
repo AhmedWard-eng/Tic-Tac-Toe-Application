@@ -439,7 +439,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
     }
 
     void init() {
-        gameManager = new GameManager();
+        gameManager = new GameManager(userName, requestGameBean.myUserName);
     }
 
     void newGame() {
@@ -518,6 +518,7 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
                     NetworkConnection.userOnline.setScore(NetworkConnection.userOnline.getScore() - 5);
                 } else if (gameManager.isDraw()) {
                     String gameFinishMessage = gson.toJson(new GameFinishBean("gameFinish", GameStatus.DRAW, userName));
+                    networkConnection.sendMessage(gameFinishMessage);
                     gameManager.saveRecord();
                     Navigation.navigate(stage, new FXMLResultDrawBase(stage, new FXMLAvailableUsersBase(stage, FXMLAvailableUsersBase.usersList)));
                 }

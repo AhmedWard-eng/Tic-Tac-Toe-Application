@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -37,6 +38,7 @@ import navigationLogic.Navigation;
 public class FXMLHomeBase extends AnchorPane {
 
     protected final ImageView imageViewLogo;
+    protected final ImageView imageViewhelpIcon;
     protected final AnchorPane anchorPane;
     protected final Rectangle rectangle;
     protected final Label label;
@@ -72,10 +74,14 @@ public class FXMLHomeBase extends AnchorPane {
     protected ButtonType cancelButtonType;
     protected Dialog<ButtonType> dialog;
     protected NetworkConnection networkConnection;
+    private Stage stage;
+    RepeatedUserDialog r;
 
     public FXMLHomeBase(Stage stage) {
 
+        r = new RepeatedUserDialog();
         imageViewLogo = new ImageView();
+        imageViewhelpIcon = new ImageView();
         anchorPane = new AnchorPane();
         rectangle = new Rectangle();
         label = new Label();
@@ -88,6 +94,7 @@ public class FXMLHomeBase extends AnchorPane {
         glow1 = new Glow();
         rectangle0 = new Rectangle();
         buttonRecord = new Button();
+        this.stage = stage;
 //        RepeatedUserDialog.acceptPlaying(networkConnection,new RequestGameBean("", "ward", "ali", "jj"));
 
         label0 = new Label();
@@ -132,6 +139,14 @@ public class FXMLHomeBase extends AnchorPane {
         imageViewLogo.setPickOnBounds(true);
         imageViewLogo.setPreserveRatio(true);
         imageViewLogo.setImage(new Image(getClass().getResource("Resources/Capture.PNG").toExternalForm()));
+
+//        imageViewhelpIcon.setFitHeight(114.0);
+//        imageViewhelpIcon.setFitWidth(253.0);
+        imageViewhelpIcon.setLayoutX(560.0);
+        imageViewhelpIcon.setLayoutY(25.0);
+        imageViewhelpIcon.setPickOnBounds(true);
+        imageViewhelpIcon.setPreserveRatio(true);
+        imageViewhelpIcon.setImage(new Image(getClass().getResource("Resources/helpIcon.png").toExternalForm()));
 
         anchorPane.setPrefHeight(450.0);
         anchorPane.setPrefWidth(195.0);
@@ -225,20 +240,16 @@ public class FXMLHomeBase extends AnchorPane {
         });
 
         buttonOnline.setOnAction((ActionEvent event) -> {
-            try {
-                networkConnection = new NetworkConnection("testing server");
-                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
-                System.out.println("hhh");
-            } catch (ConnectException ex) {
 
-                System.out.println("dialoooooooooooooogggggggggggggggggggggg");
-            } catch (SocketException ex) {
-//                System.out.println("naviiiiiigateeeeeeeeeeeeeeeeee");
-//                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                System.out.println("tictactoegame.FXMLHomeBase.<init>() catchhhhhchchchch");
-            }
+//            setCursor(Cursor.WAIT);
+            r.loadingDialog();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    checkServerStatus();
+                }
+            }).start();
+
 
         });
 
@@ -259,6 +270,18 @@ public class FXMLHomeBase extends AnchorPane {
 
             readingPlayerName(stage);
 
+        });
+
+        imageViewhelpIcon.setOnMouseClicked((event) -> {
+            RepeatedUserDialog r = new RepeatedUserDialog();
+            r.helpDialog();
+//            r.loadingDialog();
+        });
+        imageViewhelpIcon.setOnMouseEntered((event) -> {
+            setCursor(Cursor.CLOSED_HAND);
+        });
+        imageViewhelpIcon.setOnMouseExited((event) -> {
+            setCursor(Cursor.DEFAULT);
         });
 
         rectangle0.setArcHeight(5.0);
@@ -344,6 +367,7 @@ public class FXMLHomeBase extends AnchorPane {
         getChildren().add(line2);
         getChildren().add(label1);
         getChildren().add(label2);
+        getChildren().add(imageViewhelpIcon);
 
     }
 
@@ -412,6 +436,38 @@ public class FXMLHomeBase extends AnchorPane {
             cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15;");
 
             buttonAdded = true;
+        }
+    }
+
+    public void checkServerStatus() {
+        try {
+            NetworkConnection networkConnection = new NetworkConnection("testing server");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+                }
+
+            });
+            System.out.println("hhh");
+        } catch (ConnectException ex) {
+            System.out.println("dialoooooooooooooogggggggggggggggggggggg");
+        } catch (SocketException ex) {
+//                System.out.println("naviiiiiigateeeeeeeeeeeeeeeeee");
+//                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.println("tictactoegame.FXMLHomeBase.<init>() catchhhhhchchchch");
+        } finally {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    r.closeLoadingDialog();
+                }
+
+            });
+
         }
     }
 }

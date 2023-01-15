@@ -144,7 +144,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
                             networkConnection.sendMessage(message);
 
                         }
-                        Thread.sleep(10000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }

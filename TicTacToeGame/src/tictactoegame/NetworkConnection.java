@@ -249,6 +249,9 @@ public class NetworkConnection {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if (FXMLAvailableUsersBase.repeatedUserDialog != null) {
+                                        FXMLAvailableUsersBase.repeatedUserDialog.closeLoadingDialog();
+                                    }
                                     Stage stage = TicTacToeGame.getStage();
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
                                     RepeatedUserDialog.acceptPlaying(NetworkConnection.this, requestGameBean, stage);

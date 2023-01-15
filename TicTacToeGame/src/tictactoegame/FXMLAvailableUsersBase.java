@@ -77,6 +77,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
             String s = new Gson().toJson(new RequestGameBean("requestPlaying", NetworkConnection.userOnline.getUserName(), usersList.get(index).getUserName(), networkConnection.getIp(), usersList.get(index).getIp(), NetworkConnection.userOnline.getScore()));
 
             networkConnection.sendMessage(s);
+//            if(usersList.get(i).)
             repeatedUserDialog = new RepeatedUserDialog();
             repeatedUserDialog.loadingDialog();
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());

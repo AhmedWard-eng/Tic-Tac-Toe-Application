@@ -452,8 +452,9 @@ public class FXMLHomeBase extends AnchorPane {
             System.out.println("hhh");
         } catch (ConnectException ex) {
             System.out.println("dialoooooooooooooogggggggggggggggggggggg");
+            r.dialogOutOfConnection(); 
         } catch (SocketException ex) {
-//                System.out.println("naviiiiiigateeeeeeeeeeeeeeeeee");
+                System.out.println("socket expexpexp");
 //                navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
         } catch (IOException ex) {
             ex.printStackTrace();

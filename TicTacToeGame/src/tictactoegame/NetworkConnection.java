@@ -71,6 +71,7 @@ public class NetworkConnection {
 
                 socket = new Socket("10.145.19.104", 5005);
 
+
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
                 readMessage();
@@ -90,6 +91,7 @@ public class NetworkConnection {
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
                 socket = new Socket("10.145.19.104", 5005);
+
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -112,7 +114,9 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
+
                 socket = new Socket("10.145.19.104", 5005);
+
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -138,6 +142,7 @@ public class NetworkConnection {
         socket = null;
         if (socket == null || socket.isClosed()) {
             socket = new Socket("10.145.19.104", 5005);
+
 
             System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

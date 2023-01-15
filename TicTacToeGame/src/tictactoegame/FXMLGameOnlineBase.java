@@ -436,11 +436,17 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
             setTextDisabled();
         }
 
+        stage.setOnCloseRequest((event) -> {
+            RepeatedUserDialog r = new RepeatedUserDialog();
+            r.logoutDialog("zzzzzzzz", event);
+        });
     }
 
     void init() {
         gameManager = new GameManager(userName, requestGameBean.myUserName);
     }
+    
+    
 
     void newGame() {
         for (int i = 0; i < labelsBoard.size(); i++) {

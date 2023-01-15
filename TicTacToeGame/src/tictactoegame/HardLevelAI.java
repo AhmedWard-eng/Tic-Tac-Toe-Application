@@ -382,6 +382,7 @@ public class HardLevelAI extends AnchorPane {
          //   seed = Seed.CROSS;
             //record=new Record(board, player1, player2);
             if (!has_winner) {
+
                 if (label.getText().equals("")) {
                 
                    // label.setText("X");
@@ -389,6 +390,7 @@ public class HardLevelAI extends AnchorPane {
                     gameManager.setCell(index, Seed.CROSS);
                     label.setText(gameManager.getCell(index).content.getIcon());
                     label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+
                     label.setMouseTransparent(true);
                     // record.board.add(new Cell(Seed.CROSS, Integer.parseInt(label.getId())));
                     // label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
@@ -452,9 +454,9 @@ public class HardLevelAI extends AnchorPane {
             }
             if (firstTime) {
 
-              
-               // borderLabel[finalI][finalJ].setText("O");
-                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
+
                 // borderLabel[finalI][finalJ].setMouseTransparent(true);
 
                 gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
@@ -486,8 +488,10 @@ public class HardLevelAI extends AnchorPane {
                 }
             }
             if (firstTime) {
+
               //   borderLabel[finalI][finalJ].setText("O");
                 borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+
                 //  borderLabel[finalI][finalJ].setMouseTransparent(true);
                 //record.board.add(new Cell(Seed.NOUGHT,getIndex(finalI,finalJ))); 
                gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);

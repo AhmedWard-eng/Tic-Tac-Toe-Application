@@ -147,5 +147,9 @@ public class NetworkOperation {
 
         System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update2 = " + isUpdated2);
     }
+    public void logoutWithDraw(String message, String ip, String userName, String otherPlayerIp, String otherPlayerUserName, ClientConnection clientConnection, LogoutBean logoutBean, String hostAddress) throws SQLException{
+        withdrawing(message, ip, userName, otherPlayerIp, otherPlayerUserName, clientConnection);
+        logout(logoutBean, hostAddress);
+    }
 
 }

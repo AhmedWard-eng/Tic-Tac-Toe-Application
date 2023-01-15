@@ -70,7 +70,9 @@ public class NetworkOperation {
         }
         for (int i = 0; i < Server.clientsVector.size(); i++) {
             if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp) && Server.clientsVector.get(i) != clientConnection) {
-                Server.clientsVector.get(i).sendMessage(s);
+                if (!dataAccessLayer.isOnline(requestGameBean.otherPlayerIp)) {
+                    Server.clientsVector.get(i).sendMessage(s);
+                }
             }
 
         }

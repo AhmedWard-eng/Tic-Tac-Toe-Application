@@ -169,9 +169,11 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
             public void run() {
                 listViewAvailableUsers.getItems().clear();
                 for (int i = 0; i < users.size(); i++) {
-//                    if (!usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
-                    listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
-//                    }
+                    if (!usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
+                        listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+                    } else {
+                        usersList.remove(i);
+                    }
                     System.out.println("users count = " + usersList.size());
                 }
             }

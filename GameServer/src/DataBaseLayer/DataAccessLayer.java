@@ -290,6 +290,20 @@ public class DataAccessLayer {
 
     }
 
+    public boolean isOnline(String ip) {
+        try {
+            String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"ip\"=? and ROOT.\"game\".\"status\"= online";
+
+            PreparedStatement pst = connection.prepareStatement(sql);
+            pst.setString(1, ip);
+            ResultSet rs = pst.executeQuery();
+            return rs.first();
+        } catch (SQLException ex) {
+            Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
     public Connection getConnection() {
         return connection;
     }

@@ -404,7 +404,7 @@ public class FXMLGameOnePlayerEasyBase extends AnchorPane {
                     @Override
                     public void run() {
                         labelsBoard.get(compstep).setText(gameManager.getCell(compstep).content.getIcon());
-                        labelsBoard.get(compstep).setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                        labelsBoard.get(compstep).setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
                         labelsBoard.get(compstep).setMouseTransparent(true);
                         setTextEnabled();
                         if (gameManager.isPlayerOWon()) {
@@ -440,7 +440,7 @@ public class FXMLGameOnePlayerEasyBase extends AnchorPane {
                 int index = Integer.parseInt(label.getId());
                 gameManager.setCell(index, Seed.CROSS);
                 label.setText(gameManager.getCell(index).content.getIcon());
-                label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                 label.setMouseTransparent(true);
                 if (gameManager.isPlayerXWon()) {
                     gameManager.saveRecord();

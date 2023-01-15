@@ -25,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import tictactoegame.FXMLHomeBase;
 import tictactoegame.FXMLUserItemBase;
 
@@ -108,7 +109,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         
         buttonBackHome.setOnAction((ActionEvent event) -> {
             RepeatedUserDialog r = new RepeatedUserDialog();
-            r.logoutDialog("Do you want to logout?");
+            r.logoutDialog("Do you want to logout?", null);
         });
 
         buttonBackHome.setLayoutX(18.0);

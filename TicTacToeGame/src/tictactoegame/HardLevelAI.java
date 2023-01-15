@@ -388,7 +388,7 @@ public class HardLevelAI extends AnchorPane {
                 if (seed == Seed.CROSS) {
                    gameManager.setCell(Integer.parseInt(label.getId()), Seed.CROSS);
             label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
-            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
 //                    label.setText("X");
 //                    int index = Integer.parseInt(label.getId());
 //                    gameManager.setCell(index, Seed.CROSS);
@@ -455,7 +455,7 @@ public class HardLevelAI extends AnchorPane {
             if (firstTime) {
 
                 borderLabel[finalI][finalJ].setText("O");
-                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
                 // borderLabel[finalI][finalJ].setMouseTransparent(true);
 
                 gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);
@@ -488,7 +488,7 @@ public class HardLevelAI extends AnchorPane {
             }
             if (firstTime) {
                  borderLabel[finalI][finalJ].setText("O");
-                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
                 //  borderLabel[finalI][finalJ].setMouseTransparent(true);
                 //record.board.add(new Cell(Seed.NOUGHT,getIndex(finalI,finalJ))); 
                 gameManager.setCell(getIndex(finalI, finalJ), Seed.NOUGHT);

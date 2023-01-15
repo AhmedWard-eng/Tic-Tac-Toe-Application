@@ -45,7 +45,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import static tictactoegame.NetworkConnection.users;
 import javafx.application.HostServices;
+import javafx.event.EventHandler;
 import javafx.scene.paint.Paint;
+import javafx.stage.WindowEvent;
 /**
  *
  * @author Nada Hamed
@@ -198,7 +200,7 @@ public class RepeatedUserDialog extends Application{
 
     }
 
-    public void logoutDialog(String message) {
+    public void logoutDialog(String message, WindowEvent e) {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         labelFirstPlayer = new Label(message);
@@ -251,7 +253,8 @@ public class RepeatedUserDialog extends Application{
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
 
         } else if (clickedButton.get() == cancelButtonType) {
-
+            if(e!=null)
+                e.consume();
         }
     }
 

@@ -437,14 +437,14 @@ public class FXMLGameTwoPlayerBase extends AnchorPane {
         if (seed == Seed.CROSS) {
             gameManager.setCell(Integer.parseInt(label.getId()), Seed.CROSS);
             label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
-            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+            label.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
             labelPlayer.setStyle("-fx-text-fill:#c22115;");
             labelPlayer2.setStyle("-fx-text-fill:#f0f0f0 ;");
             seed = Seed.NOUGHT;
         } else {
             gameManager.setCell(Integer.parseInt(label.getId()), Seed.NOUGHT);
             label.setText(gameManager.getCell(Integer.parseInt(label.getId())).content.getIcon());
-            label.setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+            label.setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
             labelPlayer2.setStyle("-fx-text-fill:#c22115;");
             labelPlayer.setStyle("-fx-text-fill:#f0f0f0 ;");
             seed = Seed.CROSS;

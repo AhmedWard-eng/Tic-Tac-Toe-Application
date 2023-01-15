@@ -357,7 +357,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label0.getText().equals("")) {
                     label0.setText("X");
-                    label0.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label0.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label0.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
@@ -388,7 +388,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label1.getText().equals("")) {
                     label1.setText("X");
-                    label1.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label1.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label1.setMouseTransparent(true);
                     getComputerChoice(borderLabel);
                     has_winner = checkWinner(borderLabel) != 1;
@@ -418,7 +418,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label2.getText().equals("")) {
                     label2.setText("X");
-                    label2.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label2.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label2.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
@@ -449,7 +449,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label3.getText().equals("")) {
                     label3.setText("X");
-                    label3.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label3.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label3.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
@@ -480,7 +480,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label4.getText().equals("")) {
                     label4.setText("X");
-                    label4.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label4.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label4.setMouseTransparent(true);
                     getComputerChoice(borderLabel);
                     has_winner = checkWinner(borderLabel) != 1;
@@ -510,7 +510,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label5.getText().equals("")) {
                     label5.setText("X");
-                    label5.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label5.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label5.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
@@ -541,7 +541,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label6.getText().equals("")) {
                     label6.setText("X");
-                    label6.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label6.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label6.setMouseTransparent(true);
                     getComputerChoice(borderLabel);
                     has_winner = checkWinner(borderLabel) != 1;
@@ -571,7 +571,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label7.getText().equals("")) {
                     label7.setText("X");
-                    label7.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label7.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label7.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
@@ -602,7 +602,7 @@ public class MediumLevelAI extends AnchorPane {
             if (!has_winner) {
                 if (label8.getText().equals("")) {
                     label8.setText("X");
-                    label8.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900);");
+                    label8.setStyle("-fx-text-fill: linear-gradient(to top,ff9900,#ff9900); -fx-effect:  dropshadow(gaussian, rgba(208, 136, 11), 15, 0.4, 0.0, 0.0)");
                     label8.setMouseTransparent(true);
                     int result = minimax(borderLabel, 100, false, true);
                     System.out.println("result=" + result);
@@ -653,7 +653,7 @@ public class MediumLevelAI extends AnchorPane {
 
                 if (borderLabel[compi][compj].getText().equals("")) {
                     borderLabel[compi][compj].setText("O");
-                    borderLabel[compi][compj].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                    borderLabel[compi][compj].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
                     borderLabel[compi][compj].setMouseTransparent(true);
                     x = false;
                 } else {
@@ -693,7 +693,7 @@ public class MediumLevelAI extends AnchorPane {
             }
             if (firstTime) {
                 borderLabel[finalI][finalJ].setText("O");
-                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
             }
             return finalScore;
@@ -719,7 +719,7 @@ public class MediumLevelAI extends AnchorPane {
             }
             if (firstTime) {
                 borderLabel[finalI][finalJ].setText("O");
-                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0);");
+                borderLabel[finalI][finalJ].setStyle("-fx-text-fill: linear-gradient(to top,#f0f0f0,#f0f0f0); -fx-effect:  dropshadow(gaussian, rgba(255, 255, 255), 8, 0.4, 0.0, 0.0)");
                 borderLabel[finalI][finalJ].setMouseTransparent(true);
             }
             return finalScore;

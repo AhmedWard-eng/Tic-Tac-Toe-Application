@@ -39,6 +39,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
     protected final Button buttonBackHome;
     NetworkConnection networkConnection;
     Thread t;
+    public static RepeatedUserDialog repeatedUserDialog;
 
     //  Gson g = new Gson();
     public static ArrayList<UserOnline> usersList;
@@ -76,6 +77,8 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
             String s = new Gson().toJson(new RequestGameBean("requestPlaying", NetworkConnection.userOnline.getUserName(), usersList.get(index).getUserName(), networkConnection.getIp(), usersList.get(index).getIp(), NetworkConnection.userOnline.getScore()));
 
             networkConnection.sendMessage(s);
+            repeatedUserDialog = new RepeatedUserDialog();
+            repeatedUserDialog.loadingDialog();
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
         });
 
@@ -165,9 +168,9 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
             public void run() {
                 listViewAvailableUsers.getItems().clear();
                 for (int i = 0; i < users.size(); i++) {
-                    if (!usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
-                        listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
-                    }
+//                    if (!usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
+                    listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+//                    }
                     System.out.println("users count = " + usersList.size());
                 }
             }

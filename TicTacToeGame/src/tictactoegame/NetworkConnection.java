@@ -259,14 +259,17 @@ public class NetworkConnection {
                                 @Override
                                 public void run() {
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
+                                    FXMLAvailableUsersBase.repeatedUserDialog.closeLoadingDialog();
                                     Stage stage = TicTacToeGame.getStage();
                                     Navigation.navigate(stage, new FXMLGameOnlineBase(stage, requestGameBean, true, requestGameBean.score));
+
                                 }
                             });
                         } else if (object.getString("operation").equals("refuse")) {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
+                                    FXMLAvailableUsersBase.repeatedUserDialog.closeLoadingDialog();
                                     RequestGameBean requestGameBean = new Gson().fromJson(message, RequestGameBean.class);
                                     RepeatedUserDialog.dialogRefuse(requestGameBean);
                                 }

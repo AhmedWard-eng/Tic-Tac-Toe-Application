@@ -88,6 +88,7 @@ public class ClientConnection {
 //                        System.out.println(message);
                         if (message == null) {
 //                            DataAccessLayer.getInstance().makeuserOffline(ip);
+                            socket.close();
                             Server.clientsVector.remove(ClientConnection.this);
                             continue;
                         }

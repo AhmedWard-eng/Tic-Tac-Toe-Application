@@ -68,12 +68,12 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         listViewAvailableUsers.setPrefSize(585, 290);
 
         //System.out.println("Size: " + users.size());
-        reload(users);
-        
+        reload();
+
         listViewAvailableUsers.setOnMouseClicked((javafx.scene.input.MouseEvent event) -> {
             int index = Integer.parseInt(String.valueOf(listViewAvailableUsers.getSelectionModel().getSelectedIndices().get(0)));
-            System.out.println("usersList size = "+usersList.size()+"===========");
-            String s = new Gson().toJson(new RequestGameBean("requestPlaying", NetworkConnection.userOnline.getUserName(), usersList.get(index).getUserName(), networkConnection.getIp(), usersList.get(index).getIp(),NetworkConnection.userOnline.getScore()));
+            System.out.println("usersList size = " + usersList.size() + "===========");
+            String s = new Gson().toJson(new RequestGameBean("requestPlaying", NetworkConnection.userOnline.getUserName(), usersList.get(index).getUserName(), networkConnection.getIp(), usersList.get(index).getIp(), NetworkConnection.userOnline.getScore()));
 
             networkConnection.sendMessage(s);
             System.out.println("clicked on " + listViewAvailableUsers.getSelectionModel().getSelectedIndices());
@@ -106,7 +106,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         label1.setText("Status");
         label1.setTextFill(javafx.scene.paint.Color.valueOf("#fffafa"));
         label1.setFont(new Font("Arial Black", 20.0));
-        
+
         buttonBackHome.setOnAction((ActionEvent event) -> {
             RepeatedUserDialog r = new RepeatedUserDialog();
             r.logoutDialog("Do you want to logout?", null);
@@ -131,7 +131,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
 
     }
 
-    private void reload(ArrayList<UserOnline> users) {
+    private void reload() {
         t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -165,8 +165,10 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
             public void run() {
                 listViewAvailableUsers.getItems().clear();
                 for (int i = 0; i < users.size(); i++) {
-                    listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
-                    System.out.println("users count = "+usersList.size());
+                    if (!usersList.get(i).getUserName().equals(NetworkConnection.userOnline.getUserName())) {
+                        listViewAvailableUsers.getItems().add(new FXMLUserItemBase("    " + users.get(i).getUserName(), users.get(i).getStatus(), users.get(i).getScore()));
+                    }
+                    System.out.println("users count = " + usersList.size());
                 }
             }
         });

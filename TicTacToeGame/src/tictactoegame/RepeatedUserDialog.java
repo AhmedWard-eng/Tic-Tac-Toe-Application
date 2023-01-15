@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -27,6 +28,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
@@ -42,12 +44,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import static tictactoegame.NetworkConnection.users;
-
+import javafx.application.HostServices;
+import javafx.scene.paint.Paint;
 /**
  *
  * @author Nada Hamed
  */
-public class RepeatedUserDialog {
+public class RepeatedUserDialog extends Application{
 
     protected DialogPane dialogPaneName;
     protected GridPane gridPane;
@@ -397,25 +400,44 @@ public class RepeatedUserDialog {
     }
     
     public void helpDialog() {
+        Label label2;
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
+        Hyperlink githubHyperlink = new Hyperlink("https://github.com/AhmedWard-eng/Tic-Tac-Toe-Application");
+        
         String message;
         //Want to add your ideas?
-        message = "Copyright 2023 JETS LLC. All rights reserved. \n\nNeed more help? \n\nContact us in Linkedin:\n\n";
-        message += "Ahmed gamal Ward\n";
-        message += "Hossam Ahmed Fadaly\n";
-        message += "Marina abdelmalak beshara\n";
-        message += "Nada Alsayed hamed";
+        message = "Copyright 2023 JETS LLC. All rights reserved. \n\nWant to add your ideas? Contribute in:\n\n";
+        String message2 = "\nCredits to:\n\n";
+        
+        message2 += "Ahmed gamal Ward\n";
+        message2 += "Hossam Ahmed Fadaly\n";
+        message2 += "Marina abdelmalak beshara\n";
+        message2 += "Nada Alsayed hamed";
         labelFirstPlayer = new Label(message);
+        label2 = new Label(message2);
 
+        githubHyperlink.setFont(new Font("Comic Sans MS Bold", 15.0));
+        githubHyperlink.setTextFill(Paint.valueOf("#ff9900"));
+        
         labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
         labelFirstPlayer.setTextFill(Color.WHITE);
 
+        label2.setFont(new Font("Comic Sans MS Bold", 15.0));
+        label2.setTextFill(Color.WHITE);
+        
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
         dialogPaneName.setStyle("-fx-background-color: #22726e;");
+        
+        
+        githubHyperlink.setOnAction((event) -> {
+            getHostServices().showDocument(githubHyperlink.getText());
+        });
 
         gridPane.add(labelFirstPlayer, 0, 0);
+        gridPane.add(githubHyperlink, 0, 1);
+        gridPane.add(label2, 0, 2);
         dialogPaneName.setContent(gridPane);
 
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -464,6 +486,11 @@ public class RepeatedUserDialog {
     public void closeLoadingDialog(){
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
         dialog.close();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        
     }
     
     

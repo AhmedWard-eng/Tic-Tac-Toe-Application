@@ -298,6 +298,7 @@ public class GameServerBase extends AnchorPane {
                 try {
                     System.out.println("server on is close");
                     server.closeConnection();
+                    System.exit(0);
                 } catch (IOException ex) {
                     Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -307,17 +307,47 @@ public class RepeatedUserDialog {
             @Override
             public void run() {
 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("MESSAGE...!");
-                alert.setHeaderText("OK, an Information Dialog");
-                alert.setContentText("OUT OF CONNECTION");
-                alert.showAndWait().ifPresent(rs -> {
-                    if (rs == ButtonType.OK) {
-                        System.out.println("Pressed OK.");
-                        Stage stage = TicTacToeGame.getStage();
-                        navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
-                    }
-                });
+                DialogPane dialogPaneName = new DialogPane();
+                GridPane gridPane = new GridPane();
+                Label labelFirstPlayer = new Label("OUT OF CONNECTION.");
+
+                dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+                labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 18.0));
+                labelFirstPlayer.setTextFill(Color.WHITE);
+
+                dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+                dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+                dialogPaneName.setStyle("-fx-background-color: #22726e;");
+
+                gridPane.add(labelFirstPlayer, 0, 0);
+                dialogPaneName.setContent(gridPane);
+                gridPane.setMinSize(400, 100);
+
+                Dialog<ButtonType> dialog = new Dialog<>();
+                dialog.setDialogPane(dialogPaneName);
+
+                ButtonType OkButtonType = new ButtonType("Ok");
+
+                dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+                Node okButton = dialogPaneName.lookupButton(OkButtonType);
+                okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+                Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+                System.out.println(clickedButton.get());
+                if (clickedButton.get() == OkButtonType) {
+                    System.out.println("Pressed OK.");
+
+                    Stage stage = TicTacToeGame.getStage();
+                    navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
+//                    Stage stage = TicTacToeGame.getStage();
+//                    navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
+                }
+                //  });
             }
         });
 
@@ -491,4 +521,78 @@ public class RepeatedUserDialog {
         dialog.close();
     }
 
+    public static void dialogSinUp(String message) {
+        DialogPane dialogPaneName = new DialogPane();
+        GridPane gridPane = new GridPane();
+        Label labelFirstPlayer = new Label(message);
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 18.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        gridPane.setMinSize(400, 100);
+
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("Sin Up!");
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+    }
+
+    public static void dialogSinUpSuss() {
+
+        DialogPane dialogPaneName = new DialogPane();
+        GridPane gridPane = new GridPane();
+        Label labelFirstPlayer = new Label(" Sign Up succeded.");
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 18.0));
+        labelFirstPlayer.setTextFill(Color.WHITE);
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setStyle("-fx-background-color: #22726e;");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+        gridPane.setMinSize(400, 100);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        dialog.setTitle("Sin Up!");
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+        if (clickedButton.get() == OkButtonType) {
+            System.out.println("Pressed OK.");
+            Stage stage = TicTacToeGame.getStage();
+            navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+        }
+    }
 }

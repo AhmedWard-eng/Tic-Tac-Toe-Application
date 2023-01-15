@@ -191,7 +191,8 @@ public class NetworkConnection {
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                        r.dialogSignUp();
+//                                        r.dialogSignUp();
+                                        RepeatedUserDialog.dialogSinUpSuss();
                                     }
                                 });
                             } else {
@@ -199,7 +200,8 @@ public class NetworkConnection {
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                        r.dialogRepeated();
+//                                        r.dialogRepeated();
+                                        RepeatedUserDialog.dialogSinUp("Sorry repeated username.");
                                     }
                                 });
                             }

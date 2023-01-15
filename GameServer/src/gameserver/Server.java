@@ -59,7 +59,7 @@ public class Server {
 
             clientsVector.get(i).sendMessage(message);
 //            System.out.println();
-            dao.makeuserOffline(clientsVector.get(i).getIp());
+//            dao.makeuserOffline(clientsVector.get(i).getIp());
             socket.close();
 
             System.err.println(" socket isclosed " + socket.isClosed());

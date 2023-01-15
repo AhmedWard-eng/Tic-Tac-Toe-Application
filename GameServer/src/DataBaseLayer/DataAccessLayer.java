@@ -29,20 +29,22 @@ public class DataAccessLayer {
 
     private Connection connection;
     PreparedStatement pst;
-    private static DataAccessLayer dao;
+//    private static DataAccessLayer dao;
+//
+//    public static synchronized DataAccessLayer getInstance() {
+//        if (dao == null) {
+//
+//            dao = new DataAccessLayer();
+//        }
+//        if(dao.)
+//        return dao;
+//    }
 
-    public static DataAccessLayer getInstance() {
-        if (dao == null) {
-
-            dao = new DataAccessLayer();
-        }
-        return dao;
-    }
-
-    private DataAccessLayer() {
+    public DataAccessLayer() {
         try {
             DriverManager.registerDriver(new ClientDriver());
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/game", "root", "root");
+
         } catch (SQLException ex) {
             Logger.getLogger(DataAccessLayer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -286,6 +288,10 @@ public class DataAccessLayer {
             return false;
         }
 
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
 }

@@ -146,7 +146,7 @@ public class GameServerBase extends AnchorPane {
         label = new Label();
         paneview = new Pane();
 
-        test = DataAccessLayer.getInstance();
+        test = new DataAccessLayer();
         draw(paneview);
         buttonOff.setDisable(true);
 
@@ -294,16 +294,15 @@ public class GameServerBase extends AnchorPane {
 
         stage.setOnCloseRequest((event) -> {
             System.out.println("Closing Stage");
-            if ((server!=null)&&(server.isOpened)) {
+            if ((server != null) && (server.isOpened)) {
                 try {
                     System.out.println("server on is close");
                     server.closeConnection();
                 } catch (IOException ex) {
                     Logger.getLogger(GameServerBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
-               
+
             }
-          
 
         });
 

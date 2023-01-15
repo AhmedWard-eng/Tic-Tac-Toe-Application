@@ -23,15 +23,21 @@ import javafx.stage.Stage;
 public class TicTacToeGame extends Application {
 
     private static Stage guiStage;
+    private static Application app;
 
     public static Stage getStage() {
         return guiStage;
+    }
+
+    public static Application getApplication() {
+        return app;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
 
         guiStage = stage;
+        app = this;
 
         Parent root = new FXMLHomeBase(stage);
         Scene scene = new Scene(root);
@@ -39,12 +45,12 @@ public class TicTacToeGame extends Application {
         File file = new File(getClass().getResource("").toExternalForm());
         System.out.println(file.getParentFile().getAbsolutePath());
         stage.setTitle("Tic-Tac-Toe Game");
-        
+
         stage.setScene(scene);
         stage.setResizable(false);
         stage.getIcons().add(new Image(tictactoegame.TicTacToeGame.class.getResource("Resources/Capture.PNG").toExternalForm()));
         stage.show();
-        
+
     }
 
     /**

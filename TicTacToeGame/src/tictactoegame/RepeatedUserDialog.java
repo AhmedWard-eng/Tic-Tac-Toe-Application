@@ -46,11 +46,12 @@ import javafx.stage.StageStyle;
 import static tictactoegame.NetworkConnection.users;
 import javafx.application.HostServices;
 import javafx.scene.paint.Paint;
+
 /**
  *
  * @author Nada Hamed
  */
-public class RepeatedUserDialog extends Application{
+public class RepeatedUserDialog {
 
     protected DialogPane dialogPaneName;
     protected GridPane gridPane;
@@ -400,18 +401,18 @@ public class RepeatedUserDialog extends Application{
 
         }
     }
-    
+
     public void helpDialog() {
         Label label2;
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         Hyperlink githubHyperlink = new Hyperlink("https://github.com/AhmedWard-eng/Tic-Tac-Toe-Application");
-        
+
         String message;
         //Want to add your ideas?
         message = "Copyright 2023 JETS LLC. All rights reserved. \n\nWant to add your ideas? Contribute in:\n\n";
         String message2 = "\nCredits to:\n\n";
-        
+
         message2 += "Ahmed gamal Ward\n";
         message2 += "Hossam Ahmed Fadaly\n";
         message2 += "Marina abdelmalak beshara\n";
@@ -421,20 +422,19 @@ public class RepeatedUserDialog extends Application{
 
         githubHyperlink.setFont(new Font("Comic Sans MS Bold", 15.0));
         githubHyperlink.setTextFill(Paint.valueOf("#ff9900"));
-        
+
         labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
         labelFirstPlayer.setTextFill(Color.WHITE);
 
         label2.setFont(new Font("Comic Sans MS Bold", 15.0));
         label2.setTextFill(Color.WHITE);
-        
+
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
         dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
         dialogPaneName.setStyle("-fx-background-color: #22726e;");
-        
-        
+
         githubHyperlink.setOnAction((event) -> {
-            getHostServices().showDocument(githubHyperlink.getText());
+            TicTacToeGame.getApplication().getHostServices().showDocument(githubHyperlink.getText());
         });
 
         gridPane.add(labelFirstPlayer, 0, 0);
@@ -445,7 +445,7 @@ public class RepeatedUserDialog extends Application{
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setDialogPane(dialogPaneName);
         dialog.setTitle("About TicTacToe");
-        
+
         ButtonType OkButtonType = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
 
         dialogPaneName.getButtonTypes().addAll(OkButtonType);
@@ -456,19 +456,19 @@ public class RepeatedUserDialog extends Application{
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
     }
-    
+
     public void loadingDialog() {
         dialogPaneName = new DialogPane();
         gridPane = new GridPane();
         String message = "loading";
 
-        ProgressIndicator pi = new ProgressIndicator();        
+        ProgressIndicator pi = new ProgressIndicator();
         pi.setStyle("-fx-accent: #ffffff;");
-        
+
         labelFirstPlayer = new Label(message);
         labelFirstPlayer.setFont(new Font("Comic Sans MS Bold", 15.0));
         labelFirstPlayer.setTextFill(Color.WHITE);
-        
+
         dialogPaneName.setPadding(new Insets(10, 20, 0, 20));
         dialogPaneName.setStyle("-fx-background-color: #12947F; -fx-border-style: solid inside; -fx-border-width: 3; -fx-border-radius: 5; -fx-border-color: white;");
 
@@ -478,22 +478,16 @@ public class RepeatedUserDialog extends Application{
         dialogPaneName.setContent(gridPane);
 
         dialog = new Dialog<>();
-        
+
         dialog.setDialogPane(dialogPaneName);
         dialog.initStyle(StageStyle.TRANSPARENT);
-                
+
         dialog.show();
     }
-    
-    public void closeLoadingDialog(){
+
+    public void closeLoadingDialog() {
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
         dialog.close();
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        
-    }
-    
-    
 }

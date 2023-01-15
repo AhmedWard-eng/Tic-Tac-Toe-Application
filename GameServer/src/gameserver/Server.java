@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -42,7 +43,7 @@ public class Server {
 
     public void closeConnection() throws IOException {
         isOpened = false;
-        DataAccessLayer dao = DataAccessLayer.getInstance();
+        DataAccessLayer dao = new DataAccessLayer();
 //        if (clientConnection != null) {
 
 //        System.out.println("Close Connection is Called ");
@@ -66,6 +67,11 @@ public class Server {
         }
 
         serverSocket.close();
+        try {
+            dao.getConnection().close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         clientsVector.clear();
     }

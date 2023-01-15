@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class test {
 
     public static void main(String[] args) {
-        DataAccessLayer test = DataAccessLayer.getInstance();
+        DataAccessLayer test = new DataAccessLayer();
 //            double x = test.getOnlineRate();
 //            double y = test.getOfflineRate();
 //            System.out.println("online players num= "+ x);

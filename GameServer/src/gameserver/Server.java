@@ -57,9 +57,11 @@ public class Server {
 
             String message = new Gson().toJson(map);
 
-            clientsVector.get(i).sendMessage(message);
+//            clientsVector.get(i).sendMessage(message);
 //            System.out.println();
+//            if (i < clientsVector.size()) {
             dao.makeuserOffline(clientsVector.get(i).getIp());
+//            }
             socket.close();
 
             System.err.println(" socket isclosed " + socket.isClosed());

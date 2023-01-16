@@ -17,6 +17,8 @@ import beans.LogoutBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -237,23 +239,23 @@ public class RepeatedUserDialog {
         Optional<ButtonType> clickedButton = dialog.showAndWait();
 
         if (clickedButton.get() == OkButtonType) {
-            //logout and nav
             Gson gson = new GsonBuilder().create();
-
             LogoutBean logoutBean = new LogoutBean("logout", FXMLLoginBase.playerOneName);
             String h = gson.toJson(logoutBean);
-//            System.out.println(h);
             networkConnection = new NetworkConnection();
             networkConnection.sendMessage(h);
+//            try {
+//                networkConnection.getSocket().close();
+//            } catch (IOException ex) {
+//                Logger.getLogger(RepeatedUserDialog.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 //            System.out.println("data is sent ");
             //dialog
             Stage stage = TicTacToeGame.getStage();
             navigationLogic.Navigation.navigate(stage, new FXMLHomeBase(stage));
 
         } else if (clickedButton.get() == cancelButtonType) {
-            if (e != null) {
-                e.consume();
-            }
+            if (e != null) e.consume();
         }
     }
 
@@ -593,6 +595,46 @@ public class RepeatedUserDialog {
             System.out.println("Pressed OK.");
             Stage stage = TicTacToeGame.getStage();
             navigationLogic.Navigation.navigate(stage, new FXMLOnlineScreenBase(stage));
+        }
+    }
+    public static void logoutWithDrawing(NetworkConnection networkConnection, String message, Stage stage, WindowEvent e) {
+        DialogPane dialogPaneName;
+        GridPane gridPane;
+        Label labelFirstPlayer;
+        dialogPaneName = new DialogPane();
+        gridPane = new GridPane();
+        labelFirstPlayer = new Label("are you sure you want to withdraw?\n you will lose 5 points from your score");
+
+        dialogPaneName.setPadding(new Insets(0, 10, 0, 10));
+
+        dialogPaneName.setHeaderText("withdrawing");
+
+        gridPane.add(labelFirstPlayer, 0, 0);
+        dialogPaneName.setContent(gridPane);
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setDialogPane(dialogPaneName);
+        //dialog.setTitle(message);
+
+        ButtonType OkButtonType = new ButtonType("Ok");
+        ButtonType cancelButtonType = new ButtonType("cancel");
+
+        dialogPaneName.getButtonTypes().addAll(OkButtonType, cancelButtonType);
+
+        Node okButton = dialogPaneName.lookupButton(OkButtonType);
+
+        Node cancelButton = dialogPaneName.lookupButton(cancelButtonType);
+        okButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+        cancelButton.setStyle("-fx-background-color: #ff9900; -fx-border-radius: 15; -fx-background-radius: 15; -fx-fontfamily: 'Comic-Sans MS'");
+
+        Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+        if (clickedButton.get() == OkButtonType) {
+            NetworkConnection.userOnline.setScore(NetworkConnection.userOnline.getScore() - 5);
+            networkConnection.sendMessage(message);
+            Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, NetworkConnection.users));
+        } else if (clickedButton.get() == cancelButtonType) {
+            if (e != null) e.consume();
         }
     }
 }

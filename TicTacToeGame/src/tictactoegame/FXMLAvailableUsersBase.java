@@ -132,6 +132,11 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         getChildren().add(label0);
         getChildren().add(label1);
         getChildren().add(buttonBackHome);
+        
+        stage.setOnCloseRequest((event) -> {
+            RepeatedUserDialog r = new RepeatedUserDialog();
+            r.logoutDialog("Do you want to logout?", event);
+        });
 
     }
 
@@ -181,4 +186,5 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         });
 
     }
+    
 }

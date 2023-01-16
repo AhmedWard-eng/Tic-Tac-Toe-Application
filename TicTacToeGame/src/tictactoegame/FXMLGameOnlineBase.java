@@ -437,9 +437,14 @@ public class FXMLGameOnlineBase extends AnchorPane implements OnlineGameMove {
         }
 
         stage.setOnCloseRequest((event) -> {
-            RepeatedUserDialog r = new RepeatedUserDialog();
-            r.logoutDialog("zzzzzzzz", event);
-        });
+            Map map = new HashMap();
+            map.put("operation", "logoutwithdraw");
+            map.put("ip", requestGameBean.myIp);
+            map.put("otherPlayeruserName", requestGameBean.myUserName);
+            map.put("userName", userName);
+            String msg = new Gson().toJson(map);
+            RepeatedUserDialog.logoutWithDrawing(networkConnection, msg, stage, event);
+            }); 
     }
 
     void init() {

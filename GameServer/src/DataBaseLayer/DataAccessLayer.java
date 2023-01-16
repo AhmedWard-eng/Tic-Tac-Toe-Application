@@ -292,7 +292,7 @@ public class DataAccessLayer {
 
     public boolean isOnline(String ip) {
         try {
-            String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"ip\"=? and ROOT.\"game\".\"status\"= online";
+            String sql = " SELECT ROOT.\"game\".\"username\" FROM  ROOT.\"game\" Where ROOT.\"game\".\"ip\"=? and ROOT.\"game\".\"status\"= 'online'";
 
             PreparedStatement pst = connection.prepareStatement(sql);
             pst.setString(1, ip);

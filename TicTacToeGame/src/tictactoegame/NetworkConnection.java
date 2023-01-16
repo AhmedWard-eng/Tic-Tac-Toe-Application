@@ -223,7 +223,7 @@ public class NetworkConnection {
                                         //FXMLLoginBase.playerOneName = TextFieldUserName.getText();
                                         Stage stage = TicTacToeGame.getStage();
                                         userOnline = new UserOnline(ip, loginResponseBean.getUserName(), "", "", loginResponseBean.getScore());
-                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, loginResponseBean.getUsers()));
+                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, removeMeFromList(loginResponseBean.getUsers())));
                                     }
                                 });
 
@@ -237,8 +237,8 @@ public class NetworkConnection {
 
                             System.out.println("first Users");
                             if (onlineUsersList != null) {
-                                onlineUsersList.getUsers(usersResponseBean.getUsers());
-                                NetworkConnection.users = usersResponseBean.getUsers();
+                                onlineUsersList.getUsers(removeMeFromList(usersResponseBean.getUsers()));
+                                NetworkConnection.users = removeMeFromList(usersResponseBean.getUsers());
                             }
 //                                    Stage stage = TicTacToeGame.getStage();
 
@@ -317,6 +317,14 @@ public class NetworkConnection {
                 }
             }
         }.start();
+    }
+
+    private ArrayList<UserOnline> removeMeFromList(ArrayList<UserOnline> users) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUserName().equals(userOnline.getUserName())) {
+                users.remove(i);
+            }
+        }
     }
 
     public void sendMessage(String message) {

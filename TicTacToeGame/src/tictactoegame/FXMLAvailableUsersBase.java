@@ -135,7 +135,7 @@ public class FXMLAvailableUsersBase extends AnchorPane implements OnlineUsersLis
         
         stage.setOnCloseRequest((event) -> {
             RepeatedUserDialog r = new RepeatedUserDialog();
-            r.logoutDialog("zzzzzzzz", event);
+            r.logoutDialog("Do you want to logout?", event);
         });
 
     }

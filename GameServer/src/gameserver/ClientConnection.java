@@ -166,8 +166,8 @@ public class ClientConnection {
                             System.out.println(message);
                             networkOperation.withdrawing(message, ip, object.getString("userName"), object.getString("ip"), object.getString("otherPlayeruserName"), ClientConnection.this);
                         } else if (object.getString("operation").equals("logoutwithdraw")) {
-                            System.out.println(message);
-                            LogoutBean logoutBean = new LogoutBean("logout", object.getString("username"));
+                            System.out.println("ttttttttttttttttt"+message);
+                            LogoutBean logoutBean = new LogoutBean("logout", object.getString("userName"));
                             networkOperation.logout(logoutBean, ip);
                             networkOperation.logoutWithDraw(message, ip, object.getString("userName"), object.getString("ip"), object.getString("otherPlayeruserName"), ClientConnection.this, logoutBean, ip);
                             //LogoutBean logoutBean = new LogoutBean("logout", object.getString("username"));

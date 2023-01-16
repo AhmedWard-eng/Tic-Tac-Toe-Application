@@ -104,7 +104,7 @@ public class FXMLSignUpBase extends AnchorPane {
                         } else {
                             System.out.println("not matched paass");
                             ///1
-                            RepeatedUserDialog.dialogSinUp("Passwort Not Match.");
+                            RepeatedUserDialog.dialogSinUp("Password Not Match.");
                         }
 
                     } else {

@@ -70,9 +70,9 @@ public class NetworkOperation {
         }
         for (int i = 0; i < Server.clientsVector.size(); i++) {
             if (Server.clientsVector.get(i).getIp().equals(requestGameBean.otherPlayerIp) && Server.clientsVector.get(i) != clientConnection) {
-                if (!dataAccessLayer.isOnline(requestGameBean.otherPlayerIp)) {
+//                if (!dataAccessLayer.isOnline(requestGameBean.otherPlayerIp)) {
                     Server.clientsVector.get(i).sendMessage(s);
-                }
+//                }
             }
 
         }
@@ -148,6 +148,10 @@ public class NetworkOperation {
         System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update1 = " + isUpdated1);
 
         System.out.println("networkOperations.NetworkOperation.gameFinish()" + " update2 = " + isUpdated2);
+    }
+    public void logoutWithDraw(String message, String ip, String userName, String otherPlayerIp, String otherPlayerUserName, ClientConnection clientConnection, LogoutBean logoutBean, String hostAddress) throws SQLException{
+        withdrawing(message, ip, userName, otherPlayerIp, otherPlayerUserName, clientConnection);
+        logout(logoutBean, hostAddress);
     }
 
 }

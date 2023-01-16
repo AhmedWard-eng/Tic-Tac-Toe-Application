@@ -69,7 +69,8 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.7", 5005);
+                socket = new Socket("10.145.19.104", 5005);
+
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -89,7 +90,8 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.7", 5005);
+                socket = new Socket("10.145.19.104", 5005);
+
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -112,7 +114,8 @@ public class NetworkConnection {
             //"10.145.19.104"
             if (socket == null || !socket.isConnected() || socket.isClosed()) {
 
-                socket = new Socket("192.168.1.7", 5005);
+                socket = new Socket("10.145.19.104", 5005);
+
 
                 bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 ps = new PrintStream(socket.getOutputStream());
@@ -137,7 +140,9 @@ public class NetworkConnection {
         }
         socket = null;
         if (socket == null || socket.isClosed()) {
-            socket = new Socket("192.168.1.7", 5005);
+
+            socket = new Socket("10.145.19.104", 5005);
+
 
             System.out.println("tictactoegame.NetworkConnection.<init>() in constructor testmsg");
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -223,7 +228,7 @@ public class NetworkConnection {
                                         //FXMLLoginBase.playerOneName = TextFieldUserName.getText();
                                         Stage stage = TicTacToeGame.getStage();
                                         userOnline = new UserOnline(ip, loginResponseBean.getUserName(), "", "", loginResponseBean.getScore());
-                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, loginResponseBean.getUsers()));
+                                        Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, removeMeFromList(loginResponseBean.getUsers())));
                                     }
                                 });
 
@@ -237,8 +242,8 @@ public class NetworkConnection {
 
                             System.out.println("first Users");
                             if (onlineUsersList != null) {
-                                onlineUsersList.getUsers(usersResponseBean.getUsers());
-                                NetworkConnection.users = usersResponseBean.getUsers();
+                                onlineUsersList.getUsers(removeMeFromList(usersResponseBean.getUsers()));
+                                NetworkConnection.users = removeMeFromList(usersResponseBean.getUsers());
                             }
 //                                    Stage stage = TicTacToeGame.getStage();
 
@@ -302,6 +307,20 @@ public class NetworkConnection {
                                     System.out.println(".run() mafrod dialooggg");
                                 }
                             });
+                        } else if (object.getString("operation").equals("logoutwithdraw")) {
+                            Stage stage = TicTacToeGame.getStage();
+
+                            //dialogue to show him that the other player withdraw and navigate to online availbe users
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //show dialog
+//                                    Navigation.navigate(stage, new FXMLAvailableUsersBase(stage, users));
+                                    System.out.println(".run() mafrod dialooggg");
+                                    r.oppistePlayerWithDrawDialog("You are the winner! your friend withdraw");
+                                    System.out.println(".run() mafrod dialooggg");
+                                }
+                            });
                         }
 
 //                        if (object.getString("operation").equals("serverStatus")) {
@@ -317,6 +336,15 @@ public class NetworkConnection {
                 }
             }
         }.start();
+    }
+
+    private ArrayList<UserOnline> removeMeFromList(ArrayList<UserOnline> users) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUserName().equals(userOnline.getUserName())) {
+                users.remove(i);
+            }
+        }
+        return users;
     }
 
     public void sendMessage(String message) {
